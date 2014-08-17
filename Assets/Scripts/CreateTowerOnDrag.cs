@@ -27,6 +27,6 @@ public class CreateTowerOnDrag : MonoBehaviour {
 		mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		mousePosition.z = 0;
 		lastTowerCreated.transform.position = mousePosition;
-		Debug.Log("Dragging tower at position " + lastTowerCreated.transform.position);
 	}
+
 }
