@@ -10,12 +10,14 @@ public class CreateTowerOnDrag : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-	
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	
+		Vector3 screenPoint = new Vector3 (150, 40, 0);
+		Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPoint);
+		worldPos.z = 0;
+		transform.position = worldPos;
 	}
 
 	void OnMouseDown(){
