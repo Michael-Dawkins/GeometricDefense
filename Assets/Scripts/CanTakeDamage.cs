@@ -18,11 +18,12 @@ public class CanTakeDamage : MonoBehaviour {
 	}
 
 	void OnTriggerEnter2D(Collider2D other){
-		if(other.gameObject.GetComponent<Bullet>()){
-			Debug.Log ("Taking damage");
+		Bullet bullet = other.gameObject.GetComponent<Bullet>();
+		if(bullet){
 			Destroy(other.gameObject);
 			hp -= 20f;
 			if (hp <=0){
+				bullet.ShootingTower.removeEnemyFromTargets(gameObject.GetComponent<Enemy>());
 				Destroy(gameObject);
 			}
 		}

@@ -6,6 +6,8 @@ public class Bullet : MonoBehaviour {
 	public Enemy TargetEnemy {get; set;}
 	public float speed = 4f;
 
+	public CanShoot ShootingTower {get; set;}
+
 	// Use this for initialization
 	void Start () {
 	
@@ -19,11 +21,10 @@ public class Bullet : MonoBehaviour {
 	void moveTowardsEnemy(){
 		if (TargetEnemy == null){
 			Destroy (gameObject);
-		}
+		} else {
 
-		transform.position = Vector2.Lerp(
-			transform.position,
-			TargetEnemy.transform.position, 
-			Time.deltaTime * speed);
+			transform.position = 
+				Vector3.MoveTowards(transform.position, TargetEnemy.transform.position, Time.deltaTime * speed);
+		}
 	}
 }
