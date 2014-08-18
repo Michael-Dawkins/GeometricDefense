@@ -30,10 +30,8 @@ public class CanShoot : MonoBehaviour {
 
 	void shoot (Enemy targetEnemy) {
 		if (targetEnemy != null) {
-			Debug.Log("Shooting");
 			anim.SetTrigger ("shooting");
 			Bullet bullet = Instantiate (bulletPrefab, transform.position, transform.rotation) as Bullet;
-			bullet.ShootingTower = this;
 			bullet.TargetEnemy = targetEnemy;
 			nextShootingTime = Time.time + (1f /shootingSpeed);
 		}
@@ -46,6 +44,7 @@ public class CanShoot : MonoBehaviour {
 	void OnTriggerEnter2D (Collider2D other) {
 		if (other.gameObject.GetComponent<Enemy> ()) {
 			targets.Add(other.GetComponent<Enemy> ());
+			other.gameObject.GetComponent<CanTakeDamage>().addTargetingTower(this);
 		} else {
 			Debug.LogError ("not an ennemy");
 		}
@@ -55,6 +54,7 @@ public class CanShoot : MonoBehaviour {
 		Enemy leavingEnemy = other.gameObject.GetComponent<Enemy> ();
 		if (leavingEnemy) {
 			targets.Remove(leavingEnemy);
+			leavingEnemy.gameObject.GetComponent<CanTakeDamage>().removeTargetingTower(this);
 		}
 	}
 }
