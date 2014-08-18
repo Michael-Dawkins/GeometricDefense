@@ -11,6 +11,7 @@ public class CanShoot : MonoBehaviour {
 	private Animator anim;
 	private Enemy currentTarget;
 	private bool shooting = false;
+	private Bullet currentBullet;
 
 	// Use this for initialization
 	void Start () {
@@ -19,16 +20,17 @@ public class CanShoot : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		if (shooting){
+		if (shooting && currentBullet == null){
 			shoot(currentTarget);
-			shooting = false;
 		}
 	}
 
 	void shoot(Enemy targetEnemy){
-		anim.SetTrigger("shooting");
-		Bullet currentBullet = Instantiate(bullet, transform.position, transform.rotation) as Bullet;
-		currentBullet.TargetEnemy = targetEnemy;
+		if (targetEnemy != null) {
+						anim.SetTrigger ("shooting");
+						currentBullet = Instantiate (bullet, transform.position, transform.rotation) as Bullet;
+						currentBullet.TargetEnemy = targetEnemy;
+				}
 	}
 	
 	void OnTriggerEnter2D(Collider2D other){

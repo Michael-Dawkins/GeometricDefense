@@ -5,6 +5,8 @@ using System.Collections;
 [RequireComponent (typeof(BoxCollider2D))]
 public class CanTakeDamage : MonoBehaviour {
 
+	public float hp = 100f;
+
 	// Use this for initialization
 	void Start () {
 	
@@ -19,7 +21,10 @@ public class CanTakeDamage : MonoBehaviour {
 		if(other.gameObject.GetComponent<Bullet>()){
 			Debug.Log ("Taking damage");
 			Destroy(other.gameObject);
-			Destroy(gameObject);
+			hp -= 20f;
+			if (hp <=0){
+				Destroy(gameObject);
+			}
 		}
 	}
 }
