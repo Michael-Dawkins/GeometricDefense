@@ -10,9 +10,8 @@ public class CanShoot : MonoBehaviour {
 	public float shootingSpeed = 1f;
 
 	private Animator anim;
-	private bool shooting = false;
 	private float nextShootingTime = 0f;
-	private List<Enemy> targets = new List<Enemy>();
+	private List<CanTakeDamage> targets = new List<CanTakeDamage>();
 
 	// Use this for initialization
 	void Start () {
@@ -28,22 +27,22 @@ public class CanShoot : MonoBehaviour {
 		}
 	}
 
-	void shoot (Enemy targetEnemy) {
-		if (targetEnemy != null) {
+	void shoot (CanTakeDamage target) {
+		if (target != null) {
 			anim.SetTrigger ("shooting");
 			Bullet bullet = Instantiate (bulletPrefab, transform.position, transform.rotation) as Bullet;
-			bullet.TargetEnemy = targetEnemy;
+			bullet.Target = target;
 			nextShootingTime = Time.time + (1f /shootingSpeed);
 		}
 	}
 
-	public void removeEnemyFromTargets(Enemy enemy){
-		targets.Remove(enemy);
+	public void removeTargetFromList(CanTakeDamage target){
+		targets.Remove(target);
 	}
 	
 	void OnTriggerEnter2D (Collider2D other) {
-		if (other.gameObject.GetComponent<Enemy> ()) {
-			targets.Add(other.GetComponent<Enemy> ());
+		if (other.gameObject.GetComponent<CanTakeDamage> ()) {
+			targets.Add(other.GetComponent<CanTakeDamage> ());
 			other.gameObject.GetComponent<CanTakeDamage>().addTargetingTower(this);
 		} else {
 			Debug.LogError ("not an ennemy");
@@ -51,7 +50,7 @@ public class CanShoot : MonoBehaviour {
 	}
 	
 	void OnTriggerExit2D (Collider2D other) {
-		Enemy leavingEnemy = other.gameObject.GetComponent<Enemy> ();
+		CanTakeDamage leavingEnemy = other.gameObject.GetComponent<CanTakeDamage> ();
 		if (leavingEnemy) {
 			targets.Remove(leavingEnemy);
 			leavingEnemy.gameObject.GetComponent<CanTakeDamage>().removeTargetingTower(this);

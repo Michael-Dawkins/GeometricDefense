@@ -3,7 +3,7 @@ using System.Collections;
 
 public class Bullet : MonoBehaviour {
 
-	public Enemy TargetEnemy {get; set;}
+	public CanTakeDamage Target {get; set;}
 	public float speed = 4f;
 
 	public CanShoot ShootingTower {get; set;}
@@ -15,16 +15,16 @@ public class Bullet : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		moveTowardsEnemy();
+		moveTowardsTarget();
 	}
 
-	void moveTowardsEnemy(){
-		if (TargetEnemy == null){
+	void moveTowardsTarget(){
+		if (Target == null){
 			Destroy (gameObject);
 		} else {
 
 			transform.position = 
-				Vector3.MoveTowards(transform.position, TargetEnemy.transform.position, Time.deltaTime * speed);
+				Vector3.MoveTowards(transform.position, Target.transform.position, Time.deltaTime * speed);
 		}
 	}
 }

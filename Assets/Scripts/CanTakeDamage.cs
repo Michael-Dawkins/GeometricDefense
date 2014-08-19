@@ -35,7 +35,7 @@ public class CanTakeDamage : MonoBehaviour {
 			hp -= 20f;
 			if (hp <=0){
 				foreach (CanShoot tower in TargetedBy){
-					tower.removeEnemyFromTargets(gameObject.GetComponent<Enemy>());
+					tower.removeTargetFromList(gameObject.GetComponent<CanTakeDamage>());
 				}
 				Destroy(gameObject);
 			}

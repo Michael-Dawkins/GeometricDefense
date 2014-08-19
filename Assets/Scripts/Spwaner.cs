@@ -1,9 +1,9 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class EnemySpwaner : MonoBehaviour {
+public class Spwaner : MonoBehaviour {
 	
-	public Enemy enemyToSpawn;
+	public CanTakeDamage enemyToSpawn;
 	public float rate = 3f;
 
 	public float hpIncrease = 10f;
@@ -22,7 +22,7 @@ public class EnemySpwaner : MonoBehaviour {
 		if (spawnCounter % increaseHpEvery == 0){
 			currentIncrease += hpIncrease;
 		}
-		Enemy enemy = Instantiate (enemyToSpawn, transform.position, transform.rotation) as Enemy;
+		CanTakeDamage enemy = Instantiate (enemyToSpawn, transform.position, transform.rotation) as CanTakeDamage;
 		CanTakeDamage damageable = enemy.GetComponent<CanTakeDamage>();
 		damageable.hp += currentIncrease;
 	}
