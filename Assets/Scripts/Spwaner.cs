@@ -24,6 +24,6 @@ public class Spwaner : MonoBehaviour {
 		}
 		CanTakeDamage enemy = Instantiate (enemyToSpawn, transform.position, transform.rotation) as CanTakeDamage;
 		CanTakeDamage damageable = enemy.GetComponent<CanTakeDamage>();
-		damageable.hp += currentIncrease;
+		damageable.InitialHp += currentIncrease;
 	}
 }

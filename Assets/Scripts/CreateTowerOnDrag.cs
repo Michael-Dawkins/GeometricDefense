@@ -25,9 +25,12 @@ public class CreateTowerOnDrag : MonoBehaviour {
 
 			if (collider2D == Physics2D.OverlapPoint(touchPos)) {
 				CreateTower();
+				dragging = true;
 			}
-		} else if (Input.GetMouseButton(0)){
+		} else if (Input.GetMouseButton(0) && dragging){
 			DragTower();
+		} else if (Input.GetMouseButtonUp(0)){
+			dragging = false;
 		}
 	}
 
