@@ -18,19 +18,16 @@ public class CreateTowerOnDrag : MonoBehaviour {
 	void Update () {
 		PlaceObjectOnScreen(new Vector3 (150, 40, 0));
 
-		if (Input.touchCount == 1 || Input.GetMouseButtonDown(0) && !dragging)
+		if (Input.GetMouseButtonDown(0))
 		{
 			Vector3 wp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 			Vector2 touchPos = new Vector2(wp.x, wp.y);
 
 			if (collider2D == Physics2D.OverlapPoint(touchPos)) {
 				CreateTower();
-				dragging = true;
 			}
-		} else if (Input.touchCount == 1 || Input.GetMouseButton(0) && dragging){
+		} else if (Input.GetMouseButton(0)){
 			DragTower();
-		} else if (Input.touchCount == 0 && !Input.GetMouseButton(0) && dragging){
-			dragging = false;
 		}
 	}
 

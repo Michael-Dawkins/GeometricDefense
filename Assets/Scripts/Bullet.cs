@@ -22,7 +22,6 @@ public class Bullet : MonoBehaviour {
 		if (Target == null){
 			Destroy (gameObject);
 		} else {
-
 			transform.position = 
 				Vector3.MoveTowards(transform.position, Target.transform.position, Time.deltaTime * speed);
 		}

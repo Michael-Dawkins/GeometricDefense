@@ -8,6 +8,7 @@ public class CanShoot : MonoBehaviour {
 	public int Damage = 10;
 	public Bullet bulletPrefab;
 	public float shootingSpeed = 1f;
+	public AudioClip shootingSound;
 
 	private Animator anim;
 	private float nextShootingTime = 0f;
@@ -33,6 +34,7 @@ public class CanShoot : MonoBehaviour {
 			Bullet bullet = Instantiate (bulletPrefab, transform.position, transform.rotation) as Bullet;
 			bullet.Target = target;
 			nextShootingTime = Time.time + (1f /shootingSpeed);
+			audio.PlayOneShot(shootingSound, 1F);
 		}
 	}
 
