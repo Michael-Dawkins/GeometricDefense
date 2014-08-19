@@ -5,6 +5,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 
 	public GameObject towerToCreate;
 	public GameObject lastTowerCreated;
+	public float cellSize = 0.4f;
 
 	private bool dragging = false;
 
@@ -30,6 +31,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 		} else if (Input.GetMouseButton(0) && dragging){
 			DragTower();
 		} else if (Input.GetMouseButtonUp(0)){
+			PlaceTower();
 			dragging = false;
 		}
 	}
@@ -48,6 +50,14 @@ public class CreateTowerOnDrag : MonoBehaviour {
 		mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		mousePosition.z = 0;
 		lastTowerCreated.transform.position = mousePosition;
+	}
+
+	void PlaceTower(){
+		Vector3 tmpPos = lastTowerCreated.transform.position;
+		tmpPos.x = tmpPos.x - tmpPos.x % cellSize;
+		tmpPos.y = tmpPos.y - tmpPos.y % cellSize;
+		tmpPos.z = 0;
+		lastTowerCreated.transform.position = tmpPos;
 	}
 
 }
