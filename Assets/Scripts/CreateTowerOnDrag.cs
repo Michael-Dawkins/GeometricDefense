@@ -6,18 +6,26 @@ public class CreateTowerOnDrag : MonoBehaviour {
 	public GameObject towerToCreate;
 	public GameObject lastTowerCreated;
 	public float cellSize = 0.4f;
+	public int towerCost = 50;
 
 	private bool dragging = false;
-
+	private PlayerMoney playerMoney;
 	private Vector3 mousePosition;
 
 	// Use this for initialization
 	void Start () {
+		if (playerMoney == null){
+			GameObject playerState = GameObject.Find("PlayerState");
+			if (playerState == null){
+				throw new UnityException("PlayerState cannot be found in scene");
+			}
+			playerMoney = playerState.GetComponent<PlayerMoney>();
+		}
 	}
 	
 	// Update is called once per frame
 	void Update () {
-		PlaceObjectOnScreen(new Vector3 (150, 40, 0));
+		GDUtils.PlaceTransformOnScreen(transform, 150, 40);
 
 		if (Input.GetMouseButtonDown(0))
 		{
@@ -36,12 +44,6 @@ public class CreateTowerOnDrag : MonoBehaviour {
 		}
 	}
 
-	void PlaceObjectOnScreen(Vector3 screenPoint){
-		Vector3 worldPos = Camera.main.ScreenToWorldPoint(screenPoint);
-		worldPos.z = 0;
-		transform.position = worldPos;
-	}
-
 	void CreateTower(){
 		lastTowerCreated = Instantiate(towerToCreate, transform.position, transform.rotation) as GameObject;
 	}
@@ -53,11 +55,24 @@ public class CreateTowerOnDrag : MonoBehaviour {
 	}
 
 	void PlaceTower(){
-		Vector3 tmpPos = lastTowerCreated.transform.position;
-		tmpPos.x = tmpPos.x - tmpPos.x % cellSize;
-		tmpPos.y = tmpPos.y - tmpPos.y % cellSize;
-		tmpPos.z = 0;
-		lastTowerCreated.transform.position = tmpPos;
+		if (hasEnoughMoneyToBuyTower()){
+			buyTower();
+			Vector3 tmpPos = lastTowerCreated.transform.position;
+			tmpPos.x = tmpPos.x - tmpPos.x % cellSize;
+			tmpPos.y = tmpPos.y - tmpPos.y % cellSize;
+			tmpPos.z = 0;
+			lastTowerCreated.transform.position = tmpPos;
+		} else {
+			Destroy(lastTowerCreated);
+		}
+
 	}
 
+	bool hasEnoughMoneyToBuyTower(){
+		return playerMoney.Money >= towerCost;
+	}
+
+	void buyTower(){
+		playerMoney.Money -= towerCost;
+	}
 }

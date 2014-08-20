@@ -21,6 +21,7 @@ public class CanTakeDamage : MonoBehaviour {
 	private float currentHp;
 	private GameObject healthBar;
 	private List<CanShoot> TargetedBy = new List<CanShoot>();
+	private PlayerMoney playerMoney;
 
 	// Use this for initialization
 	void Start () {
@@ -28,6 +29,14 @@ public class CanTakeDamage : MonoBehaviour {
 		healthBar = Instantiate(healthBarSPrite,new Vector3(pos.x - 0.15f, pos.y + 0.15f, 0f), transform.rotation) as GameObject;
 		healthBar.transform.parent = gameObject.transform;
 		healthBar.gameObject.transform.localScale = new Vector3(0,1,1);
+
+		if (playerMoney == null){
+			GameObject playerState = GameObject.Find("PlayerState");
+			if (playerState == null){
+				throw new UnityException("PlayerState cannot be found in scene");
+			}
+			playerMoney = playerState.GetComponent<PlayerMoney>();
+		}
 	}
 	
 	// Update is called once per frame
@@ -50,15 +59,21 @@ public class CanTakeDamage : MonoBehaviour {
 			currentHp -= 20f;
 			updateHealthBar();
 			if (currentHp <=0){
-				foreach (CanShoot tower in TargetedBy){
-					tower.removeTargetFromList(gameObject.GetComponent<CanTakeDamage>());
-				}
-				Destroy(gameObject);
+				Die();
+
 			}
 		}
 	}
 
 	void updateHealthBar(){
 		healthBar.gameObject.transform.localScale = new Vector3(currentHp / initialHp, 1f, 1f);
+	}
+
+	void Die(){
+		foreach (CanShoot tower in TargetedBy){
+			tower.removeTargetFromList(gameObject.GetComponent<CanTakeDamage>());
+		}
+		Destroy(gameObject);
+		playerMoney.Money += 6 + (int) initialHp / 16;
 	}
 }
