@@ -5,8 +5,8 @@ using UnityEngine;
 
 public class Map {
 	public static List<Cell> cells = new List<Cell>();
-	public int mapWidth = 14;
-	public int mapHeight = 8;
+	public static int mapWidth = 14;
+	public static int mapHeight = 10;
 
 	public static void CreateMap () {
 		bool isObstacle = false;
@@ -52,26 +52,27 @@ public class Map {
 		
 	}
 
-	bool isCoordValid(int x, int y){
-		return (0 <= x < mapHeight) && (0 <= y < mapWidth);
+	static bool isCoordValid(int x, int y){
+		return (0 <= x && x < mapHeight) && (0 <= y && y < mapWidth);
 	}
 
-	bool isCoordWalkable(int x, int y){
+	static bool isCoordWalkable(int x, int y){
 		foreach (Cell cell in cells){
 			if (cell.x == x && cell.y == y){
 				return !cell.isObstacle;
 			}
 		}
-		Debug.LogError("cell not found in map");
+		Debug.LogError("cell not found in map :   x: " + x + "  y: " + y);
 		return false;
 	}
 
-	Cell cellAt(int x, int y){
+	static Cell cellAt(int x, int y){
 		foreach (Cell cell in cells){
 			if (cell.x == x && cell.y == y){
 				return cell;
 			}
 		}
+		return null;
 	}
 
 }
