@@ -7,10 +7,13 @@ public class PathFinder : MonoBehaviour {
 	private List<Cell> openList = new List<Cell>();
 	private List<Cell> closedList = new List<Cell>();
 
+	public List<Cell> pathFound = new List<Cell>();
+
 	// Use this for initialization
 	void Start () {
 		Map.CreateMap();
-		FindPath(new Cell(2,2,false), new Cell(6,7,false));
+		//FindPath(Map.CellAt(0,Map.mapHeight / 2), Map.CellAt(Map.mapWidth -1, Map.mapHeight / 2));
+		FindPath(Map.CellAt(0,0), Map.CellAt(7, 7));
 	}
 	
 	// Update is called once per frame
@@ -18,13 +21,13 @@ public class PathFinder : MonoBehaviour {
 	
 	}
 
-	public void FindPath(Cell originCell, Cell destinationCell){
+	public List<Cell> FindPath(Cell originCell, Cell destinationCell){
 		//bool pathFound = false;
 		Cell currentCell;
 		List<Cell> adjacentCells = new List<Cell>();
 
 		openList.Add(originCell);
-
+		float timeBeforePathFinding = Time.realtimeSinceStartup;
 		do {
 			currentCell = GetCellWithLowestFScore();
 
@@ -33,17 +36,21 @@ public class PathFinder : MonoBehaviour {
 
 			//Yeay, reconstruct the found path
 			if (closedList.Contains(destinationCell)){
+				Debug.Log("Time to find path : " 
+				          + ((Time.realtimeSinceStartup - timeBeforePathFinding)*1000).ToString()
+				          + " ms");
 				//pathFound = true;
 				Cell tmpCell = currentCell;
-				Debug.Log("Path found!");
 				do {
-					Debug.Log(tmpCell);
+					pathFound.Add(tmpCell);
 					tmpCell = tmpCell.parent;
 				} while (tmpCell != null);
 				//release memory
 				openList = new List<Cell>();
 				closedList = new List<Cell>();
-				break;
+				pathFound.Reverse();
+				LogPath(pathFound);
+				return pathFound;
 			}
 
 			adjacentCells = Map.GetWalkableAdjacentSquares(currentCell);
@@ -70,6 +77,8 @@ public class PathFinder : MonoBehaviour {
 				}
 			}
 		} while (openList.Count > 0);
+		Debug.LogError("No path found from " + originCell + " to " + destinationCell);
+		return null;
 	}
 
 	int ComputeHScoreFromCoord(Cell fromCell, Cell destCell){
@@ -96,6 +105,14 @@ public class PathFinder : MonoBehaviour {
 			}
 		}
 		openList.Insert(i, cell);
+	}
+
+	public static void LogPath(List<Cell> path){
+		string message = "Path : ";
+		foreach(Cell cell in path){
+			message += "x: " + cell.x + ", y: " + cell.y + "  → ";
+		}
+		Debug.Log(message);
 	}
 	
 }

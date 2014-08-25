@@ -7,12 +7,13 @@ public class Map {
 	public static List<Cell> cells = new List<Cell>();
 	public static int mapWidth = 14;
 	public static int mapHeight = 10;
+	public static float cellSize = 0.4f;
 
 	public static void CreateMap () {
-		bool isObstacle = false;
 		for (int x = 0; x < mapWidth; x++){
 			for (int y = 0; y < mapHeight; y++){
-				cells.Add(new Cell(x, y, isObstacle));
+				cells.Add(new Cell(x, y, false));
+				//Debug.Log("adding x : " + x + "    y : " + y);
 			}
 		}
 	}
@@ -25,48 +26,47 @@ public class Map {
 		//Top
 		x = cell.x;
 		y = cell.y + 1;
-		if (isCoordValid(x, y) && isCoordWalkable(x,y)){
-			tmp.Add(cellAt(x, y));
+		if (IsCoordValid(x, y) && IsCoordWalkable(x,y)){
+			tmp.Add(CellAt(x, y));
 		}
 
 		//Right
 		x = cell.x + 1;
 		y = cell.y;
-		if (isCoordValid(x, y) && isCoordWalkable(x,y)){
-			tmp.Add(cellAt(x, y));
+		if (IsCoordValid(x, y) && IsCoordWalkable(x,y)){
+			tmp.Add(CellAt(x, y));
 		}
 		//Bottom
 		x = cell.x;
 		y = cell.y - 1;
-		if (isCoordValid(x, y) && isCoordWalkable(x,y)){
-			tmp.Add(cellAt(x, y));
+		if (IsCoordValid(x, y) && IsCoordWalkable(x,y)){
+			tmp.Add(CellAt(x, y));
 		}
 
 		//Left
 		x = cell.x -1;
 		y = cell.y;
-		if (isCoordValid(x, y) && isCoordWalkable(x,y)){
-			tmp.Add(cellAt(x, y));
+		if (IsCoordValid(x, y) && IsCoordWalkable(x,y)){
+			tmp.Add(CellAt(x, y));
 		}
 		return tmp;
 		
 	}
 
-	static bool isCoordValid(int x, int y){
+	static bool IsCoordValid(int x, int y){
 		return (0 <= x && x < mapHeight) && (0 <= y && y < mapWidth);
 	}
 
-	static bool isCoordWalkable(int x, int y){
+	static bool IsCoordWalkable(int x, int y){
 		foreach (Cell cell in cells){
 			if (cell.x == x && cell.y == y){
 				return !cell.isObstacle;
 			}
 		}
-		Debug.LogError("cell not found in map :   x: " + x + "  y: " + y);
 		return false;
 	}
 
-	static Cell cellAt(int x, int y){
+	public static Cell CellAt(int x, int y){
 		foreach (Cell cell in cells){
 			if (cell.x == x && cell.y == y){
 				return cell;
@@ -74,5 +74,14 @@ public class Map {
 		}
 		return null;
 	}
+	
+	public static Cell GetCellAtPos(float xPos, float yPos){
+		int x = (int) (xPos / cellSize);
+		int y = (int) (yPos / cellSize);
+		return Map.CellAt(x, y);
+	}
 
+	public static Vector3 GetCellPos(Cell cell){
+		return new Vector3(cell.x * cellSize, cell.y * cellSize, 0f);
+	}
 }
