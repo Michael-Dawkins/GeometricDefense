@@ -41,7 +41,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 		} else if (Input.GetMouseButton(0) && dragging){
 			DragTower();
 			DrawGhostAtClosestInputPos();
-		} else if (Input.GetMouseButtonUp(0)){
+		} else if (Input.GetMouseButtonUp(0) && dragging){
 			PlaceTower();
 			Destroy(currentGhost);
 			dragging = false;
