@@ -56,7 +56,7 @@ public class CanTakeDamage : MonoBehaviour {
 		Bullet bullet = other.gameObject.GetComponent<Bullet>();
 		if(bullet){
 			Destroy(other.gameObject);
-			currentHp -= 20f;
+			currentHp -= 40f;
 			updateHealthBar();
 			if (currentHp <=0){
 				Die();

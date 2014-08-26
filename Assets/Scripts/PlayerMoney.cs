@@ -3,7 +3,7 @@ using System.Collections;
 
 public class PlayerMoney : MonoBehaviour {
 
-	private int money = 100;
+	private int money = 1000;
 	public int Money {
 		get {
 			return money;

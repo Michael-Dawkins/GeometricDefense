@@ -16,6 +16,24 @@ public class Map {
 				//Debug.Log("adding x : " + x + "    y : " + y);
 			}
 		}
+		setUpMapBorderDisplay();
+	}
+
+	static void setUpMapBorderDisplay(){
+		List<Vector3> vertices = new List<Vector3>();
+		GameObject obj = new GameObject("Line renderer");
+		obj.AddComponent<LineRenderer>();
+		LineRenderer lr = obj.GetComponent<LineRenderer>();
+		vertices.Add(new Vector3(0,0,0));
+		vertices.Add(new Vector3(mapWidth * cellSize,0,0));
+		vertices.Add(new Vector3(mapWidth * cellSize,mapHeight * cellSize,0));
+		vertices.Add(new Vector3(0,mapHeight * cellSize,0));
+		vertices.Add(new Vector3(0,0,0));
+		lr.SetVertexCount(vertices.Count);
+		for (int i =0; i < vertices.Count; i++){
+			lr.SetPosition(i, vertices[i]);
+		}
+		lr.SetWidth(0.1f,0.1f);
 	}
 
 	//TODO Optimize this, too many foreach to find cells

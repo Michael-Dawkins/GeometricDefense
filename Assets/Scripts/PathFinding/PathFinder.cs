@@ -18,13 +18,26 @@ public class PathFinder : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+		debugPath();
+	}
+
+	void debugPath(){
+		Vector3 start = new Vector3();
+		Vector3 end = new Vector3();
+		for (int i = 0; i < pathFound.Count - 1; i++){
+			start[0] = pathFound[i].x * Map.cellSize;
+			start[1] = pathFound[i].y * Map.cellSize;
+			end[0] = pathFound[i + 1].x * Map.cellSize;
+			end[1] = pathFound[i + 1].y * Map.cellSize;
+			Debug.DrawLine(start, end);
+		}
 	}
 
 	public List<Cell> FindPath(Cell originCell, Cell destinationCell){
 		//bool pathFound = false;
 		Cell currentCell;
 		List<Cell> adjacentCells = new List<Cell>();
+		pathFound = new List<Cell>();
 
 		openList.Add(originCell);
 		float timeBeforePathFinding = Time.realtimeSinceStartup;

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 
 public class CanMove : MonoBehaviour {
 
-	public float speed = 1f;
+	public float speed = 2f;
 	PathFinder pathFinder;
 	int indexInPath = 0;
 	List<Cell> path;
