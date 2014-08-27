@@ -8,12 +8,13 @@ public class PathFinder : MonoBehaviour {
 	private List<Cell> closedList = new List<Cell>();
 
 	public List<Cell> pathFound = new List<Cell>();
+	private Map map;
 
 	// Use this for initialization
 	void Start () {
-		Map.CreateMap();
-		//FindPath(Map.CellAt(0,Map.mapHeight / 2), Map.CellAt(Map.mapWidth -1, Map.mapHeight / 2));
-		FindPath(Map.CellAt(0,0), Map.CellAt(7, 7));
+		map = GameObject.Find("Map").GetComponent<Map>();
+		//FindPath(map.CellAt(0,map.mapHeight / 2), map.CellAt(map.mapWidth -1, map.mapHeight / 2));
+		FindPath(map.CellAt(0,0), map.CellAt(map.xGoal, map.yGoal));
 	}
 	
 	// Update is called once per frame
@@ -25,10 +26,10 @@ public class PathFinder : MonoBehaviour {
 		Vector3 start = new Vector3();
 		Vector3 end = new Vector3();
 		for (int i = 0; i < pathFound.Count - 1; i++){
-			start[0] = pathFound[i].x * Map.cellSize;
-			start[1] = pathFound[i].y * Map.cellSize;
-			end[0] = pathFound[i + 1].x * Map.cellSize;
-			end[1] = pathFound[i + 1].y * Map.cellSize;
+			start[0] = pathFound[i].x * map.cellSize;
+			start[1] = pathFound[i].y * map.cellSize;
+			end[0] = pathFound[i + 1].x * map.cellSize;
+			end[1] = pathFound[i + 1].y * map.cellSize;
 			Debug.DrawLine(start, end);
 		}
 	}
@@ -66,7 +67,7 @@ public class PathFinder : MonoBehaviour {
 				return pathFound;
 			}
 
-			adjacentCells = Map.GetWalkableAdjacentSquares(currentCell);
+			adjacentCells = map.GetWalkableAdjacentSquares(currentCell);
 
 			foreach (Cell adjacentCell in adjacentCells) {
 				if (closedList.Contains(adjacentCell)) {

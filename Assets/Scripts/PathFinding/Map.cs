@@ -1,25 +1,29 @@
-using System;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
-using UnityEngine;
 
-public class Map {
-	public static List<Cell> cells = new List<Cell>();
-	public static int mapWidth = 14;
-	public static int mapHeight = 10;
-	public static float cellSize = 0.4f;
+public class Map : MonoBehaviour {
+	public List<Cell> cells = new List<Cell>();
+	public int mapWidth = 14;
+	public int mapHeight = 10;
+	public float cellSize = 0.4f;
+	public int xGoal = 7;
+	public int yGoal = 7;
 
-	public static void CreateMap () {
+	void Start () {
 		for (int x = 0; x < mapWidth; x++){
 			for (int y = 0; y < mapHeight; y++){
 				cells.Add(new Cell(x, y, false));
-				//Debug.Log("adding x : " + x + "    y : " + y);
 			}
 		}
 	}
 
+	void Update(){
+
+	}
+
 	//TODO Optimize this, too many foreach to find cells
-	public static List<Cell> GetWalkableAdjacentSquares(Cell cell){
+	public List<Cell> GetWalkableAdjacentSquares(Cell cell){
 		List<Cell> tmp = new List<Cell>();
 		int x, y;
 
@@ -53,11 +57,11 @@ public class Map {
 		
 	}
 
-	static bool IsCoordValid(int x, int y){
-		return (0 <= x && x < mapHeight) && (0 <= y && y < mapWidth);
+	bool IsCoordValid(int x, int y){
+		return (0 <= x && x < mapWidth) && (0 <= y && y < mapHeight);
 	}
 
-	static bool IsCoordWalkable(int x, int y){
+	bool IsCoordWalkable(int x, int y){
 		foreach (Cell cell in cells){
 			if (cell.x == x && cell.y == y){
 				return !cell.isObstacle;
@@ -66,7 +70,7 @@ public class Map {
 		return false;
 	}
 
-	public static Cell CellAt(int x, int y){
+	public Cell CellAt(int x, int y){
 		foreach (Cell cell in cells){
 			if (cell.x == x && cell.y == y){
 				return cell;
@@ -75,13 +79,13 @@ public class Map {
 		return null;
 	}
 	
-	public static Cell GetCellAtPos(float xPos, float yPos){
+	public Cell GetCellAtPos(float xPos, float yPos){
 		int x = (int) (xPos / cellSize);
 		int y = (int) (yPos / cellSize);
-		return Map.CellAt(x, y);
+		return CellAt(x, y);
 	}
 
-	public static Vector3 GetCellPos(Cell cell){
+	public Vector3 GetCellPos(Cell cell){
 		return new Vector3(cell.x * cellSize, cell.y * cellSize, 0f);
 	}
 }

@@ -9,9 +9,11 @@ public class CanMove : MonoBehaviour {
 	int indexInPath = 0;
 	List<Cell> path;
 	Vector3 currentTargetPos;
+	private Map map;
 
 	// Use this for initialization
 	void Start () {
+		map = GameObject.Find("Map").GetComponent<Map>();
 		pathFinder = GameObject.Find ("PathFinder").GetComponent<PathFinder> ();
 	}
 	
@@ -31,14 +33,14 @@ public class CanMove : MonoBehaviour {
 		if (path == null){
 			path = pathFinder.pathFound;
 		}
-		currentTargetPos = Map.GetCellPos (path [indexInPath]);
+		currentTargetPos = map.GetCellPos (path [indexInPath]);
 		if (currentTargetPos == transform.position){
 			indexInPath++;
 			if (indexInPath == path.Count){
 				ReachGoal();
 				return;
 			}
-			currentTargetPos = Map.GetCellPos (path [indexInPath]);
+			currentTargetPos = map.GetCellPos (path [indexInPath]);
 		}
 		transform.position = Vector2.MoveTowards(
 			transform.position,

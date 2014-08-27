@@ -13,9 +13,11 @@ public class CreateTowerOnDrag : MonoBehaviour {
 	private Vector3 mousePosition;
 	private Vector3 ghostPosition;
 	private GameObject currentGhost;
+	private Map map;
 
 	// Use this for initialization
 	void Start () {
+		map = GameObject.Find("Map").GetComponent<Map>();
 		if (playerMoney == null){
 			GameObject playerState = GameObject.Find("PlayerState");
 			if (playerState == null){
@@ -62,13 +64,13 @@ public class CreateTowerOnDrag : MonoBehaviour {
 		if (HasEnoughMoneyToBuyTower()){
 			BuyTower();
 			Vector3 tmpPos = lastTowerCreated.transform.position;
-			Map.GetCellAtPos(tmpPos.x, tmpPos.y).isObstacle = true;
+			map.GetCellAtPos(tmpPos.x, tmpPos.y).isObstacle = true;
 			PathFinder pathFinder = GameObject.Find("PathFinder").GetComponent<PathFinder>();
-			//pathFinder.FindPath(Map.CellAt(0,Map.mapHeight / 2), Map.CellAt(Map.mapWidth -1, Map.mapHeight / 2));
-			pathFinder.FindPath(Map.CellAt(0,0), Map.CellAt(7, 7));
+			//pathFinder.FindPath(map.CellAt(0,map.mapHeight / 2), map.CellAt(map.mapWidth -1, map.mapHeight / 2));
+			pathFinder.FindPath(map.CellAt(0,0), map.CellAt(map.xGoal, map.yGoal));
 
-			tmpPos.x = tmpPos.x - tmpPos.x % Map.cellSize;
-			tmpPos.y = tmpPos.y - tmpPos.y % Map.cellSize;
+			tmpPos.x = tmpPos.x - tmpPos.x % map.cellSize;
+			tmpPos.y = tmpPos.y - tmpPos.y % map.cellSize;
 			tmpPos.z = 0;
 			lastTowerCreated.transform.position = tmpPos;
 		} else {
@@ -79,15 +81,18 @@ public class CreateTowerOnDrag : MonoBehaviour {
 	void DrawGhostAtClosestInputPos(){
 		Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		mousePos.z = 0;
-		Vector3 closestPos = new Vector3(mousePos.x - mousePos.x % Map.cellSize,
-		                                 mousePos.y - mousePos.y % Map.cellSize,
-		                                 0);
-		if (currentGhost == null){
-			currentGhost = Instantiate(ghost, closestPos, Quaternion.identity) as GameObject;
-			SpriteRenderer renderer = currentGhost.GetComponent<SpriteRenderer>();
-			renderer.color = new Color(1f,1f,1f,0.5f);
+		if (map.CellAt((int)(mousePos.x / map.cellSize), (int)(mousePos.y / map.cellSize)) != null){
+
+			Vector3 closestPos = new Vector3(mousePos.x - mousePos.x % map.cellSize,
+			                                 mousePos.y - mousePos.y % map.cellSize,
+			                                 0);
+			if (currentGhost == null){
+				currentGhost = Instantiate(ghost, closestPos, Quaternion.identity) as GameObject;
+				SpriteRenderer renderer = currentGhost.GetComponent<SpriteRenderer>();
+				renderer.color = new Color(1f,1f,1f,0.5f);
+			}
+			currentGhost.transform.position = closestPos;
 		}
-		currentGhost.transform.position = closestPos;
 	}
 
 	bool HasEnoughMoneyToBuyTower(){
