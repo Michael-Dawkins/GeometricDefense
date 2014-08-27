@@ -5,11 +5,13 @@ using System.Collections.Generic;
 public class CanMove : MonoBehaviour {
 
 	public float speed = 2f;
+
 	PathFinder pathFinder;
 	int indexInPath = 0;
 	List<Cell> path;
 	Vector3 currentTargetPos;
-	private Map map;
+	Map map;
+	Transform transformToRotate;
 
 	// Use this for initialization
 	void Start () {
@@ -41,6 +43,15 @@ public class CanMove : MonoBehaviour {
 				return;
 			}
 			currentTargetPos = map.GetCellPos (path [indexInPath]);
+		}
+		if (indexInPath > 0){
+			if (transformToRotate == null){
+				Transform[] t = transform.gameObject.GetComponentsInChildren<Transform>();
+				//get the first child
+				transformToRotate = t[1];
+			}
+			float angle = Vector3.Angle(Vector3.right, map.GetCellPos (path [indexInPath]) - map.GetCellPos (path [indexInPath - 1]));
+			transformToRotate.eulerAngles = new Vector3(0,0,angle);
 		}
 		transform.position = Vector2.MoveTowards(
 			transform.position,
