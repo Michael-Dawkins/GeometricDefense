@@ -23,12 +23,11 @@ public class CanMove : MonoBehaviour {
 	void Update () {
 		MoveAlongPath ();
 	}
-
-	void moveRight(){
-		transform.position = Vector2.Lerp(
-			transform.position,
-			transform.position + Vector3.right, 
-			Time.deltaTime * speed);
+	
+	public void SetOwnPath(){
+		Debug.Log("Setting own path");
+		path = pathFinder.FindPath(map.GetCellAtPos(transform.position.x, transform.position.y), map.CellAt(map.xGoal, map.yGoal));
+		indexInPath = 1;
 	}
 
 	void MoveAlongPath(){

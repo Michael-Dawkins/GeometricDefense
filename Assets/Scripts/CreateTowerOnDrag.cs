@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
 
 public class CreateTowerOnDrag : MonoBehaviour {
 
@@ -73,7 +74,8 @@ public class CreateTowerOnDrag : MonoBehaviour {
 			map.GetCellAtPos(tmpPos.x, tmpPos.y).isObstacle = true;
 			PathFinder pathFinder = GameObject.Find("PathFinder").GetComponent<PathFinder>();
 			//pathFinder.FindPath(map.CellAt(0,map.mapHeight / 2), map.CellAt(map.mapWidth -1, map.mapHeight / 2));
-			pathFinder.FindPath(map.CellAt(0,0), map.CellAt(map.xGoal, map.yGoal));
+			pathFinder.FindGlobalPath(map.CellAt(0,0), map.CellAt(map.xGoal, map.yGoal));
+			RecalculatePathForCurrentEnemies();
 
 			tmpPos.x = tmpPos.x - tmpPos.x % map.cellSize;
 			tmpPos.y = tmpPos.y - tmpPos.y % map.cellSize;
@@ -82,6 +84,24 @@ public class CreateTowerOnDrag : MonoBehaviour {
 		} else {
 			Destroy(lastTowerCreated);
 		}
+	}
+
+	void RecalculatePathForCurrentEnemies(){
+		List<GameObject> rootObjects = new List<GameObject>();
+		foreach (GameObject obj in UnityEngine.Object.FindObjectsOfType(typeof(GameObject)))
+		{
+			if (obj.transform.parent == null)
+			{
+				rootObjects.Add(obj);
+			}
+		}
+		foreach (GameObject obj in rootObjects){
+			CanMove enemy;
+			if (enemy = obj.GetComponent<CanMove>()){
+				enemy.SetOwnPath();
+			}
+		}
+
 	}
 
 	void DrawGhostAtClosestInputPos(){

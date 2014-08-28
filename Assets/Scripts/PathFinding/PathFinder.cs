@@ -14,7 +14,7 @@ public class PathFinder : MonoBehaviour {
 	void Start () {
 		map = GameObject.Find("Map").GetComponent<Map>();
 		//FindPath(map.CellAt(0,map.mapHeight / 2), map.CellAt(map.mapWidth -1, map.mapHeight / 2));
-		FindPath(map.CellAt(0,0), map.CellAt(map.xGoal, map.yGoal));
+		FindGlobalPath(map.CellAt(0,0), map.CellAt(map.xGoal, map.yGoal));
 	}
 	
 	// Update is called once per frame
@@ -34,11 +34,15 @@ public class PathFinder : MonoBehaviour {
 		}
 	}
 
+	public void FindGlobalPath(Cell originCell, Cell destinationCell){
+		pathFound = FindPath(originCell, destinationCell);
+	}
+
 	public List<Cell> FindPath(Cell originCell, Cell destinationCell){
-		//bool pathFound = false;
+		//bool path = false;
 		Cell currentCell;
 		List<Cell> adjacentCells = new List<Cell>();
-		pathFound = new List<Cell>();
+		List<Cell> path = new List<Cell>();
 
 		openList.Add(originCell);
 		float timeBeforePathFinding = Time.realtimeSinceStartup;
@@ -53,18 +57,23 @@ public class PathFinder : MonoBehaviour {
 				Debug.Log("Time to find path : " 
 				          + ((Time.realtimeSinceStartup - timeBeforePathFinding)*1000).ToString()
 				          + " ms");
-				//pathFound = true;
+				//path = true;
 				Cell tmpCell = currentCell;
 				do {
-					pathFound.Add(tmpCell);
+					path.Add(tmpCell);
 					tmpCell = tmpCell.parent;
 				} while (tmpCell != null);
 				//release memory
 				openList = new List<Cell>();
 				closedList = new List<Cell>();
-				pathFound.Reverse();
-				LogPath(pathFound);
-				return pathFound;
+				path.Reverse();
+				LogPath(path);
+				for (int i = 0; i < map.mapWidth; i++){
+					for(int j = 0; j < map.mapHeight; j++){
+						map.CellAt(i,j).parent = null;
+					}
+				}
+				return path;
 			}
 
 			adjacentCells = map.GetWalkableAdjacentSquares(currentCell);
