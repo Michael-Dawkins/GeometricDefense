@@ -5,7 +5,7 @@ using System.Collections.Generic;
 [RequireComponent (typeof(Collider2D))]
 public class CanShoot : MonoBehaviour {
 
-	public int Damage = 10;
+	public float Damage = 20f;
 	public Bullet bulletPrefab;
 	public float shootingSpeed = 1f;
 	public AudioClip shootingSound;
@@ -13,10 +13,12 @@ public class CanShoot : MonoBehaviour {
 	private Animator anim;
 	private float nextShootingTime = 0f;
 	private List<CanTakeDamage> targets = new List<CanTakeDamage>();
+	private Color bulletColor;
 
 	// Use this for initialization
 	void Start () {
 		anim = GetComponent<Animator> ();
+		bulletColor = gameObject.GetComponent<SpriteRenderer>().color;
 	}
 	
 	// Update is called once per frame
@@ -33,6 +35,9 @@ public class CanShoot : MonoBehaviour {
 			anim.SetTrigger ("shooting");
 			Bullet bullet = Instantiate (bulletPrefab, transform.position, transform.rotation) as Bullet;
 			bullet.Target = target;
+			bullet.Damage = Damage;
+			bullet.GetComponent<SpriteRenderer>().color = bulletColor;
+
 			nextShootingTime = Time.time + (1f /shootingSpeed);
 			audio.PlayOneShot(shootingSound, 1F);
 		}

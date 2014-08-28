@@ -7,6 +7,8 @@ public class CreateTowerOnDrag : MonoBehaviour {
 	public GameObject lastTowerCreated;
 	public int towerCost = 50;
 	public GameObject ghost;
+	public bool applyButtonColorToTowers = true;
+	public int xOffset = 100;
 
 	private bool dragging = false;
 	private PlayerMoney playerMoney;
@@ -29,7 +31,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		GDUtils.PlaceTransformOnScreen(transform, 150, 40);
+		GDUtils.PlaceTransformOnScreen(transform, xOffset, 80);
 
 		if (Input.GetMouseButtonDown(0))
 		{
@@ -52,6 +54,10 @@ public class CreateTowerOnDrag : MonoBehaviour {
 
 	void CreateTower(){
 		lastTowerCreated = Instantiate(towerToCreate, transform.position, transform.rotation) as GameObject;
+		if (applyButtonColorToTowers){
+			SpriteRenderer renderer = lastTowerCreated.GetComponent<SpriteRenderer>();
+			renderer.color = gameObject.GetComponent<SpriteRenderer>().color;
+		}
 	}
 	
 	void DragTower(){
@@ -89,7 +95,14 @@ public class CreateTowerOnDrag : MonoBehaviour {
 			if (currentGhost == null){
 				currentGhost = Instantiate(ghost, closestPos, Quaternion.identity) as GameObject;
 				SpriteRenderer renderer = currentGhost.GetComponent<SpriteRenderer>();
-				renderer.color = new Color(1f,1f,1f,0.5f);
+
+				if (applyButtonColorToTowers){
+					Color color = gameObject.GetComponent<SpriteRenderer>().color;
+					renderer.color = new Color(color.r,color.g,color.b,0.5f);
+				} else {
+					renderer.color = new Color(1f,1f,1f,0.5f);
+				}
+
 			}
 			currentGhost.transform.position = closestPos;
 		}

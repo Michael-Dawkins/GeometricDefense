@@ -5,6 +5,7 @@ public class Bullet : MonoBehaviour {
 
 	public CanTakeDamage Target {get; set;}
 	public float speed = 4f;
+	public float Damage;
 
 	public CanShoot ShootingTower {get; set;}
 

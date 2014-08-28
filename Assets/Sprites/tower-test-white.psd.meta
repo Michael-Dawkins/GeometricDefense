@@ -1,15 +1,15 @@
 fileFormatVersion: 2
-guid: f1aeb6fd3c08690448cee997fa788514
+guid: c529940f6aacec140a937c8ca88aebb4
 TextureImporter:
   fileIDToRecycleName:
-    21300000: tower-test
-    21300002: tower-test_0
-    21300004: tower-test_1
-    21300006: tower-test_2
-    21300008: tower-test_3
-    21300010: tower-test_4
-    21300012: tower-test_5
-    21300014: tower-test_6
+    21300000: tower-test-white
+    21300002: tower-test-white_0
+    21300004: tower-test-white_1
+    21300006: tower-test-white_2
+    21300008: tower-test-white_3
+    21300010: tower-test-white_4
+    21300012: tower-test-white_5
+    21300014: tower-test-white_6
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
@@ -51,72 +51,72 @@ TextureImporter:
   buildTargetSettings: []
   spriteSheet:
     sprites:
-    - name: tower-test_0
+    - name: tower-test-white_0
       rect:
         serializedVersion: 2
-        x: 8
+        x: 9
         y: 2
-        width: 43
+        width: 40
         height: 40
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: tower-test_1
+    - name: tower-test-white_1
       rect:
         serializedVersion: 2
-        x: 58
+        x: 59
         y: 2
-        width: 43
+        width: 40
         height: 40
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: tower-test_2
+    - name: tower-test-white_2
       rect:
         serializedVersion: 2
-        x: 108
+        x: 109
         y: 2
-        width: 43
+        width: 40
         height: 40
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: tower-test_3
+    - name: tower-test-white_3
       rect:
         serializedVersion: 2
-        x: 158
+        x: 159
         y: 2
-        width: 43
+        width: 40
         height: 40
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: tower-test_4
+    - name: tower-test-white_4
       rect:
         serializedVersion: 2
-        x: 208
+        x: 209
         y: 2
-        width: 43
+        width: 40
         height: 40
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: tower-test_5
+    - name: tower-test-white_5
       rect:
         serializedVersion: 2
-        x: 258
+        x: 259
         y: 2
-        width: 43
+        width: 40
         height: 40
       alignment: 0
       pivot: {x: 0, y: 0}
       border: {x: 0, y: 0, z: 0, w: 0}
-    - name: tower-test_6
+    - name: tower-test-white_6
       rect:
         serializedVersion: 2
-        x: 308
+        x: 309
         y: 2
-        width: 43
+        width: 40
         height: 40
       alignment: 0
       pivot: {x: 0, y: 0}

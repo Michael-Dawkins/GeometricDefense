@@ -55,8 +55,8 @@ public class CanTakeDamage : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other){
 		Bullet bullet = other.gameObject.GetComponent<Bullet>();
 		if(bullet){
+			currentHp -= bullet.Damage;
 			Destroy(other.gameObject);
-			currentHp -= 40f;
 			updateHealthBar();
 			if (currentHp <=0){
 				Die();
