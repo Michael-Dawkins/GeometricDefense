@@ -25,13 +25,20 @@ public class CanMove : MonoBehaviour {
 	}
 	
 	public void SetOwnPath(){
-		Cell origin = map.GetCellAtPos(transform.position.x, transform.position.y);
-		if (origin != null){
-			path = pathFinder.FindPath(origin, map.CellAt(map.xGoal, map.yGoal));
-			if (path.Count == 1){ //path is too short, enemy is nearly at destination
-				indexInPath = 0;
+		Cell currentCell = map.GetCellAtPos(transform.position.x, transform.position.y);
+		Cell destination = map.CellAt(map.xGoal, map.yGoal);
+		if (currentCell != null){
+			if (!pathFinder.IsEnemyOnCurrentPath(currentCell)){
+				path = pathFinder.FindPath(currentCell, destination);
+				if (path.Count == 1){ //path is too short, enemy is nearly at destination
+					indexInPath = 0;
+				} else {
+					indexInPath = 1;
+				}
 			} else {
-				indexInPath = 1;
+				//enemy is still on the path, but it might not be at the same index if beggining of path has changed
+				indexInPath = pathFinder.GetIndexOfEnemyOnCurrentPath(currentCell);
+				path = pathFinder.pathFound;
 			}
 		} //if origin is null, enemy is not yet arrived close to a grid position (it just spawned)
 
@@ -43,6 +50,7 @@ public class CanMove : MonoBehaviour {
 		}
 		if (indexInPath >= path.Count){
 			Debug.Log("Index path is too big");
+			indexInPath = path.Count - 1;
 		}
 		currentTargetPos = map.GetCellPos (path [indexInPath]);
 		if (currentTargetPos == transform.position){

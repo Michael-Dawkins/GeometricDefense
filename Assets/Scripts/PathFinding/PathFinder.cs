@@ -145,6 +145,18 @@ public class PathFinder : MonoBehaviour {
 		return null;
 	}
 
+	public bool IsEnemyOnCurrentPath(Cell enemyCell){
+		return (pathFound.Contains(enemyCell));
+	}
+
+	public int GetIndexOfEnemyOnCurrentPath(Cell enemyCell){
+		int index = pathFound.IndexOf(enemyCell);
+		if (pathFound.Count >1){
+			index++;
+		}
+		return index;
+	}
+
 	int ComputeHScoreFromCoord(Cell fromCell, Cell destCell){
 		//Manhattan approach
 		return Mathf.Abs(destCell.x - fromCell.x) + Mathf.Abs(destCell.y - fromCell.y);
