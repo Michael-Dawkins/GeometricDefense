@@ -71,7 +71,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 		if (HasEnoughMoneyToBuyTower()){
 			Vector3 tmpPos = lastTowerCreated.transform.position;
 			Cell cellAtPos = map.GetCellAtPos(tmpPos.x, tmpPos.y) ;
-			if (cellAtPos == null){
+			if (cellAtPos == null || cellAtPos.isObstacle){
 				Destroy(lastTowerCreated);
 				return;
 			}
@@ -87,6 +87,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 				tmpPos.z = 0;
 				lastTowerCreated.transform.position = tmpPos;
 			} else {
+				//TODO This seems to mess up future path findings, maybe because of messed up score ?
 				cellAtPos.isObstacle = false;
 				Debug.Log("Cannot place tower, it is blocking enemies");
 				Destroy(lastTowerCreated);
