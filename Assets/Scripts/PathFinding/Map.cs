@@ -9,6 +9,7 @@ public class Map : MonoBehaviour {
 	public float cellSize = 0.4f;
 	public int xGoal = 7;
 	public int yGoal = 7;
+	public GameObject goalSprite;
 
 	void Start () {
 		for (int x = 0; x < mapWidth; x++){
@@ -16,6 +17,8 @@ public class Map : MonoBehaviour {
 				cells.Add(new Cell(x, y, false));
 			}
 		}
+
+		Instantiate(goalSprite, GetCellPos(CellAt(xGoal, yGoal)), Quaternion.identity);
 	}
 
 	void Update(){
