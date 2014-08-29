@@ -25,14 +25,24 @@ public class CanMove : MonoBehaviour {
 	}
 	
 	public void SetOwnPath(){
-		Debug.Log("Setting own path");
-		path = pathFinder.FindPath(map.GetCellAtPos(transform.position.x, transform.position.y), map.CellAt(map.xGoal, map.yGoal));
-		indexInPath = 1;
+		Cell origin = map.GetCellAtPos(transform.position.x, transform.position.y);
+		if (origin != null){
+			path = pathFinder.FindPath(origin, map.CellAt(map.xGoal, map.yGoal));
+			if (path.Count == 1){ //path is too short, enemy is nearly at destination
+				indexInPath = 0;
+			} else {
+				indexInPath = 1;
+			}
+		} //if origin is null, enemy is not yet arrived close to a grid position (it just spawned)
+
 	}
 
 	void MoveAlongPath(){
 		if (path == null){
 			path = pathFinder.pathFound;
+		}
+		if (indexInPath >= path.Count){
+			Debug.Log("Index path is too big");
 		}
 		currentTargetPos = map.GetCellPos (path [indexInPath]);
 		if (currentTargetPos == transform.position){

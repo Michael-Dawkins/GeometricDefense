@@ -69,18 +69,28 @@ public class CreateTowerOnDrag : MonoBehaviour {
 
 	void PlaceTower(){
 		if (HasEnoughMoneyToBuyTower()){
-			BuyTower();
 			Vector3 tmpPos = lastTowerCreated.transform.position;
-			map.GetCellAtPos(tmpPos.x, tmpPos.y).isObstacle = true;
+			Cell cellAtPos = map.GetCellAtPos(tmpPos.x, tmpPos.y) ;
+			if (cellAtPos == null){
+				Destroy(lastTowerCreated);
+				return;
+			}
 			PathFinder pathFinder = GameObject.Find("PathFinder").GetComponent<PathFinder>();
-			//pathFinder.FindPath(map.CellAt(0,map.mapHeight / 2), map.CellAt(map.mapWidth -1, map.mapHeight / 2));
-			pathFinder.FindGlobalPath(map.CellAt(0,0), map.CellAt(map.xGoal, map.yGoal));
-			RecalculatePathForCurrentEnemies();
+			cellAtPos.isObstacle = true;
 
-			tmpPos.x = tmpPos.x - tmpPos.x % map.cellSize;
-			tmpPos.y = tmpPos.y - tmpPos.y % map.cellSize;
-			tmpPos.z = 0;
-			lastTowerCreated.transform.position = tmpPos;
+			if (pathFinder.requestNewGlobalPath(map.CellAt(0,0), map.CellAt(map.xGoal, map.yGoal))){
+				BuyTower();
+				RecalculatePathForCurrentEnemies();
+				
+				tmpPos.x = tmpPos.x - tmpPos.x % map.cellSize;
+				tmpPos.y = tmpPos.y - tmpPos.y % map.cellSize;
+				tmpPos.z = 0;
+				lastTowerCreated.transform.position = tmpPos;
+			} else {
+				cellAtPos.isObstacle = false;
+				Debug.Log("Cannot place tower, it is blocking enemies");
+				Destroy(lastTowerCreated);
+			}
 		} else {
 			Destroy(lastTowerCreated);
 		}
@@ -95,12 +105,18 @@ public class CreateTowerOnDrag : MonoBehaviour {
 				rootObjects.Add(obj);
 			}
 		}
+		float timeBeforePathFinding = Time.realtimeSinceStartup;
+		int counter = 0;
 		foreach (GameObject obj in rootObjects){
 			CanMove enemy;
 			if (enemy = obj.GetComponent<CanMove>()){
 				enemy.SetOwnPath();
+				counter++;
 			}
 		}
+		Debug.Log("Time to find paths for " + counter + " enemies : "
+          + ((Time.realtimeSinceStartup - timeBeforePathFinding)*1000).ToString()
+          + " ms");
 
 	}
 

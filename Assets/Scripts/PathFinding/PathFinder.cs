@@ -19,10 +19,11 @@ public class PathFinder : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		debugPath();
+		DebugPath();
+		DebugMapObstacles();
 	}
 
-	void debugPath(){
+	void DebugPath(){
 		Vector3 start = new Vector3();
 		Vector3 end = new Vector3();
 		for (int i = 0; i < pathFound.Count - 1; i++){
@@ -30,8 +31,48 @@ public class PathFinder : MonoBehaviour {
 			start[1] = pathFound[i].y * map.cellSize;
 			end[0] = pathFound[i + 1].x * map.cellSize;
 			end[1] = pathFound[i + 1].y * map.cellSize;
-			Debug.DrawLine(start, end);
+			Debug.DrawLine(start, end, Color.green);
 		}
+	}
+
+	void DebugMapObstacles(){
+		List<Cell> cells = map.cells;
+		string message = "";
+		foreach(Cell cell in cells){
+			message += cell.SimpleToString();
+			Color color;
+			if (cell.isObstacle){
+				color = Color.red;
+			} else {
+				color = Color.grey;
+			}
+			float sizeOfCellSize = 0.9f;
+			float x = cell.position.x;
+			float y = cell.position.y;
+			Vector3 bottomLeft = new Vector3(x + (map.cellSize - map.cellSize*sizeOfCellSize) - (map.cellSize / 2f),
+			                                 y + (map.cellSize - map.cellSize*sizeOfCellSize) - (map.cellSize / 2f),0);
+			Vector3 bottomRight = new Vector3(x + map.cellSize*sizeOfCellSize - (map.cellSize / 2f),
+			                                  y + (map.cellSize - map.cellSize*sizeOfCellSize) - (map.cellSize / 2f),0);
+			Vector3 topRight = new Vector3(x + map.cellSize*sizeOfCellSize - (map.cellSize / 2f),
+			                               y + map.cellSize*sizeOfCellSize - (map.cellSize / 2f),0);
+			Vector3 topLeft = new Vector3(x + (map.cellSize - map.cellSize*sizeOfCellSize) - (map.cellSize / 2f),
+			                              y + map.cellSize*sizeOfCellSize - (map.cellSize / 2f),0);
+			Debug.DrawLine(bottomLeft, bottomRight, color);
+			Debug.DrawLine(bottomRight, topRight, color);
+			Debug.DrawLine(topRight, topLeft, color);
+			Debug.DrawLine(topLeft, bottomLeft, color);
+		}
+		Debug.Log(message);
+	}
+
+	//Try to find a new global path, if not possible, it returns false
+	public bool requestNewGlobalPath(Cell originCell, Cell destinationCell){
+		List<Cell> path = FindPath(originCell, destinationCell);
+		if (path == null){
+			return false;
+		}
+		pathFound = path;
+		return true;
 	}
 
 	public void FindGlobalPath(Cell originCell, Cell destinationCell){
@@ -45,7 +86,7 @@ public class PathFinder : MonoBehaviour {
 		List<Cell> path = new List<Cell>();
 
 		openList.Add(originCell);
-		float timeBeforePathFinding = Time.realtimeSinceStartup;
+//		float timeBeforePathFinding = Time.realtimeSinceStartup;
 		do {
 			currentCell = GetCellWithLowestFScore();
 
@@ -54,9 +95,9 @@ public class PathFinder : MonoBehaviour {
 
 			//Yeay, reconstruct the found path
 			if (closedList.Contains(destinationCell)){
-				Debug.Log("Time to find path : " 
-				          + ((Time.realtimeSinceStartup - timeBeforePathFinding)*1000).ToString()
-				          + " ms");
+//				Debug.Log("Time to find path : " 
+//				          + ((Time.realtimeSinceStartup - timeBeforePathFinding)*1000).ToString()
+//				          + " ms");
 				//path = true;
 				Cell tmpCell = currentCell;
 				do {
@@ -100,7 +141,7 @@ public class PathFinder : MonoBehaviour {
 				}
 			}
 		} while (openList.Count > 0);
-		Debug.LogError("No path found from " + originCell + " to " + destinationCell);
+		Debug.Log("No path found from " + originCell + " to " + destinationCell);
 		return null;
 	}
 
