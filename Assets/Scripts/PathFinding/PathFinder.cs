@@ -38,13 +38,13 @@ public class PathFinder : MonoBehaviour {
 	}
 
 	public List<Cell> FindPath(Cell originCell, Cell destinationCell){
-		//bool path = false;
+		openList = new List<Cell>();
+		closedList = new List<Cell>();
 		Cell currentCell;
 		List<Cell> adjacentCells = new List<Cell>();
 		List<Cell> path = new List<Cell>();
 
 		openList.Add(originCell);
-//		float timeBeforePathFinding = Time.realtimeSinceStartup;
 		do {
 			currentCell = GetCellWithLowestFScore();
 
@@ -53,18 +53,12 @@ public class PathFinder : MonoBehaviour {
 
 			//Yeay, reconstruct the found path
 			if (closedList.Contains(destinationCell)){
-//				Debug.Log("Time to find path : " 
-//				          + ((Time.realtimeSinceStartup - timeBeforePathFinding)*1000).ToString()
-//				          + " ms");
 				//path = true;
 				Cell tmpCell = currentCell;
 				do {
 					path.Add(tmpCell);
 					tmpCell = tmpCell.parent;
 				} while (tmpCell != null);
-				//release memory
-				openList = new List<Cell>();
-				closedList = new List<Cell>();
 				path.Reverse();
 				LogPath(path);
 				for (int i = 0; i < map.mapWidth; i++){
@@ -100,9 +94,6 @@ public class PathFinder : MonoBehaviour {
 			}
 		} while (openList.Count > 0);
 		Debug.Log("No path found from " + originCell + " to " + destinationCell);
-		//release memory
-		openList = new List<Cell>();
-		closedList = new List<Cell>();
 		return null;
 	}
 
