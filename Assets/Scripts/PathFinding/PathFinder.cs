@@ -23,48 +23,6 @@ public class PathFinder : MonoBehaviour {
 		DebugMapObstacles();
 	}
 
-	void DebugPath(){
-		Vector3 start = new Vector3();
-		Vector3 end = new Vector3();
-		for (int i = 0; i < pathFound.Count - 1; i++){
-			start[0] = pathFound[i].x * map.cellSize;
-			start[1] = pathFound[i].y * map.cellSize;
-			end[0] = pathFound[i + 1].x * map.cellSize;
-			end[1] = pathFound[i + 1].y * map.cellSize;
-			Debug.DrawLine(start, end, Color.green);
-		}
-	}
-
-	void DebugMapObstacles(){
-		List<Cell> cells = map.cells;
-		string message = "";
-		foreach(Cell cell in cells){
-			message += cell.SimpleToString();
-			Color color;
-			if (cell.isObstacle){
-				color = Color.red;
-			} else {
-				color = Color.grey;
-			}
-			float sizeOfCellSize = 0.9f;
-			float x = cell.position.x;
-			float y = cell.position.y;
-			Vector3 bottomLeft = new Vector3(x + (map.cellSize - map.cellSize*sizeOfCellSize) - (map.cellSize / 2f),
-			                                 y + (map.cellSize - map.cellSize*sizeOfCellSize) - (map.cellSize / 2f),0);
-			Vector3 bottomRight = new Vector3(x + map.cellSize*sizeOfCellSize - (map.cellSize / 2f),
-			                                  y + (map.cellSize - map.cellSize*sizeOfCellSize) - (map.cellSize / 2f),0);
-			Vector3 topRight = new Vector3(x + map.cellSize*sizeOfCellSize - (map.cellSize / 2f),
-			                               y + map.cellSize*sizeOfCellSize - (map.cellSize / 2f),0);
-			Vector3 topLeft = new Vector3(x + (map.cellSize - map.cellSize*sizeOfCellSize) - (map.cellSize / 2f),
-			                              y + map.cellSize*sizeOfCellSize - (map.cellSize / 2f),0);
-			Debug.DrawLine(bottomLeft, bottomRight, color);
-			Debug.DrawLine(bottomRight, topRight, color);
-			Debug.DrawLine(topRight, topLeft, color);
-			Debug.DrawLine(topLeft, bottomLeft, color);
-		}
-		Debug.Log(message);
-	}
-
 	//Try to find a new global path, if not possible, it returns false
 	public bool requestNewGlobalPath(Cell originCell, Cell destinationCell){
 		List<Cell> path = FindPath(originCell, destinationCell);
@@ -142,6 +100,9 @@ public class PathFinder : MonoBehaviour {
 			}
 		} while (openList.Count > 0);
 		Debug.Log("No path found from " + originCell + " to " + destinationCell);
+		//release memory
+		openList = new List<Cell>();
+		closedList = new List<Cell>();
 		return null;
 	}
 
@@ -182,7 +143,7 @@ public class PathFinder : MonoBehaviour {
 		}
 		openList.Insert(i, cell);
 	}
-
+	#region debug methods
 	public static void LogPath(List<Cell> path){
 		string message = "Path : ";
 		foreach(Cell cell in path){
@@ -190,5 +151,45 @@ public class PathFinder : MonoBehaviour {
 		}
 		Debug.Log(message);
 	}
+
 	
+	void DebugPath(){
+		Vector3 start = new Vector3();
+		Vector3 end = new Vector3();
+		for (int i = 0; i < pathFound.Count - 1; i++){
+			start[0] = pathFound[i].x * map.cellSize;
+			start[1] = pathFound[i].y * map.cellSize;
+			end[0] = pathFound[i + 1].x * map.cellSize;
+			end[1] = pathFound[i + 1].y * map.cellSize;
+			Debug.DrawLine(start, end, Color.green);
+		}
+	}
+	
+	void DebugMapObstacles(){
+		List<Cell> cells = map.cells;
+		foreach(Cell cell in cells){
+			Color color;
+			if (cell.isObstacle){
+				color = Color.red;
+			} else {
+				color = Color.grey;
+			}
+			float sizeOfCellSize = 0.9f;
+			float x = cell.position.x;
+			float y = cell.position.y;
+			Vector3 bottomLeft = new Vector3(x + (map.cellSize - map.cellSize*sizeOfCellSize) - (map.cellSize / 2f),
+			                                 y + (map.cellSize - map.cellSize*sizeOfCellSize) - (map.cellSize / 2f),0);
+			Vector3 bottomRight = new Vector3(x + map.cellSize*sizeOfCellSize - (map.cellSize / 2f),
+			                                  y + (map.cellSize - map.cellSize*sizeOfCellSize) - (map.cellSize / 2f),0);
+			Vector3 topRight = new Vector3(x + map.cellSize*sizeOfCellSize - (map.cellSize / 2f),
+			                               y + map.cellSize*sizeOfCellSize - (map.cellSize / 2f),0);
+			Vector3 topLeft = new Vector3(x + (map.cellSize - map.cellSize*sizeOfCellSize) - (map.cellSize / 2f),
+			                              y + map.cellSize*sizeOfCellSize - (map.cellSize / 2f),0);
+			Debug.DrawLine(bottomLeft, bottomRight, color);
+			Debug.DrawLine(bottomRight, topRight, color);
+			Debug.DrawLine(topRight, topLeft, color);
+			Debug.DrawLine(topLeft, bottomLeft, color);
+		}
+	}
+	#endregion
 }

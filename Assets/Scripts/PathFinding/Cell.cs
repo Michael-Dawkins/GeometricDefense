@@ -34,7 +34,7 @@ public class Cell {
 	}
 
 	public String SimpleToString(){
-		return "Cell x: " + x + ", y: " + y;
+		return "Cell x: " + x + ", y: " + y + " ";
 	}
 
 	public bool isEqual(Cell otherCell){
