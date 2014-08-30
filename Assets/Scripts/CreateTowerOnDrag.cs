@@ -79,7 +79,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 			PathFinder pathFinder = GameObject.Find("PathFinder").GetComponent<PathFinder>();
 			cellAtPos.isObstacle = true;
 
-			if (pathFinder.requestNewGlobalPath(map.CellAt(0,0), map.CellAt(map.xGoal, map.yGoal))){
+			if (pathFinder.requestNewGlobalPath(map.CellAt(map.xStart,map.yStart), map.CellAt(map.xGoal, map.yGoal))){
 				BuyTower();
 				RecalculatePathForCurrentEnemies();
 				

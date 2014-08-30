@@ -13,8 +13,7 @@ public class PathFinder : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		map = GameObject.Find("Map").GetComponent<Map>();
-		//FindPath(map.CellAt(0,map.mapHeight / 2), map.CellAt(map.mapWidth -1, map.mapHeight / 2));
-		FindGlobalPath(map.CellAt(0,0), map.CellAt(map.xGoal, map.yGoal));
+		FindGlobalPath(map.CellAt(map.xStart,map.yStart), map.CellAt(map.xGoal, map.yGoal));
 	}
 	
 	// Update is called once per frame

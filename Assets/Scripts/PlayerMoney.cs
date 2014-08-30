@@ -21,7 +21,7 @@ public class PlayerMoney : MonoBehaviour {
 	void Start () {
 		GameObject moneyLabel = new GameObject("money label");
 		moneyLabel.AddComponent<TextMesh>();
-		GDUtils.PlaceTransformOnViewport(moneyLabel.transform, 0.8f,0.9f);
+		GDUtils.PlaceTransformOnViewport(moneyLabel.transform, 0.8f,0.08f);
 		moneyTextMesh = moneyLabel.GetComponent<TextMesh>();
 		moneyLabel.GetComponent<TextMesh>().renderer.material = fontMaterial;
 		moneyTextMesh.font = font;

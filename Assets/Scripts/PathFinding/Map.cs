@@ -4,11 +4,13 @@ using System.Collections.Generic;
 
 public class Map : MonoBehaviour {
 	public List<Cell> cells = new List<Cell>();
-	public int mapWidth = 14;
+	public int mapWidth = 15;
 	public int mapHeight = 10;
 	public float cellSize = 0.4f;
-	public int xGoal = 7;
-	public int yGoal = 7;
+	public int xGoal = 14;
+	public int yGoal = 4;
+	public int xStart = 0;
+	public int yStart = 4;
 	public GameObject goalSprite;
 
 	void Start () {
