@@ -9,7 +9,8 @@ public class CreateTowerOnDrag : MonoBehaviour {
 	public int towerCost = 50;
 	public GameObject ghost;
 	public bool applyButtonColorToTowers = true;
-	public int xOffset = 100;
+	public float xViewportPos = 0.1f;
+	public float yViewportPos = 0.1f;
 
 	private bool dragging = false;
 	private PlayerMoney playerMoney;
@@ -32,7 +33,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-		GDUtils.PlaceTransformOnScreen(transform, xOffset, 80);
+		GDUtils.PlaceTransformOnViewport(transform, xViewportPos, yViewportPos);
 
 		if (Input.GetMouseButtonDown(0))
 		{

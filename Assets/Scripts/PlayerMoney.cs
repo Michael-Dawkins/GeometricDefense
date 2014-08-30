@@ -3,32 +3,33 @@ using System.Collections;
 
 public class PlayerMoney : MonoBehaviour {
 
-	private int money = 1000;
+	public int money = 1000;
+	public Font font;
+	public Material fontMaterial;
 	public int Money {
 		get {
 			return money;
 		}
 		set {
 			money = value;
-			setMoneyLabel(money);
+			SetMoneyLabel(money);
 		}
 	}
 
-	private GUIText moneyGUIText;
-	// Use this for initialization
+	private TextMesh moneyTextMesh;
+
 	void Start () {
-		GameObject moneyLabel = new GameObject();
-		moneyLabel.AddComponent<GUIText>();
-		moneyLabel.transform.position = new Vector3(0.9f,0.9f,0.0f);
-		moneyGUIText = moneyLabel.guiText;
-		setMoneyLabel(money);
-	}
-	
-	// Update is called once per frame
-	void Update () {
+		GameObject moneyLabel = new GameObject("money label");
+		moneyLabel.AddComponent<TextMesh>();
+		GDUtils.PlaceTransformOnViewport(moneyLabel.transform, 0.8f,0.9f);
+		moneyTextMesh = moneyLabel.GetComponent<TextMesh>();
+		moneyLabel.GetComponent<TextMesh>().renderer.material = fontMaterial;
+		moneyTextMesh.font = font;
+		SetMoneyLabel(money);
+		GDUtils.ScaleTextMeshToMatchXWorldUnit(moneyLabel.transform, 0.8f);
 	}
 
-	void setMoneyLabel(int amount){
-		moneyGUIText.text = "gold: " + money.ToString();
+	void SetMoneyLabel(int amount){
+		moneyTextMesh.text = "gold: " + money.ToString();
 	}
 }

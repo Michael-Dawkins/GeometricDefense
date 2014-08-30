@@ -36,4 +36,16 @@ public class GDUtils {
 				break;
 		}
 	}
+
+	public static void PlaceTransformOnViewport(Transform trans, float xMargin, float yMargin){
+		Vector3 worldPos = Camera.main.ViewportToWorldPoint(new Vector3(xMargin, yMargin, 0));
+		worldPos.z = 0;
+		trans.position = worldPos;
+	}
+
+	public static void ScaleTextMeshToMatchXWorldUnit(Transform trans, float xScale){
+		Bounds bounds = trans.gameObject.GetComponent<TextMesh>().renderer.bounds;
+		float ratio = xScale / bounds.size.x;
+		trans.localScale = new Vector3(trans.localScale.x * ratio, trans.localScale.y * ratio, 0);
+	}
 }
