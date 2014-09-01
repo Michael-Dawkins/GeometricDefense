@@ -60,7 +60,6 @@ public class CanTakeDamage : MonoBehaviour {
 			updateHealthBar();
 			if (currentHp <=0){
 				Die();
-
 			}
 		}
 	}

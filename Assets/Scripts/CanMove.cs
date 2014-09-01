@@ -12,11 +12,14 @@ public class CanMove : MonoBehaviour {
 	Vector3 currentTargetPos;
 	Map map;
 	Transform transformToRotate;
+	private PlayerLife playerLife;
 
 	// Use this for initialization
 	void Start () {
 		map = GameObject.Find("Map").GetComponent<Map>();
 		pathFinder = GameObject.Find ("PathFinder").GetComponent<PathFinder> ();
+		GameObject playerState = GameObject.Find("PlayerState");
+		playerLife = playerState.GetComponent<PlayerLife>();
 	}
 	
 	// Update is called once per frame
@@ -77,7 +80,7 @@ public class CanMove : MonoBehaviour {
 	}
 
 	void ReachGoal(){
-		Debug.Log("Enemy has reached its goal");
+		playerLife.Lives--;
 		Destroy(gameObject);
 	}
 }
