@@ -4,32 +4,58 @@ using System.Collections;
 public class Spwaner : MonoBehaviour {
 	
 	public CanTakeDamage enemyToSpawn;
+
 	public float everyXSeconds = 1.5f;
+	public int numberOfWaves = 20;
+	public int numberOfAddedEnemyPerWave = 3;
+	public float pauseBetweenWaves = 6;
 
-	public float hpIncrease = 10f;
-	public int increaseHpEvery = 5;
-	private int spawnCounter = 0;
+	public float hpIncreaseMultiplier = 1.5f;
+	public float currentBaseLife;
 	private float nextSpawningTime = 0;
+	public int totalNumberOfEnemyInCurrentWave = 10;
+	public int currentWaveProgress = 0;
+	public int currentWave = 1;
 
-	private float currentIncrease = 0f;
 
 	void Start () {
 	}
 
 	void Update(){
 		if (nextSpawningTime < Time.time){
-			nextSpawningTime = Time.time + everyXSeconds;
-			SpawnEnemy();
+			if (currentWaveProgress < totalNumberOfEnemyInCurrentWave){
+				currentWaveProgress ++;
+				nextSpawningTime = Time.time + everyXSeconds;
+				SpawnEnemy();
+			} else {
+				if (currentWave == numberOfWaves){
+					Win();
+				} else {
+					currentWave ++;
+					nextSpawningTime = Time.time + pauseBetweenWaves;
+					currentWaveProgress = 0;
+					totalNumberOfEnemyInCurrentWave += numberOfAddedEnemyPerWave;
+					SpawnEnemy();
+				}
+			}
 		}
 	}
 
 	void SpawnEnemy(){
-		spawnCounter ++;
-		if (spawnCounter % increaseHpEvery == 0){
-			currentIncrease += hpIncrease;
-		}
 		CanTakeDamage enemy = Instantiate (enemyToSpawn, transform.position, transform.rotation) as CanTakeDamage;
 		CanTakeDamage damageable = enemy.GetComponent<CanTakeDamage>();
-		damageable.InitialHp += currentIncrease;
+		if (currentBaseLife == 0){
+			currentBaseLife = damageable.InitialHp;
+		} else if (currentWaveProgress == 0){
+			currentBaseLife *= hpIncreaseMultiplier;
+		}
+		damageable.InitialHp = currentBaseLife * hpIncreaseMultiplier;
+		Debug.Log("Spawning enemy at life : " + damageable.InitialHp);
+	}
+
+	void Win(){
+		GameObject playerState = GameObject.Find("PlayerState");
+		PlayerLife playerLife = playerState.GetComponent<PlayerLife>();
+		playerLife.WinTheGame();
 	}
 }

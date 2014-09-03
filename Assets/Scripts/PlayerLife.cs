@@ -34,4 +34,9 @@ public class PlayerLife : MonoBehaviour {
 		endingSentence.enabled = true;
 		endingSentence.text = "Game Over";
 	}
+
+	public void WinTheGame(){
+		endingSentence.enabled = true;
+		endingSentence.text = "You win!";
+	}
 }
