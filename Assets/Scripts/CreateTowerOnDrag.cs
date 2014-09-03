@@ -6,6 +6,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 
 	public GameObject towerToCreate;
 	public GameObject lastTowerCreated;
+	public GameObject towerRange;
 	public int towerCost = 50;
 	public GameObject ghost;
 	public bool applyButtonColorToTowers = true;
@@ -17,6 +18,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 	private Vector3 mousePosition;
 	private Vector3 ghostPosition;
 	private GameObject currentGhost;
+	private GameObject currentTowerRangeObject;
 	private Map map;
 
 	// Use this for initialization
@@ -50,6 +52,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 		} else if (Input.GetMouseButtonUp(0) && dragging){
 			PlaceTower();
 			Destroy(currentGhost);
+			Destroy(currentTowerRangeObject);
 			dragging = false;
 		}
 	}
@@ -132,17 +135,21 @@ public class CreateTowerOnDrag : MonoBehaviour {
 			                                 0);
 			if (currentGhost == null){
 				currentGhost = Instantiate(ghost, closestPos, Quaternion.identity) as GameObject;
-				SpriteRenderer renderer = currentGhost.GetComponent<SpriteRenderer>();
+				currentTowerRangeObject = Instantiate(towerRange, closestPos, Quaternion.identity) as GameObject;
+				SpriteRenderer ghostRenderer = currentGhost.GetComponent<SpriteRenderer>();
+				SpriteRenderer towerRangeRenderer = currentTowerRangeObject.GetComponent<SpriteRenderer>();
 
 				if (applyButtonColorToTowers){
 					Color color = gameObject.GetComponent<SpriteRenderer>().color;
-					renderer.color = new Color(color.r,color.g,color.b,0.5f);
+					ghostRenderer.color = new Color(color.r,color.g,color.b,0.5f);
+					towerRangeRenderer.color = new Color(color.r, color.g, color.b);
 				} else {
-					renderer.color = new Color(1f,1f,1f,0.5f);
+					ghostRenderer.color = new Color(1f,1f,1f,0.5f);
 				}
 
 			}
 			currentGhost.transform.position = closestPos;
+			currentTowerRangeObject.transform.position = closestPos;
 		}
 	}
 
