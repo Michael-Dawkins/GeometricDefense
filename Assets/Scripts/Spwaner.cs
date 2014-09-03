@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 
 public class Spwaner : MonoBehaviour {
@@ -16,9 +17,11 @@ public class Spwaner : MonoBehaviour {
 	public int totalNumberOfEnemyInCurrentWave = 10;
 	public int currentWaveProgress = 0;
 	public int currentWave = 1;
+	public Text waveCounterText;
 
 
 	void Start () {
+		UpdateWaveCounterDisplay();
 	}
 
 	void Update(){
@@ -32,6 +35,7 @@ public class Spwaner : MonoBehaviour {
 					Win();
 				} else {
 					currentWave ++;
+					UpdateWaveCounterDisplay();
 					nextSpawningTime = Time.time + pauseBetweenWaves;
 					currentWaveProgress = 0;
 					totalNumberOfEnemyInCurrentWave += numberOfAddedEnemyPerWave;
@@ -39,6 +43,10 @@ public class Spwaner : MonoBehaviour {
 				}
 			}
 		}
+	}
+
+	void UpdateWaveCounterDisplay(){
+		waveCounterText.text = currentWave.ToString() + " / " + numberOfWaves.ToString();
 	}
 
 	void SpawnEnemy(){
