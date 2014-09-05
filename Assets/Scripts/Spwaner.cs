@@ -9,7 +9,7 @@ public class Spwaner : MonoBehaviour {
 	public float everyXSeconds = 1.5f;
 	public int numberOfWaves = 20;
 	public int numberOfAddedEnemyPerWave = 3;
-	public float pauseBetweenWaves = 6;
+	public float pauseBetweenWaves = 10;
 
 	public float hpIncreaseMultiplier = 1.5f;
 	public float currentBaseLife;
@@ -22,6 +22,7 @@ public class Spwaner : MonoBehaviour {
 
 	void Start () {
 		UpdateWaveCounterDisplay();
+		nextSpawningTime = Time.time + pauseBetweenWaves;
 	}
 
 	void Update(){
