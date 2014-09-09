@@ -20,7 +20,7 @@ public class Map : MonoBehaviour {
 			}
 		}
 
-		Instantiate(goalSprite, GetCellPos(CellAt(xGoal, yGoal)), Quaternion.identity);
+		Instantiate(goalSprite, GetCellPos(GetCellAt(xGoal, yGoal)), Quaternion.identity);
 	}
 
 	void Update(){
@@ -36,27 +36,27 @@ public class Map : MonoBehaviour {
 		x = cell.x;
 		y = cell.y + 1;
 		if (IsCoordValid(x, y) && IsCoordWalkable(x,y)){
-			tmp.Add(CellAt(x, y));
+			tmp.Add(GetCellAt(x, y));
 		}
 
 		//Right
 		x = cell.x + 1;
 		y = cell.y;
 		if (IsCoordValid(x, y) && IsCoordWalkable(x,y)){
-			tmp.Add(CellAt(x, y));
+			tmp.Add(GetCellAt(x, y));
 		}
 		//Bottom
 		x = cell.x;
 		y = cell.y - 1;
 		if (IsCoordValid(x, y) && IsCoordWalkable(x,y)){
-			tmp.Add(CellAt(x, y));
+			tmp.Add(GetCellAt(x, y));
 		}
 
 		//Left
 		x = cell.x -1;
 		y = cell.y;
 		if (IsCoordValid(x, y) && IsCoordWalkable(x,y)){
-			tmp.Add(CellAt(x, y));
+			tmp.Add(GetCellAt(x, y));
 		}
 		return tmp;
 		
@@ -75,7 +75,7 @@ public class Map : MonoBehaviour {
 		return false;
 	}
 
-	public Cell CellAt(int x, int y){
+	public Cell GetCellAt(int x, int y){
 		foreach (Cell cell in cells){
 			if (cell.x == x && cell.y == y){
 				return cell;
@@ -87,10 +87,14 @@ public class Map : MonoBehaviour {
 	public Cell GetCellAtPos(float xPos, float yPos){
 		int x = (int) (xPos / cellSize);
 		int y = (int) (yPos / cellSize);
-		return CellAt(x, y);
+		return GetCellAt(x, y);
 	}
 
 	public Vector3 GetCellPos(Cell cell){
 		return new Vector3(cell.x * cellSize + cellSize / 2f, cell.y * cellSize + cellSize / 2f, 0f);
+	}
+
+	public Cell GetStartCell(){
+		return GetCellAt(xStart, yStart);
 	}
 }

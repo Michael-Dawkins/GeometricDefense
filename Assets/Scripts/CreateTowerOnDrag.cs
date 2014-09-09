@@ -79,23 +79,18 @@ public class CreateTowerOnDrag : MonoBehaviour {
 		if (HasEnoughMoneyToBuyTower()){
 			CreateTower();
 			Vector3 tmpPos = GetClosestPos();
-//			tmpPos.x += map.cellSize / 2f;
-//			tmpPos.y += map.cellSize / 2f;
-
-			Debug.Log("tmpPos : " + tmpPos);
 			Cell cellAtPos = map.GetCellAtPos(tmpPos.x, tmpPos.y) ;
 			Debug.Log(tmpPos);
-			if (cellAtPos == null || cellAtPos.isObstacle){
+			if (cellAtPos == null || cellAtPos.isObstacle || cellAtPos == map.GetStartCell()){
 				Destroy(lastTowerCreated);
 				return;
 			}
 			PathFinder pathFinder = GameObject.Find("PathFinder").GetComponent<PathFinder>();
 			cellAtPos.isObstacle = true;
 
-			if (pathFinder.requestNewGlobalPath(map.CellAt(map.xStart,map.yStart), map.CellAt(map.xGoal, map.yGoal))){
+			if (pathFinder.requestNewGlobalPath(map.GetCellAt(map.xStart,map.yStart), map.GetCellAt(map.xGoal, map.yGoal))){
 				BuyTower();
 				RecalculatePathForCurrentEnemies();
-				Debug.Log("Tower placed");
 				tmpPos = map.GetCellPos(cellAtPos);
 				lastTowerCreated.transform.position = tmpPos;
 
@@ -140,7 +135,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 	void DrawGhostAtClosestInputPos(){
 		Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		mousePos.z = 0;
-		if (map.CellAt((int)(mousePos.x / map.cellSize), (int)(mousePos.y / map.cellSize)) != null){
+		if (map.GetCellAt((int)(mousePos.x / map.cellSize), (int)(mousePos.y / map.cellSize)) != null){
 
 			Vector3 closestPos = GetClosestPos();
 

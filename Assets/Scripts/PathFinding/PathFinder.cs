@@ -13,7 +13,7 @@ public class PathFinder : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		map = GameObject.Find("Map").GetComponent<Map>();
-		FindGlobalPath(map.CellAt(map.xStart,map.yStart), map.CellAt(map.xGoal, map.yGoal));
+		FindGlobalPath(map.GetCellAt(map.xStart,map.yStart), map.GetCellAt(map.xGoal, map.yGoal));
 	}
 	
 	// Update is called once per frame
@@ -62,7 +62,7 @@ public class PathFinder : MonoBehaviour {
 				LogPath(path);
 				for (int i = 0; i < map.mapWidth; i++){
 					for(int j = 0; j < map.mapHeight; j++){
-						map.CellAt(i,j).parent = null;
+						map.GetCellAt(i,j).parent = null;
 					}
 				}
 				return path;

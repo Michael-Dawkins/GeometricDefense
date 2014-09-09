@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -29,7 +29,7 @@ public class CanMove : MonoBehaviour {
 	
 	public void SetOwnPath(){
 		Cell currentCell = map.GetCellAtPos(transform.position.x, transform.position.y);
-		Cell destination = map.CellAt(map.xGoal, map.yGoal);
+		Cell destination = map.GetCellAt(map.xGoal, map.yGoal);
 		if (currentCell != null){
 			if (!pathFinder.IsEnemyOnCurrentPath(currentCell)){
 				path = pathFinder.FindPath(currentCell, destination);
