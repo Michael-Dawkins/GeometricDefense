@@ -27,6 +27,10 @@ public class CanShoot : MonoBehaviour {
 		map = GameObject.Find("Map").GetComponent<Map>();
 		anim = GetComponent<Animator> ();
 		bulletColor = gameObject.GetComponent<SpriteRenderer>().color;
+		UpdateColliderRadius();
+	}
+
+	public void UpdateColliderRadius(){
 		CircleCollider2D collider = GetComponent<CircleCollider2D>();
 		collider.radius = ColliderRadius;
 	}

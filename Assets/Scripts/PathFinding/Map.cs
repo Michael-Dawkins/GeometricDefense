@@ -91,6 +91,6 @@ public class Map : MonoBehaviour {
 	}
 
 	public Vector3 GetCellPos(Cell cell){
-		return new Vector3(cell.x * cellSize, cell.y * cellSize, 0f);
+		return new Vector3(cell.x * cellSize + cellSize / 2f, cell.y * cellSize + cellSize / 2f, 0f);
 	}
 }

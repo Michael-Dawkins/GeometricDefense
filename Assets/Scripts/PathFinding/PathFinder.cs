@@ -147,10 +147,10 @@ public class PathFinder : MonoBehaviour {
 		Vector3 start = new Vector3();
 		Vector3 end = new Vector3();
 		for (int i = 0; i < pathFound.Count - 1; i++){
-			start[0] = pathFound[i].x * map.cellSize;
-			start[1] = pathFound[i].y * map.cellSize;
-			end[0] = pathFound[i + 1].x * map.cellSize;
-			end[1] = pathFound[i + 1].y * map.cellSize;
+			start[0] = pathFound[i].x * map.cellSize + map.cellSize / 2f;
+			start[1] = pathFound[i].y * map.cellSize + map.cellSize / 2f;
+			end[0] = pathFound[i + 1].x * map.cellSize + map.cellSize / 2f;
+			end[1] = pathFound[i + 1].y * map.cellSize + map.cellSize / 2f;
 			Debug.DrawLine(start, end, Color.green);
 		}
 	}
@@ -167,14 +167,14 @@ public class PathFinder : MonoBehaviour {
 			float sizeOfCellSize = 0.9f;
 			float x = cell.position.x;
 			float y = cell.position.y;
-			Vector3 bottomLeft = new Vector3(x + (map.cellSize - map.cellSize*sizeOfCellSize) - (map.cellSize / 2f),
-			                                 y + (map.cellSize - map.cellSize*sizeOfCellSize) - (map.cellSize / 2f),0);
-			Vector3 bottomRight = new Vector3(x + map.cellSize*sizeOfCellSize - (map.cellSize / 2f),
-			                                  y + (map.cellSize - map.cellSize*sizeOfCellSize) - (map.cellSize / 2f),0);
-			Vector3 topRight = new Vector3(x + map.cellSize*sizeOfCellSize - (map.cellSize / 2f),
-			                               y + map.cellSize*sizeOfCellSize - (map.cellSize / 2f),0);
-			Vector3 topLeft = new Vector3(x + (map.cellSize - map.cellSize*sizeOfCellSize) - (map.cellSize / 2f),
-			                              y + map.cellSize*sizeOfCellSize - (map.cellSize / 2f),0);
+			Vector3 bottomLeft = new Vector3(x + (map.cellSize - map.cellSize*sizeOfCellSize),
+			                                 y + (map.cellSize - map.cellSize*sizeOfCellSize),0);
+			Vector3 bottomRight = new Vector3(x + map.cellSize*sizeOfCellSize,
+			                                  y + (map.cellSize - map.cellSize*sizeOfCellSize),0);
+			Vector3 topRight = new Vector3(x + map.cellSize*sizeOfCellSize,
+			                               y + map.cellSize*sizeOfCellSize,0);
+			Vector3 topLeft = new Vector3(x + (map.cellSize - map.cellSize*sizeOfCellSize),
+			                              y + map.cellSize*sizeOfCellSize,0);
 			Debug.DrawLine(bottomLeft, bottomRight, color);
 			Debug.DrawLine(bottomRight, topRight, color);
 			Debug.DrawLine(topRight, topLeft, color);

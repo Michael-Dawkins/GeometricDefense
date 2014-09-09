@@ -6,10 +6,16 @@ public class CreateTowerOnDrag : MonoBehaviour {
 
 	public GameObject towerToCreate;
 	public GameObject lastTowerCreated;
-	public GameObject towerRange;
-	public int towerCost = 50;
+	public GameObject towerRangeObject;
+
+	//Tower specs
+	public int towerCost;
+	public float cellRange;
 	public GameObject ghost;
+	public float damage;
+	public float shootingSpeed;
 	public bool applyButtonColorToTowers = true;
+
 	public float xViewportPos = 0.1f;
 	public float yViewportPos = 0.1f;
 
@@ -43,11 +49,9 @@ public class CreateTowerOnDrag : MonoBehaviour {
 			Vector2 touchPos = new Vector2(wp.x, wp.y);
 
 			if (collider2D == Physics2D.OverlapPoint(touchPos)) {
-				CreateTower();
 				dragging = true;
 			}
 		} else if (Input.GetMouseButton(0) && dragging){
-			DragTower();
 			DrawGhostAtClosestInputPos();
 		} else if (Input.GetMouseButtonUp(0) && dragging){
 			PlaceTower();
@@ -66,15 +70,21 @@ public class CreateTowerOnDrag : MonoBehaviour {
 	}
 	
 	void DragTower(){
-		mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-		mousePosition.z = 0;
-		lastTowerCreated.transform.position = mousePosition;
+//		mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+//		mousePosition.z = 0;
+//		lastTowerCreated.transform.position = mousePosition;
 	}
 
 	void PlaceTower(){
 		if (HasEnoughMoneyToBuyTower()){
-			Vector3 tmpPos = lastTowerCreated.transform.position;
+			CreateTower();
+			Vector3 tmpPos = GetClosestPos();
+//			tmpPos.x += map.cellSize / 2f;
+//			tmpPos.y += map.cellSize / 2f;
+
+			Debug.Log("tmpPos : " + tmpPos);
 			Cell cellAtPos = map.GetCellAtPos(tmpPos.x, tmpPos.y) ;
+			Debug.Log(tmpPos);
 			if (cellAtPos == null || cellAtPos.isObstacle){
 				Destroy(lastTowerCreated);
 				return;
@@ -85,13 +95,15 @@ public class CreateTowerOnDrag : MonoBehaviour {
 			if (pathFinder.requestNewGlobalPath(map.CellAt(map.xStart,map.yStart), map.CellAt(map.xGoal, map.yGoal))){
 				BuyTower();
 				RecalculatePathForCurrentEnemies();
-				
-				tmpPos.x = tmpPos.x - tmpPos.x % map.cellSize;
-				tmpPos.y = tmpPos.y - tmpPos.y % map.cellSize;
-				tmpPos.z = 0;
+				Debug.Log("Tower placed");
+				tmpPos = map.GetCellPos(cellAtPos);
 				lastTowerCreated.transform.position = tmpPos;
+
+				CanShoot canShoot = lastTowerCreated.GetComponent<CanShoot>();
+				canShoot.Damage = damage;
+				canShoot.shootingSpeed = shootingSpeed;
+				canShoot.cellRange = cellRange;
 			} else {
-				//TODO This seems to mess up future path findings, maybe because of messed up score ?
 				cellAtPos.isObstacle = false;
 				Debug.Log("Cannot place tower, it is blocking enemies");
 				Destroy(lastTowerCreated);
@@ -130,12 +142,13 @@ public class CreateTowerOnDrag : MonoBehaviour {
 		mousePos.z = 0;
 		if (map.CellAt((int)(mousePos.x / map.cellSize), (int)(mousePos.y / map.cellSize)) != null){
 
-			Vector3 closestPos = new Vector3(mousePos.x - mousePos.x % map.cellSize,
-			                                 mousePos.y - mousePos.y % map.cellSize,
-			                                 0);
+			Vector3 closestPos = GetClosestPos();
+
 			if (currentGhost == null){
 				currentGhost = Instantiate(ghost, closestPos, Quaternion.identity) as GameObject;
-				currentTowerRangeObject = Instantiate(towerRange, closestPos, Quaternion.identity) as GameObject;
+				currentTowerRangeObject = Instantiate(towerRangeObject, closestPos, Quaternion.identity) as GameObject;
+				GDUtils.ScaleTransformToXWorldUnit(
+					currentTowerRangeObject.transform, (map.cellSize * cellRange + map.cellSize / 2f) * 2f);
 				SpriteRenderer ghostRenderer = currentGhost.GetComponent<SpriteRenderer>();
 				SpriteRenderer towerRangeRenderer = currentTowerRangeObject.GetComponent<SpriteRenderer>();
 
@@ -151,6 +164,13 @@ public class CreateTowerOnDrag : MonoBehaviour {
 			currentGhost.transform.position = closestPos;
 			currentTowerRangeObject.transform.position = closestPos;
 		}
+	}
+
+	Vector3 GetClosestPos(){
+		Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+		mousePos.z = 0;
+		Vector3 pos = map.GetCellPos(map.GetCellAtPos(mousePos.x, mousePos.y));
+		return pos;
 	}
 
 	bool HasEnoughMoneyToBuyTower(){
