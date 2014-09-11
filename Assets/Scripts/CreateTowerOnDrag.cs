@@ -68,12 +68,6 @@ public class CreateTowerOnDrag : MonoBehaviour {
 			renderer.color = gameObject.GetComponent<SpriteRenderer>().color;
 		}
 	}
-	
-	void DragTower(){
-//		mousePosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-//		mousePosition.z = 0;
-//		lastTowerCreated.transform.position = mousePosition;
-	}
 
 	void PlaceTower(){
 		if (HasEnoughMoneyToBuyTower()){
@@ -98,6 +92,8 @@ public class CreateTowerOnDrag : MonoBehaviour {
 				canShoot.Damage = damage;
 				canShoot.shootingSpeed = shootingSpeed;
 				canShoot.cellRange = cellRange;
+				//Might not be necessary be it could solve a bug where a towerObject disapear on next tower positioning
+				lastTowerCreated = null;
 			} else {
 				cellAtPos.isObstacle = false;
 				Debug.Log("Cannot place tower, it is blocking enemies");
@@ -164,7 +160,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 	Vector3 GetClosestPos(){
 		Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
 		mousePos.z = 0;
-		Vector3 pos = map.GetCellPos(map.GetCellAtPos(mousePos.x, mousePos.y));
+		Vector3 pos = map.GetCellPos(map.GetCellClosestToPos(mousePos.x, mousePos.y + map.cellSize));
 		return pos;
 	}
 

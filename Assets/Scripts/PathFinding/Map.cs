@@ -94,6 +94,25 @@ public class Map : MonoBehaviour {
 		return new Vector3(cell.x * cellSize + cellSize / 2f, cell.y * cellSize + cellSize / 2f, 0f);
 	}
 
+	public Cell GetCellClosestToPos(float xPos, float yPos){
+		int x = (int) (xPos / cellSize);
+		int y = (int) (yPos / cellSize);
+		//Clamping x and y to map bounds
+		if (x < 0){
+			x = 0;
+		}
+		if (y < 0){
+			y = 0;
+		}
+		if (x >= mapWidth){
+			x = mapWidth - 1;
+		}
+		if (y >= mapHeight){
+			y = mapHeight - 1;
+		}
+		return GetCellAt(x, y);
+	}
+
 	public Cell GetStartCell(){
 		return GetCellAt(xStart, yStart);
 	}
