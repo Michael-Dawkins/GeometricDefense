@@ -64,7 +64,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 	void CreateTower(){
 		lastTowerCreated = Instantiate(towerToCreate, transform.position, transform.rotation) as GameObject;
 		if (applyButtonColorToTowers){
-			SpriteRenderer renderer = lastTowerCreated.GetComponent<SpriteRenderer>();
+			SpriteRenderer renderer = lastTowerCreated.transform.Find("TowerSprite").gameObject.GetComponent<SpriteRenderer>();
 			renderer.color = gameObject.GetComponent<SpriteRenderer>().color;
 		}
 	}
