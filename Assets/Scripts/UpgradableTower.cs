@@ -11,21 +11,21 @@ public class UpgradableTower : MonoBehaviour {
 	Map map;
 	PlayerMoney playerMoney;
 	GameObject upgradeButtonObject;
+	GameObject towerSpriteObj;
 
 	// Use this for initialization
 	void Start() {
 		map = GameObject.Find("Map").GetComponent<Map>();
+		towerSpriteObj = transform.Find("TowerSprite").gameObject;
 		GameObject playerState = GameObject.Find("PlayerState");
 		playerMoney = playerState.GetComponent<PlayerMoney>();
 		upgradeCanvas =  GetComponentsInChildren<Canvas>(true)[0];
 		upgradeButtonObject = upgradeCanvas.transform.Find("UpgradeButton").gameObject;
+		Image upgradeImage = upgradeButtonObject.GetComponent<Image>();
+		upgradeImage.color = towerSpriteObj.GetComponent<SpriteRenderer>().color;
 	}
 	
-	// Update is called once per frame
-	void Update() {}
-
 	public void DisplayUpgradeButton() {
-		Debug.Log("display upgrade button");
 		upgradeButtonObject.SetActive(true);
 		Button button = upgradeButtonObject.GetComponent<Button>();
 		EventSystem eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
@@ -33,7 +33,6 @@ public class UpgradableTower : MonoBehaviour {
 	}
 
 	public void UpGradeTower(){
-		Debug.Log("Upgrading tower");
 		if (playerMoney.Money >= 100){
 			playerMoney.Money -= 100;
 			CanShoot canShoot = GetComponent<CanShoot>();
@@ -43,7 +42,6 @@ public class UpgradableTower : MonoBehaviour {
 	}
 
 	public void OnDeselect(){
-		Debug.Log("Deselecting tower");
 		upgradeButtonObject.SetActive(false);
 	}
 }
