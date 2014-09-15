@@ -70,7 +70,9 @@ public class CanMove : MonoBehaviour {
 				//get the first child
 				transformToRotate = t[1];
 			}
-			float angle = Vector3.Angle(Vector3.right, map.GetCellPos (path [indexInPath]) - map.GetCellPos (path [indexInPath - 1]));
+			float angle = GDUtils.SignedAngleBetween(Vector3.right, 
+			                                 		 map.GetCellPos (path [indexInPath]) - map.GetCellPos (path [indexInPath - 1]), 
+			                                 		 Vector3.forward);
 			transformToRotate.eulerAngles = new Vector3(0,0,angle);
 		}
 		transform.position = Vector2.MoveTowards(
