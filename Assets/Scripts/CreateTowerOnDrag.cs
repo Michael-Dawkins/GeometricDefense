@@ -4,9 +4,9 @@ using System.Collections.Generic;
 
 public class CreateTowerOnDrag : MonoBehaviour {
 
-	public GameObject towerToCreate;
+	public GameObject towerToCreatePrefab;
 	public GameObject lastTowerCreated;
-	public GameObject towerRangeObject;
+	public GameObject towerRangePrefab;
 
 	//Tower specs
 	public int towerCost;
@@ -63,13 +63,15 @@ public class CreateTowerOnDrag : MonoBehaviour {
 	}
 
 	void CreateTower(){
-		lastTowerCreated = Instantiate(towerToCreate) as GameObject;
+		lastTowerCreated = Instantiate(towerToCreatePrefab) as GameObject;
 		lastTowerCreated.transform.position = transform.position;
 		lastTowerCreated.transform.rotation = transform.rotation;
 		if (applyButtonColorToTowers){
 			SpriteRenderer renderer = lastTowerCreated.transform.Find("TowerSprite").gameObject.GetComponent<SpriteRenderer>();
 			renderer.color = gameObject.GetComponent<SpriteRenderer>().color;
 		}
+		UpgradableTower upgradableTower = lastTowerCreated.GetComponent<UpgradableTower>();
+		upgradableTower.towerRangePrefab = towerRangePrefab;
 	}
 
 	void PlaceTower(){
@@ -142,7 +144,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 
 			if (currentGhost == null){
 				currentGhost = Instantiate(ghost, closestPos, Quaternion.identity) as GameObject;
-				currentTowerRangeObject = Instantiate(towerRangeObject, closestPos, Quaternion.identity) as GameObject;
+				currentTowerRangeObject = Instantiate(towerRangePrefab, closestPos, Quaternion.identity) as GameObject;
 				GDUtils.ScaleTransformToXWorldUnit(
 					currentTowerRangeObject.transform, (map.cellSize * cellRange + map.cellSize / 2f) * 2f);
 				SpriteRenderer ghostRenderer = currentGhost.GetComponent<SpriteRenderer>();
