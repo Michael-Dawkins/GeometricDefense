@@ -15,6 +15,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 	public float damage;
 	public float shootingSpeed;
 	public bool applyButtonColorToTowers = true;
+	public float upgradeCost;
 
 	public float xViewportPos = 0.1f;
 	public float yViewportPos = 0.1f;
@@ -94,6 +95,8 @@ public class CreateTowerOnDrag : MonoBehaviour {
 				canShoot.Damage = damage;
 				canShoot.shootingSpeed = shootingSpeed;
 				canShoot.cellRange = cellRange;
+				UpgradableTower upgradableTower = lastTowerCreated.GetComponent<UpgradableTower>();
+				upgradableTower.upgradeCost = upgradeCost;
 				//Might not be necessary be it could solve a bug where a towerObject disapear on next tower positioning
 				lastTowerCreated = null;
 			} else {

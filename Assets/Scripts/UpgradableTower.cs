@@ -5,17 +5,18 @@ using System.Collections;
 
 public class UpgradableTower : MonoBehaviour {
 
+	public float upgradeCost;
+
 	Canvas upgradeCanvas;
 	BoxCollider2D clickableCollider;
 	GameObject clickableObject;
-	Map map;
 	PlayerMoney playerMoney;
 	GameObject upgradeButtonObject;
 	GameObject towerSpriteObj;
+	Text upgradeCostLabel;
 
 	// Use this for initialization
 	void Start() {
-		map = GameObject.Find("Map").GetComponent<Map>();
 		towerSpriteObj = transform.Find("TowerSprite").gameObject;
 		GameObject playerState = GameObject.Find("PlayerState");
 		playerMoney = playerState.GetComponent<PlayerMoney>();
@@ -30,11 +31,13 @@ public class UpgradableTower : MonoBehaviour {
 		Button button = upgradeButtonObject.GetComponent<Button>();
 		EventSystem eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
 		eventSystem.SetSelectedGameObject(button.gameObject, new BaseEventData(eventSystem));
+		upgradeCostLabel = upgradeButtonObject.GetComponentInChildren<Text>();
+		upgradeCostLabel.text = "$" + upgradeCost;
 	}
 
 	public void UpGradeTower(){
-		if (playerMoney.Money >= 100){
-			playerMoney.Money -= 100;
+		if (playerMoney.Money >= (int) upgradeCost){
+			playerMoney.Money -= (int) upgradeCost;
 			CanShoot canShoot = GetComponent<CanShoot>();
 			canShoot.shootingSpeed += 1f;
 		}
