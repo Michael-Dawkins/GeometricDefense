@@ -1,6 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEngine.UI;
 
 public class CreateTowerOnDrag : MonoBehaviour {
 
@@ -20,13 +21,14 @@ public class CreateTowerOnDrag : MonoBehaviour {
 	public float xViewportPos = 0.1f;
 	public float yViewportPos = 0.1f;
 
-	private bool dragging = false;
-	private PlayerMoney playerMoney;
-	private Vector3 mousePosition;
-	private Vector3 ghostPosition;
-	private GameObject currentGhost;
-	private GameObject currentTowerRangeObject;
-	private Map map;
+	bool dragging = false;
+	PlayerMoney playerMoney;
+	Vector3 mousePosition;
+	Vector3 ghostPosition;
+	GameObject currentGhost;
+	GameObject currentTowerRangeObject;
+	Map map;
+	Text towerCostLabel;
 
 	// Use this for initialization
 	void Start () {
@@ -38,6 +40,9 @@ public class CreateTowerOnDrag : MonoBehaviour {
 			}
 			playerMoney = playerState.GetComponent<PlayerMoney>();
 		}
+		towerCostLabel = transform.GetComponentInChildren<Text>();
+		towerCostLabel.text = towerCost.ToString();
+		playerMoney.AddOnMoneyChangeListener(UpdateTowerCostLabelStatus);
 	}
 	
 	// Update is called once per frame
@@ -59,6 +64,14 @@ public class CreateTowerOnDrag : MonoBehaviour {
 			Destroy(currentGhost);
 			Destroy(currentTowerRangeObject);
 			dragging = false;
+		}
+	}
+
+	public void UpdateTowerCostLabelStatus(float playerMoney){
+		if (towerCost > playerMoney){
+			towerCostLabel.color = Color.gray;
+		} else {
+			towerCostLabel.color = Color.white;
 		}
 	}
 
