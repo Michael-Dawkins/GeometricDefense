@@ -12,7 +12,9 @@ public class PlayerMoney : MonoBehaviour {
 			return money;
 		}
 		set {
-			DisplayMoneyDelta(value - money);
+			if ((value - money)<0){
+				DisplayMoneyDelta(value - money);
+			}
 			money = value;
 			UpdateMoneyLabel();
 			foreach(OnMoneyChange callback in callbacks){

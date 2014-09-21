@@ -13,6 +13,7 @@ public class UpgradableTower : MonoBehaviour {
 	GameObject clickableObject;
 	PlayerMoney playerMoney;
 	GameObject upgradeButtonObject;
+	GameObject sellButtonObject;
 	GameObject towerSpriteObj;
 	Text upgradeCostLabel;
 	Map map;
@@ -26,17 +27,22 @@ public class UpgradableTower : MonoBehaviour {
 		playerMoney = playerState.GetComponent<PlayerMoney>();
 		upgradeCanvas =  GetComponentsInChildren<Canvas>(true)[0];
 		upgradeButtonObject = upgradeCanvas.transform.Find("UpgradeButton").gameObject;
+		sellButtonObject = upgradeCanvas.transform.Find("SellButton").gameObject;
 		Image upgradeImage = upgradeButtonObject.GetComponent<Image>();
 		upgradeImage.color = towerSpriteObj.GetComponent<SpriteRenderer>().color;
 	}
 	
 	public void DisplayUpgradeButton() {
 		upgradeButtonObject.SetActive(true);
-		Button button = upgradeButtonObject.GetComponent<Button>();
 		EventSystem eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
-		eventSystem.SetSelectedGameObject(button.gameObject, new BaseEventData(eventSystem));
+		eventSystem.SetSelectedGameObject(upgradeButtonObject, new BaseEventData(eventSystem));
 		upgradeCostLabel = upgradeButtonObject.GetComponentInChildren<Text>();
 		upgradeCostLabel.text = "$" + upgradeCost;
+		DisplayTowerRange();
+	}
+
+	public void DisplaySellButton() {
+		sellButtonObject.SetActive(true);
 		DisplayTowerRange();
 	}
 
@@ -65,8 +71,17 @@ public class UpgradableTower : MonoBehaviour {
 		OnDeselect();
 	}
 
+	public void SellTower(){
+		Debug.Log("Tower sold");
+		Destroy(gameObject);
+		Destroy(currentTowerRangeObject);
+		Cell cell = map.GetCellAtPos(transform.position.x, transform.position.y);
+		cell.isObstacle = false;
+	}
+
 	public void OnDeselect(){
 		upgradeButtonObject.SetActive(false);
+		sellButtonObject.SetActive(false);
 		HideTowerRange();
 	}
 }
