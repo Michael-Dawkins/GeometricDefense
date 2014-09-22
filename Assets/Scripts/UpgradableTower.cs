@@ -6,6 +6,7 @@ using System.Collections;
 public class UpgradableTower : MonoBehaviour {
 
 	public float upgradeCost;
+	public float towerCost;
 	public GameObject towerRangePrefab;
 
 	Canvas upgradeCanvas;
@@ -18,6 +19,9 @@ public class UpgradableTower : MonoBehaviour {
 	Text upgradeCostLabel;
 	Map map;
 	GameObject currentTowerRangeObject;
+	ClickReceptor clickReceptor;
+	GameObject upgradeButtonBackground;
+	GameObject sellButtonBackground;
 
 	// Use this for initialization
 	void Start() {
@@ -27,15 +31,18 @@ public class UpgradableTower : MonoBehaviour {
 		playerMoney = playerState.GetComponent<PlayerMoney>();
 		upgradeCanvas =  GetComponentsInChildren<Canvas>(true)[0];
 		upgradeButtonObject = upgradeCanvas.transform.Find("UpgradeButton").gameObject;
+		upgradeButtonBackground = upgradeCanvas.transform.Find("UpgradeButtonBackground").gameObject;
+		sellButtonBackground = upgradeCanvas.transform.Find("SellButtonBackground").gameObject;
 		sellButtonObject = upgradeCanvas.transform.Find("SellButton").gameObject;
 		Image upgradeImage = upgradeButtonObject.GetComponent<Image>();
 		upgradeImage.color = towerSpriteObj.GetComponent<SpriteRenderer>().color;
+		clickReceptor = GameObject.Find("ClickReceptorCanvas").GetComponentInChildren<ClickReceptor>();
+		clickReceptor.AddOnClickListener(OnDeselect);
 	}
 	
 	public void DisplayUpgradeButton() {
 		upgradeButtonObject.SetActive(true);
-		EventSystem eventSystem = GameObject.Find("EventSystem").GetComponent<EventSystem>();
-		eventSystem.SetSelectedGameObject(upgradeButtonObject, new BaseEventData(eventSystem));
+		upgradeButtonBackground.SetActive(true);
 		upgradeCostLabel = upgradeButtonObject.GetComponentInChildren<Text>();
 		upgradeCostLabel.text = "$" + upgradeCost;
 		DisplayTowerRange();
@@ -43,6 +50,7 @@ public class UpgradableTower : MonoBehaviour {
 
 	public void DisplaySellButton() {
 		sellButtonObject.SetActive(true);
+		sellButtonBackground.SetActive(true);
 		DisplayTowerRange();
 	}
 
@@ -67,21 +75,26 @@ public class UpgradableTower : MonoBehaviour {
 			playerMoney.Money -= (int) upgradeCost;
 			CanShoot canShoot = GetComponent<CanShoot>();
 			canShoot.shootingSpeed += 1f;
+			towerCost += upgradeCost;
 		}
 		OnDeselect();
 	}
 
 	public void SellTower(){
-		Debug.Log("Tower sold");
+		Debug.Log("Tower sold for " + (int)(towerCost / 2f));
+		playerMoney.Money += (int)(towerCost / 2f);
 		Destroy(gameObject);
 		Destroy(currentTowerRangeObject);
 		Cell cell = map.GetCellAtPos(transform.position.x, transform.position.y);
 		cell.isObstacle = false;
+		clickReceptor.RemoveOnClickListener(OnDeselect);
 	}
 
 	public void OnDeselect(){
 		upgradeButtonObject.SetActive(false);
 		sellButtonObject.SetActive(false);
+		upgradeButtonBackground.SetActive(false);
+		sellButtonBackground.SetActive(false);
 		HideTowerRange();
 	}
 }

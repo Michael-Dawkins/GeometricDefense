@@ -85,6 +85,8 @@ public class CreateTowerOnDrag : MonoBehaviour {
 		}
 		UpgradableTower upgradableTower = lastTowerCreated.GetComponent<UpgradableTower>();
 		upgradableTower.towerRangePrefab = towerRangePrefab;
+		upgradableTower.upgradeCost = upgradeCost;
+		upgradableTower.towerCost = towerCost;
 	}
 
 	void PlaceTower(){
@@ -110,8 +112,6 @@ public class CreateTowerOnDrag : MonoBehaviour {
 				canShoot.Damage = damage;
 				canShoot.shootingSpeed = shootingSpeed;
 				canShoot.cellRange = cellRange;
-				UpgradableTower upgradableTower = lastTowerCreated.GetComponent<UpgradableTower>();
-				upgradableTower.upgradeCost = upgradeCost;
 				//Might not be necessary be it could solve a bug where a towerObject disapear on next tower positioning
 				lastTowerCreated = null;
 			} else {
