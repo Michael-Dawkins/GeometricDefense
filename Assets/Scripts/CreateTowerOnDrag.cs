@@ -104,7 +104,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 
 			if (pathFinder.requestNewGlobalPath(map.GetCellAt(map.xStart,map.yStart), map.GetCellAt(map.xGoal, map.yGoal))){
 				BuyTower();
-				RecalculatePathForCurrentEnemies();
+				pathFinder.RecalculatePathForCurrentEnemies();
 				tmpPos = map.GetCellPos(cellAtPos);
 				lastTowerCreated.transform.position = tmpPos;
 
@@ -122,30 +122,6 @@ public class CreateTowerOnDrag : MonoBehaviour {
 		} else {
 			Destroy(lastTowerCreated);
 		}
-	}
-
-	void RecalculatePathForCurrentEnemies(){
-		List<GameObject> rootObjects = new List<GameObject>();
-		foreach (GameObject obj in UnityEngine.Object.FindObjectsOfType(typeof(GameObject)))
-		{
-			if (obj.transform.parent == null)
-			{
-				rootObjects.Add(obj);
-			}
-		}
-		float timeBeforePathFinding = Time.realtimeSinceStartup;
-		int counter = 0;
-		foreach (GameObject obj in rootObjects){
-			CanMove enemy;
-			if (enemy = obj.GetComponent<CanMove>()){
-				enemy.SetOwnPath();
-				counter++;
-			}
-		}
-		Debug.Log("Time to find paths for " + counter + " enemies : "
-          + ((Time.realtimeSinceStartup - timeBeforePathFinding)*1000).ToString()
-          + " ms");
-
 	}
 
 	void DrawGhostAtClosestInputPos(){

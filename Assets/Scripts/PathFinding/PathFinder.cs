@@ -133,6 +133,28 @@ public class PathFinder : MonoBehaviour {
 		}
 		openList.Insert(i, cell);
 	}
+
+	public void RecalculatePathForCurrentEnemies(){
+		List<GameObject> rootObjects = new List<GameObject>();
+		foreach (GameObject obj in UnityEngine.Object.FindObjectsOfType(typeof(GameObject))){
+			if (obj.transform.parent == null)			{
+				rootObjects.Add(obj);
+			}
+		}
+		float timeBeforePathFinding = Time.realtimeSinceStartup;
+		int counter = 0;
+		foreach (GameObject obj in rootObjects){
+			CanMove enemy;
+			if (enemy = obj.GetComponent<CanMove>()){
+				enemy.SetOwnPath();
+				counter++;
+			}
+		}
+		Debug.Log("Time to find paths for " + counter + " enemies : "
+		          + ((Time.realtimeSinceStartup - timeBeforePathFinding)*1000).ToString()
+		          + " ms");
+	}
+
 	#region debug methods
 	public static void LogPath(List<Cell> path){
 		string message = "Path : ";

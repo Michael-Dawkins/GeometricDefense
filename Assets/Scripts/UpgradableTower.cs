@@ -88,6 +88,9 @@ public class UpgradableTower : MonoBehaviour {
 		Cell cell = map.GetCellAtPos(transform.position.x, transform.position.y);
 		cell.isObstacle = false;
 		clickReceptor.RemoveOnClickListener(OnDeselect);
+		PathFinder pathFinder = GameObject.Find("PathFinder").GetComponent<PathFinder>();
+		pathFinder.requestNewGlobalPath(map.GetCellAt(map.xStart,map.yStart), map.GetCellAt(map.xGoal, map.yGoal));
+		pathFinder.RecalculatePathForCurrentEnemies();
 	}
 
 	public void OnDeselect(){
