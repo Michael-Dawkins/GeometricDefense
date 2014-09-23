@@ -3,13 +3,31 @@ using System.Collections;
 
 public class MapBackground : MonoBehaviour {
 
+	public GameObject lineSpritePrefab;
+	public float lineWidth;
+
 	Map map;
+	GameObject left;
+	GameObject top;
+	GameObject right;
+	GameObject bottom;
 
 	// Use this for initialization
 	void Start () {
 		map = GameObject.Find("Map").GetComponent<Map>();
-		transform.position = new Vector3((map.mapWidth * map.cellSize) / 2f - (map.cellSize / 2f), (map.mapHeight * map.cellSize) / 2f  - (map.cellSize / 2f), 1f);
-		transform.localScale = new Vector3(map.mapWidth * map.cellSize, map.mapHeight * map.cellSize, 0);
+		left = Instantiate(lineSpritePrefab, Vector3.zero, Quaternion.identity) as GameObject;
+		top = Instantiate(lineSpritePrefab, Vector3.zero, Quaternion.identity) as GameObject;
+		right = Instantiate(lineSpritePrefab, Vector3.zero, Quaternion.identity) as GameObject;
+		bottom = Instantiate(lineSpritePrefab, Vector3.zero, Quaternion.identity) as GameObject;
+
+		left.transform.rotation = Quaternion.Euler(0, 0, 90f);
+		left.transform.localScale = new Vector3(map.mapHeight * map.cellSize * 100f, lineWidth, 0);
+		top.transform.localPosition = new Vector3(0, map.mapHeight * map.cellSize,0);
+		top.transform.localScale = new Vector3(map.mapWidth * map.cellSize * 100f, lineWidth, 0);
+		right.transform.rotation = Quaternion.Euler(0, 0, 90f);
+		right.transform.localScale = new Vector3(map.mapHeight * map.cellSize * 100f, lineWidth, 0);
+		right.transform.localPosition = new Vector3(map.mapWidth * map.cellSize, 0, 0);
+		bottom.transform.localScale = new Vector3(map.mapWidth * map.cellSize* 100f, lineWidth, 0);
 	}
 	
 	// Update is called once per frame

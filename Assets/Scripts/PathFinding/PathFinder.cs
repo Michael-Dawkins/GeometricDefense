@@ -59,7 +59,7 @@ public class PathFinder : MonoBehaviour {
 					tmpCell = tmpCell.parent;
 				} while (tmpCell != null);
 				path.Reverse();
-				LogPath(path);
+//				LogPath(path);
 				for (int i = 0; i < map.mapWidth; i++){
 					for(int j = 0; j < map.mapHeight; j++){
 						map.GetCellAt(i,j).parent = null;
