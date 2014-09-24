@@ -9,6 +9,7 @@ public class UpgradableTower : MonoBehaviour {
 	public float towerCost;
 	public GameObject towerRangePrefab;
 
+	int towerLevel = 1;
 	Canvas upgradeCanvas;
 	BoxCollider2D clickableCollider;
 	GameObject clickableObject;
@@ -76,6 +77,9 @@ public class UpgradableTower : MonoBehaviour {
 			CanShoot canShoot = GetComponent<CanShoot>();
 			canShoot.shootingSpeed += 1f;
 			towerCost += upgradeCost;
+			towerLevel += 1;
+			SpriteRenderer spriteRenderer = GetComponentInChildren<SpriteRenderer>();
+			spriteRenderer.sprite = Resources.Load("tower-circle-" + towerLevel) as Sprite;
 		}
 		OnDeselect();
 	}
