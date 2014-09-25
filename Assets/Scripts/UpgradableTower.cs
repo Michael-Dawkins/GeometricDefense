@@ -8,6 +8,7 @@ public class UpgradableTower : MonoBehaviour {
 	public float upgradeCost;
 	public float towerCost;
 	public GameObject towerRangePrefab;
+	public int maxLevel;
 
 	int towerLevel = 1;
 	Canvas upgradeCanvas;
@@ -72,14 +73,15 @@ public class UpgradableTower : MonoBehaviour {
 	}
 
 	public void UpGradeTower(){
-		if (playerMoney.Money >= (int) upgradeCost){
+		if (playerMoney.Money >= (int) upgradeCost && towerLevel < maxLevel){
 			playerMoney.Money -= (int) upgradeCost;
 			CanShoot canShoot = GetComponent<CanShoot>();
 			canShoot.shootingSpeed += 1f;
 			towerCost += upgradeCost;
 			towerLevel += 1;
 			SpriteRenderer spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-			spriteRenderer.sprite = Resources.Load("tower-circle-" + towerLevel) as Sprite;
+			spriteRenderer.sprite = Resources.Load("tower-circle-" + towerLevel, typeof(Sprite)) as Sprite;
+			Debug.Log("Sprite name : " + spriteRenderer.sprite.name);
 		}
 		OnDeselect();
 	}
