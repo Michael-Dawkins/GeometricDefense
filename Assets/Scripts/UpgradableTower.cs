@@ -42,6 +42,18 @@ public class UpgradableTower : MonoBehaviour {
 		upgradeImage.color = towerSpriteGlowObj.GetComponent<SpriteRenderer>().color;
 		clickReceptor = GameObject.Find("ClickReceptorCanvas").GetComponentInChildren<ClickReceptor>();
 		clickReceptor.AddOnClickListener(OnDeselect);
+		UIState.AddTowerSelectionListener(OnDeselect);
+	}
+
+	void OnDestroy(){
+		UIState.RemoveTowerSelectionListener(OnDeselect);
+	}
+
+	public void TowerSelection(){
+		Debug.Log("Tower selection");
+		UIState.TowerSelection();
+		DisplaySellButton();
+		DisplayUpgradeButton();
 	}
 	
 	public void DisplayUpgradeButton() {
@@ -72,7 +84,9 @@ public class UpgradableTower : MonoBehaviour {
 	}
 
 	public void HideTowerRange(){
-		Destroy(currentTowerRangeObject);
+		if (currentTowerRangeObject != null){
+			Destroy(currentTowerRangeObject);
+		}
 	}
 
 	public void UpGradeTower(){
