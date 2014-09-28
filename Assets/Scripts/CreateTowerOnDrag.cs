@@ -29,6 +29,8 @@ public class CreateTowerOnDrag : MonoBehaviour {
 	GameObject currentTowerRangeObject;
 	Map map;
 	Text towerCostLabel;
+	SpriteRenderer buttonCenterRenderer;
+	SpriteRenderer buttonGlowRenderer;
 
 	// Use this for initialization
 	void Start () {
@@ -43,6 +45,8 @@ public class CreateTowerOnDrag : MonoBehaviour {
 		towerCostLabel = transform.GetComponentInChildren<Text>();
 		towerCostLabel.text = towerCost.ToString();
 		playerMoney.AddOnMoneyChangeListener(UpdateTowerCostLabelStatus);
+		buttonCenterRenderer = GetComponent<SpriteRenderer>();
+		buttonGlowRenderer = transform.Find("Glow").GetComponent<SpriteRenderer>();
 	}
 	
 	// Update is called once per frame
@@ -70,8 +74,24 @@ public class CreateTowerOnDrag : MonoBehaviour {
 	public void UpdateTowerCostLabelStatus(float playerMoney){
 		if (towerCost > playerMoney){
 			towerCostLabel.color = Color.gray;
+			buttonCenterRenderer.color = new Color(buttonCenterRenderer.color.r, 
+			                                       buttonCenterRenderer.color.g, 
+			                                       buttonCenterRenderer.color.b, 
+			                                       0.5f);
+			buttonGlowRenderer.color = new Color(buttonGlowRenderer.color.r, 
+			                                       buttonGlowRenderer.color.g, 
+			                                       buttonGlowRenderer.color.b, 
+			                                       0.5f);
 		} else {
 			towerCostLabel.color = Color.white;
+			buttonCenterRenderer.color = new Color(buttonCenterRenderer.color.r, 
+			                                       buttonCenterRenderer.color.g, 
+			                                       buttonCenterRenderer.color.b, 
+			                                       1f);
+			buttonGlowRenderer.color = new Color(buttonGlowRenderer.color.r, 
+			                                       buttonGlowRenderer.color.g, 
+			                                       buttonGlowRenderer.color.b, 
+			                                       1f);
 		}
 	}
 
