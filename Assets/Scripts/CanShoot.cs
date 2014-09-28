@@ -11,7 +11,8 @@ public class CanShoot : MonoBehaviour {
 	public AudioClip shootingSound;
 	public float cellRange;
 
-	private Animator towerSpriteAnimator;
+	private Animator towerSpriteCenterAnimator;
+	private Animator towerSpriteGlowAnimator;
 	private float ColliderRadius {
 		get {
 			return map.cellSize * cellRange + map.cellSize / 2f;
@@ -21,14 +22,17 @@ public class CanShoot : MonoBehaviour {
 	private List<CanTakeDamage> targets = new List<CanTakeDamage>();
 	private Color bulletColor;
 	private Map map;
-	private GameObject towerSprite;
+	private GameObject towerSpriteCenter;
+	private GameObject towerSpriteGlow;
 
 	// Use this for initialization
 	void Start () {
-		towerSprite = transform.Find("TowerSprite").gameObject;
+		towerSpriteCenter = transform.Find("TowerSpriteCenter").gameObject;
+		towerSpriteGlow = transform.Find("TowerSpriteGlow").gameObject;
 		map = GameObject.Find("Map").GetComponent<Map>();
-		towerSpriteAnimator = towerSprite.GetComponent<Animator> ();
-		bulletColor = towerSprite.GetComponent<SpriteRenderer>().color;
+		towerSpriteCenterAnimator = towerSpriteCenter.GetComponent<Animator> ();
+		towerSpriteGlowAnimator = towerSpriteGlow.GetComponent<Animator> ();
+		bulletColor = towerSpriteCenter.GetComponent<SpriteRenderer>().color;
 		UpdateColliderRadius();
 	}
 
@@ -48,14 +52,15 @@ public class CanShoot : MonoBehaviour {
 
 	void shoot (CanTakeDamage target) {
 		if (target != null) {
-			towerSpriteAnimator.SetTrigger ("shooting");
+			towerSpriteCenterAnimator.SetTrigger ("shooting");
+			towerSpriteGlowAnimator.SetTrigger ("shooting");
 			Bullet bullet = Instantiate (bulletPrefab, transform.position, transform.rotation) as Bullet;
 			bullet.Target = target;
 			bullet.Damage = Damage;
 			bullet.GetComponent<SpriteRenderer>().color = bulletColor;
 
 			nextShootingTime = Time.time + (1f /shootingSpeed);
-			audio.PlayOneShot(shootingSound, 1F);
+			audio.PlayOneShot(shootingSound, 0.5f);
 		}
 	}
 

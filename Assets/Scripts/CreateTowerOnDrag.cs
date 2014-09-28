@@ -80,8 +80,17 @@ public class CreateTowerOnDrag : MonoBehaviour {
 		lastTowerCreated.transform.position = transform.position;
 		lastTowerCreated.transform.rotation = transform.rotation;
 		if (applyButtonColorToTowers){
-			SpriteRenderer renderer = lastTowerCreated.transform.Find("TowerSprite").gameObject.GetComponent<SpriteRenderer>();
-			renderer.color = gameObject.GetComponent<SpriteRenderer>().color;
+			float h, s, v;
+			Color saturatedColorToApply = gameObject.GetComponent<SpriteRenderer>().color;
+			GDUtils.ColorToHSV(saturatedColorToApply, out h, out s, out v);
+			saturatedColorToApply = GDUtils.ColorFromHSV(h, 1f, v);
+
+			SpriteRenderer centerRenderer = lastTowerCreated.transform.Find("TowerSpriteCenter").gameObject.GetComponent<SpriteRenderer>();
+			GDUtils.ColorToHSV(saturatedColorToApply, out h, out s, out v);
+			Color lightColor = GDUtils.ColorFromHSV(h,0.25f,v);
+			centerRenderer.color = lightColor;
+			SpriteRenderer glowRenderer = lastTowerCreated.transform.Find("TowerSpriteGlow").gameObject.GetComponent<SpriteRenderer>();
+			glowRenderer.color = saturatedColorToApply;
 		}
 		UpgradableTower upgradableTower = lastTowerCreated.GetComponent<UpgradableTower>();
 		upgradableTower.towerRangePrefab = towerRangePrefab;
@@ -94,7 +103,6 @@ public class CreateTowerOnDrag : MonoBehaviour {
 			CreateTower();
 			Vector3 tmpPos = GetClosestPos();
 			Cell cellAtPos = map.GetCellAtPos(tmpPos.x, tmpPos.y) ;
-			Debug.Log(tmpPos);
 			if (cellAtPos == null || cellAtPos.isObstacle || cellAtPos == map.GetStartCell()){
 				Destroy(lastTowerCreated);
 				return;

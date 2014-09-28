@@ -17,7 +17,8 @@ public class UpgradableTower : MonoBehaviour {
 	PlayerMoney playerMoney;
 	GameObject upgradeButtonObject;
 	GameObject sellButtonObject;
-	GameObject towerSpriteObj;
+	GameObject towerSpriteCenterObj;
+	GameObject towerSpriteGlowObj;
 	Text upgradeCostLabel;
 	Map map;
 	GameObject currentTowerRangeObject;
@@ -28,7 +29,8 @@ public class UpgradableTower : MonoBehaviour {
 	// Use this for initialization
 	void Start() {
 		map = GameObject.Find("Map").GetComponent<Map>();
-		towerSpriteObj = transform.Find("TowerSprite").gameObject;
+		towerSpriteCenterObj = transform.Find("TowerSpriteCenter").gameObject;
+		towerSpriteGlowObj = transform.Find("TowerSpriteGlow").gameObject;
 		GameObject playerState = GameObject.Find("PlayerState");
 		playerMoney = playerState.GetComponent<PlayerMoney>();
 		upgradeCanvas =  GetComponentsInChildren<Canvas>(true)[0];
@@ -37,7 +39,7 @@ public class UpgradableTower : MonoBehaviour {
 		sellButtonBackground = upgradeCanvas.transform.Find("SellButtonBackground").gameObject;
 		sellButtonObject = upgradeCanvas.transform.Find("SellButton").gameObject;
 		Image upgradeImage = upgradeButtonObject.GetComponent<Image>();
-		upgradeImage.color = towerSpriteObj.GetComponent<SpriteRenderer>().color;
+		upgradeImage.color = towerSpriteGlowObj.GetComponent<SpriteRenderer>().color;
 		clickReceptor = GameObject.Find("ClickReceptorCanvas").GetComponentInChildren<ClickReceptor>();
 		clickReceptor.AddOnClickListener(OnDeselect);
 	}
@@ -63,7 +65,7 @@ public class UpgradableTower : MonoBehaviour {
 			GDUtils.ScaleTransformToXWorldUnit(
 				currentTowerRangeObject.transform, (map.cellSize * canShoot.cellRange + map.cellSize / 2f) * 2f);
 			SpriteRenderer towerRangeRenderer = currentTowerRangeObject.GetComponent<SpriteRenderer>();
-			Color color = towerSpriteObj.GetComponent<SpriteRenderer>().color;
+			Color color = towerSpriteGlowObj.GetComponent<SpriteRenderer>().color;
 			towerRangeRenderer.color = new Color(color.r, color.g, color.b);
 		}
 	}
@@ -79,9 +81,10 @@ public class UpgradableTower : MonoBehaviour {
 			canShoot.shootingSpeed += 1f;
 			towerCost += upgradeCost;
 			towerLevel += 1;
-			SpriteRenderer spriteRenderer = GetComponentInChildren<SpriteRenderer>();
-			spriteRenderer.sprite = Resources.Load("tower-circle-" + towerLevel, typeof(Sprite)) as Sprite;
-			Debug.Log("Sprite name : " + spriteRenderer.sprite.name);
+			SpriteRenderer spriteRendererCenter = transform.Find("TowerSpriteCenter").GetComponent<SpriteRenderer>();
+			spriteRendererCenter.sprite = Resources.Load("tower-circle_" + towerLevel, typeof(Sprite)) as Sprite;
+			SpriteRenderer spriteRendererGlow = transform.Find("TowerSpriteGlow").GetComponent<SpriteRenderer>();
+			spriteRendererGlow.sprite = Resources.Load("tower-circle_" + towerLevel + "-glow", typeof(Sprite)) as Sprite;
 		}
 		OnDeselect();
 	}
