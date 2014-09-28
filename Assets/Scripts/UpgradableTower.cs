@@ -45,17 +45,18 @@ public class UpgradableTower : MonoBehaviour {
 	}
 	
 	public void DisplayUpgradeButton() {
-		upgradeButtonObject.SetActive(true);
-		upgradeButtonBackground.SetActive(true);
-		upgradeCostLabel = upgradeButtonObject.GetComponentInChildren<Text>();
-		upgradeCostLabel.text = "$" + upgradeCost;
+		if (towerLevel < maxLevel){
+			upgradeButtonObject.SetActive(true);
+			upgradeButtonBackground.SetActive(true);
+			upgradeCostLabel = upgradeButtonObject.GetComponentInChildren<Text>();
+			upgradeCostLabel.text = "$" + upgradeCost;
+		}
 		DisplayTowerRange();
 	}
 
 	public void DisplaySellButton() {
 		sellButtonObject.SetActive(true);
 		sellButtonBackground.SetActive(true);
-		DisplayTowerRange();
 	}
 
 	public void DisplayTowerRange(){
@@ -81,10 +82,12 @@ public class UpgradableTower : MonoBehaviour {
 			canShoot.shootingSpeed += 1f;
 			towerCost += upgradeCost;
 			towerLevel += 1;
+
 			SpriteRenderer spriteRendererCenter = transform.Find("TowerSpriteCenter").GetComponent<SpriteRenderer>();
-			spriteRendererCenter.sprite = Resources.Load("tower-circle_" + towerLevel, typeof(Sprite)) as Sprite;
+			string resourceName = spriteRendererCenter.sprite.name.Split('_')[0];
+			spriteRendererCenter.sprite = Resources.Load(resourceName + "_" + towerLevel, typeof(Sprite)) as Sprite;
 			SpriteRenderer spriteRendererGlow = transform.Find("TowerSpriteGlow").GetComponent<SpriteRenderer>();
-			spriteRendererGlow.sprite = Resources.Load("tower-circle_" + towerLevel + "-glow", typeof(Sprite)) as Sprite;
+			spriteRendererGlow.sprite = Resources.Load(resourceName + "_" + towerLevel + "-glow", typeof(Sprite)) as Sprite;
 		}
 		OnDeselect();
 	}
