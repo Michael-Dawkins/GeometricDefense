@@ -23,6 +23,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 
 	bool dragging = false;
 	PlayerMoney playerMoney;
+	DamageTypeManager damageTypeManager;
 	Vector3 mousePosition;
 	Vector3 ghostPosition;
 	GameObject currentGhost;
@@ -41,12 +42,15 @@ public class CreateTowerOnDrag : MonoBehaviour {
 				throw new UnityException("PlayerState cannot be found in scene");
 			}
 			playerMoney = playerState.GetComponent<PlayerMoney>();
+			damageTypeManager = playerState.GetComponent<DamageTypeManager>();
 		}
 		towerCostLabel = transform.GetComponentInChildren<Text>();
 		towerCostLabel.text = towerCost.ToString();
 		playerMoney.AddOnMoneyChangeListener(UpdateTowerCostLabelStatus);
 		buttonCenterRenderer = GetComponent<SpriteRenderer>();
 		buttonGlowRenderer = transform.Find("Glow").GetComponent<SpriteRenderer>();
+		damageTypeManager.AddDamageTypeSelectionChangeListener(ChangeTowerDamageType);
+		damageTypeManager.SelectCurrentDamageType(DamageTypeManager.DamageType.Antimatter);
 	}
 	
 	// Update is called once per frame
@@ -69,6 +73,11 @@ public class CreateTowerOnDrag : MonoBehaviour {
 			Destroy(currentTowerRangeObject);
 			dragging = false;
 		}
+	}
+
+	public void ChangeTowerDamageType(){
+		ApplyColorToButton(damageTypeManager.GetDamageTypeColor(damageTypeManager.currentDamageType));
+		UpdateTowerCostLabelStatus(playerMoney.Money);
 	}
 
 	public void UpdateTowerCostLabelStatus(float playerMoney){
@@ -100,22 +109,41 @@ public class CreateTowerOnDrag : MonoBehaviour {
 		lastTowerCreated.transform.position = transform.position;
 		lastTowerCreated.transform.rotation = transform.rotation;
 		if (applyButtonColorToTowers){
-			float h, s, v;
-			Color saturatedColorToApply = gameObject.GetComponent<SpriteRenderer>().color;
-			GDUtils.ColorToHSV(saturatedColorToApply, out h, out s, out v);
-			saturatedColorToApply = GDUtils.ColorFromHSV(h, 1f, v);
-
-			SpriteRenderer centerRenderer = lastTowerCreated.transform.Find("TowerSpriteCenter").gameObject.GetComponent<SpriteRenderer>();
-			GDUtils.ColorToHSV(saturatedColorToApply, out h, out s, out v);
-			Color lightColor = GDUtils.ColorFromHSV(h,0.25f,v);
-			centerRenderer.color = lightColor;
-			SpriteRenderer glowRenderer = lastTowerCreated.transform.Find("TowerSpriteGlow").gameObject.GetComponent<SpriteRenderer>();
-			glowRenderer.color = saturatedColorToApply;
+			Color colorToApply = gameObject.GetComponent<SpriteRenderer>().color;
+			ApplyColorToTower(colorToApply);
 		}
 		UpgradableTower upgradableTower = lastTowerCreated.GetComponent<UpgradableTower>();
 		upgradableTower.towerRangePrefab = towerRangePrefab;
 		upgradableTower.upgradeCost = upgradeCost;
 		upgradableTower.towerCost = towerCost;
+	}
+
+	void ApplyColorToButton(Color colorToApply){
+		float h, s, v;
+		GDUtils.ColorToHSV(colorToApply, out h, out s, out v);
+		colorToApply = GDUtils.ColorFromHSV(h, 1f, v);
+		
+		GDUtils.ColorToHSV(colorToApply, out h, out s, out v);
+		Color lightColor = GDUtils.ColorFromHSV(h,0.25f,v);
+		buttonCenterRenderer.color = lightColor;
+		buttonGlowRenderer.color = colorToApply;
+	}
+
+	Color RoundColor(Color color){
+		return new Color(Mathf.Round(color.r), Mathf.Round(color.g), Mathf.Round(color.b));
+	}
+
+	void ApplyColorToTower(Color colorToApply){
+		float h, s, v;
+		GDUtils.ColorToHSV(colorToApply, out h, out s, out v);
+		colorToApply = GDUtils.ColorFromHSV(h, 1f, v);
+		
+		SpriteRenderer centerRenderer = lastTowerCreated.transform.Find("TowerSpriteCenter").gameObject.GetComponent<SpriteRenderer>();
+		GDUtils.ColorToHSV(colorToApply, out h, out s, out v);
+		Color lightColor = GDUtils.ColorFromHSV(h,0.25f,v);
+		centerRenderer.color = lightColor;
+		SpriteRenderer glowRenderer = lastTowerCreated.transform.Find("TowerSpriteGlow").gameObject.GetComponent<SpriteRenderer>();
+		glowRenderer.color = colorToApply;
 	}
 
 	void PlaceTower(){

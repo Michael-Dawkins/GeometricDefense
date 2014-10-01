@@ -59,7 +59,6 @@ public class Spwaner : MonoBehaviour {
 			currentBaseLife *= hpIncreaseMultiplier;
 		}
 		damageable.InitialHp = currentBaseLife * hpIncreaseMultiplier;
-		Debug.Log("Spawning enemy at life : " + damageable.InitialHp);
 	}
 
 	void Win(){

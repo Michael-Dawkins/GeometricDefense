@@ -122,7 +122,7 @@ public class GDUtils {
 			color.b  = q;
 			break;
 		}
-		
+
 		return color;
 	}
 	
