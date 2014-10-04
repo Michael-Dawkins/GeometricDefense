@@ -7,7 +7,7 @@ public class Tile : MonoBehaviour {
 	public float timeToFadeOut;
 	SpriteRenderer spriteRenderer;
 	bool animationStarted = false;
-	Color targetColor = new Color(1f,1f,1f,0.2f);
+	Color targetColor = new Color(1f,1f,1f,0.15f);
 
 	// Use this for initialization
 	void Start () {
