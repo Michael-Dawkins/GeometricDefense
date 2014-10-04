@@ -17,6 +17,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 	public float shootingSpeed;
 	public bool applyButtonColorToTowers = true;
 	public float upgradeCost;
+	public TowerTypeManager.TowerType towerType;
 
 	public float xViewportPos = 0.1f;
 	public float yViewportPos = 0.1f;
@@ -116,6 +117,9 @@ public class CreateTowerOnDrag : MonoBehaviour {
 		upgradableTower.towerRangePrefab = towerRangePrefab;
 		upgradableTower.upgradeCost = upgradeCost;
 		upgradableTower.towerCost = towerCost;
+		CanShoot canShoot = lastTowerCreated.GetComponent<CanShoot>();
+		canShoot.towerType = towerType;
+		canShoot.damageType = damageTypeManager.currentDamageType;
 	}
 
 	void ApplyColorToButton(Color colorToApply){
@@ -166,8 +170,19 @@ public class CreateTowerOnDrag : MonoBehaviour {
 
 				CanShoot canShoot = lastTowerCreated.GetComponent<CanShoot>();
 				canShoot.Damage = damage;
-				canShoot.shootingSpeed = shootingSpeed;
 				canShoot.cellRange = cellRange;
+				switch(towerType){
+				case TowerTypeManager.TowerType.Circle:
+					CanShootBullets canShootBullets = lastTowerCreated.GetComponent<CanShootBullets>();
+					canShootBullets.shootingSpeed = shootingSpeed;
+					break;
+				case TowerTypeManager.TowerType.Square:
+					//TODO
+					break;
+				case TowerTypeManager.TowerType.Triangle:
+					//TODO
+					break;
+				}
 				//Might not be necessary be it could solve a bug where a towerObject disapear on next tower positioning
 				lastTowerCreated = null;
 			} else {

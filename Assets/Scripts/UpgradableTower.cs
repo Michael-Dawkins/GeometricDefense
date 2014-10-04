@@ -50,7 +50,6 @@ public class UpgradableTower : MonoBehaviour {
 	}
 
 	public void TowerSelection(){
-		Debug.Log("Tower selection");
 		UIState.TowerSelection();
 		DisplaySellButton();
 		DisplayUpgradeButton();
@@ -93,7 +92,19 @@ public class UpgradableTower : MonoBehaviour {
 		if (playerMoney.Money >= (int) upgradeCost && towerLevel < maxLevel){
 			playerMoney.Money -= (int) upgradeCost;
 			CanShoot canShoot = GetComponent<CanShoot>();
-			canShoot.shootingSpeed += 1f;
+			switch(canShoot.towerType){
+			case TowerTypeManager.TowerType.Circle:
+				CanShootBullets canShootBullets = GetComponent<CanShootBullets>();
+				canShootBullets.shootingSpeed += 1;
+				break;
+			case TowerTypeManager.TowerType.Square:
+				CanShootOnArea canShootOnArea = GetComponent<CanShootOnArea>();
+				canShootOnArea.Damage += 10;
+				break;
+			case TowerTypeManager.TowerType.Triangle:
+				//TODO
+				break;
+			}
 			towerCost += upgradeCost;
 			towerLevel += 1;
 

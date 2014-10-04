@@ -41,7 +41,7 @@ public class CanTakeDamage : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
-	
+
 	}
 
 	public void addTargetingTower(CanShoot tower){
@@ -61,6 +61,14 @@ public class CanTakeDamage : MonoBehaviour {
 			if (currentHp <=0){
 				Die();
 			}
+		}
+	}
+
+	public void takeDamage(float damage, DamageTypeManager.DamageType damageType){
+		currentHp -= damage;
+		updateHealthBar();
+		if (currentHp <=0){
+			Die();
 		}
 	}
 
