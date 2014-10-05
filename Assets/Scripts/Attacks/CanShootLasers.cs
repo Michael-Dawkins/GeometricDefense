@@ -3,15 +3,63 @@ using System.Collections;
 
 public class CanShootLasers : CanShoot {
 
-	protected override void Start () {
+	public GameObject laserPrefab;
+	public float coolDownTime;
+	float lastShootingTime;
+
+	protected override void Start() {
 		base.Start();
-	}
-	
-	void Update () {
-	
+		GameObject topColliderObj = new GameObject ("TopCollider");
+		GameObject leftColliderObj = new GameObject ("LeftCollider");
+		GameObject rightColliderObj = new GameObject ("RightCollider");
+
+		topColliderObj.transform.parent = transform;
+		leftColliderObj.transform.parent = transform;
+		rightColliderObj.transform.parent = transform;
+
+		topColliderObj.transform.localPosition = new Vector3 (0f, 0.4f, 0f);
+		leftColliderObj.transform.localPosition = new Vector3 (-0.4f, -0.4f, 0f);
+		rightColliderObj.transform.localPosition = new Vector3 (0.4f, -0.4f, 0f);
+
+		topColliderObj.AddComponent<BoxCollider2D>();
+		leftColliderObj.AddComponent<BoxCollider2D>();
+		rightColliderObj.AddComponent<BoxCollider2D>();
+
+		topColliderObj.AddComponent<CanShootLasersCollider>().OnCollision(Shoot);
+		leftColliderObj.AddComponent<CanShootLasersCollider>().OnCollision(Shoot);
+		rightColliderObj.AddComponent<CanShootLasersCollider>().OnCollision(Shoot);
 	}
 
-	protected override void LateUpdate(){
+	protected override void LateUpdate() {
 		base.LateUpdate();
+	}
+
+	void Shoot() {
+		GameObject topLaserObj = Instantiate(laserPrefab) as GameObject;
+		GameObject leftLaserObj = Instantiate(laserPrefab) as GameObject;
+		GameObject rightLaserObj = Instantiate(laserPrefab) as GameObject;
+
+		topLaserObj.transform.parent = transform;
+		leftLaserObj.transform.parent = transform;
+		rightLaserObj.transform.parent = transform;
+
+		topLaserObj.transform.localPosition = new Vector3 (0f, 0.2f, 0f);
+		leftLaserObj.transform.localPosition = new Vector3 (-0.2f, -0.2f, 0f);
+		rightLaserObj.transform.localPosition = new Vector3 (0.2f, -0.2f, 0f);
+
+		topLaserObj.transform.localRotation = Quaternion.AngleAxis(90f, Vector3.forward);
+		leftLaserObj.transform.localRotation = Quaternion.AngleAxis(-135f, Vector3.forward);
+		rightLaserObj.transform.localRotation = Quaternion.AngleAxis(-45f, Vector3.forward);
+
+		Projectile topLaser = topLaserObj.transform.Find("Laser").GetComponent<Projectile>();
+		Projectile leftLaser = leftLaserObj.transform.Find("Laser").GetComponent<Projectile>();
+		Projectile rightLaser = rightLaserObj.transform.Find("Laser").GetComponent<Projectile>();
+
+		topLaser.damage = Damage;
+		topLaser.damageType = damageType;
+		leftLaser.damage = Damage;
+		leftLaser.damageType = damageType;
+		rightLaser.damage = Damage;
+		rightLaser.damageType = damageType;
 	}
 }

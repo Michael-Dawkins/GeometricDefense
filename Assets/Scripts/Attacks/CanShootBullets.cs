@@ -5,7 +5,7 @@ using System.Collections.Generic;
 [RequireComponent (typeof(Collider2D))]
 public class CanShootBullets : CanShoot {
 
-	public Bullet bulletPrefab;
+	public TargetedBullet bulletPrefab;
 	private float nextShootingTime = 0f;
 	public float shootingSpeed;
 	public AudioClip shootingSound;
@@ -32,10 +32,10 @@ public class CanShootBullets : CanShoot {
 		if(target != null) {
 			towerSpriteCenterAnimator.SetTrigger("shooting");
 			towerSpriteGlowAnimator.SetTrigger("shooting");
-			Bullet bullet = Instantiate(bulletPrefab, transform.position, transform.rotation) as Bullet;
-			bullet.Target = target;
-			bullet.Damage = Damage;
-			bullet.GetComponent<SpriteRenderer>().color = bulletColor;
+			TargetedBullet targetedBullet = Instantiate(bulletPrefab, transform.position, transform.rotation) as TargetedBullet;
+			targetedBullet.Target = target;
+			targetedBullet.damage = Damage;
+			targetedBullet.GetComponent<SpriteRenderer>().color = bulletColor;
 			
 			nextShootingTime = Time.time + (1f / shootingSpeed);
 			audio.PlayOneShot(shootingSound, 0.5f);

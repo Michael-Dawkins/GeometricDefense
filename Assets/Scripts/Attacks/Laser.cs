@@ -1,15 +1,22 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class Laser : MonoBehaviour {
+public class Laser : Projectile {
 
-	// Use this for initialization
+	float shootingTime;
+	float timeBeforeDeletion = 1f;
+
 	void Start () {
-	
+		shootingTime = Time.time;
 	}
 	
-	// Update is called once per frame
 	void Update () {
-	
+		if ((shootingTime + timeBeforeDeletion) < Time.time){
+			Destroy(this);
+		} else {
+			transform.localPosition = new Vector3(transform.localPosition.x + speed * Time.deltaTime, transform.localPosition.y, 0);
+		}
 	}
+
+	public override void OnEnemyHit(){}
 }
