@@ -7,7 +7,5 @@ public class Projectile : MonoBehaviour {
 	public DamageTypeManager.DamageType damageType;
 	public float speed = 4f;
 
-	public virtual void OnEnemyHit(){
-		Destroy(this);
-	}
+	public virtual void OnEnemyHit(){}
 }

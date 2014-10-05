@@ -6,6 +6,7 @@ public class CanShootLasers : CanShoot {
 	public GameObject laserPrefab;
 	public float coolDownTime;
 	float lastShootingTime;
+	public AudioClip shootingSound;
 
 	protected override void Start() {
 		base.Start();
@@ -35,6 +36,8 @@ public class CanShootLasers : CanShoot {
 	}
 
 	void Shoot() {
+		audio.PlayOneShot(shootingSound, 0.5f);
+
 		GameObject topLaserObj = Instantiate(laserPrefab) as GameObject;
 		GameObject leftLaserObj = Instantiate(laserPrefab) as GameObject;
 		GameObject rightLaserObj = Instantiate(laserPrefab) as GameObject;
@@ -51,15 +54,19 @@ public class CanShootLasers : CanShoot {
 		leftLaserObj.transform.localRotation = Quaternion.AngleAxis(-135f, Vector3.forward);
 		rightLaserObj.transform.localRotation = Quaternion.AngleAxis(-45f, Vector3.forward);
 
-		Projectile topLaser = topLaserObj.transform.Find("Laser").GetComponent<Projectile>();
-		Projectile leftLaser = leftLaserObj.transform.Find("Laser").GetComponent<Projectile>();
-		Projectile rightLaser = rightLaserObj.transform.Find("Laser").GetComponent<Projectile>();
+		Laser topLaser = topLaserObj.transform.Find("Laser").GetComponent<Laser>();
+		Laser leftLaser = leftLaserObj.transform.Find("Laser").GetComponent<Laser>();
+		Laser rightLaser = rightLaserObj.transform.Find("Laser").GetComponent<Laser>();
 
+		Color colorToApply = transform.Find("TowerSpriteGlow").GetComponent<SpriteRenderer>().color;
 		topLaser.damage = Damage;
 		topLaser.damageType = damageType;
+		topLaser.SetColor(colorToApply);
 		leftLaser.damage = Damage;
 		leftLaser.damageType = damageType;
+		leftLaser.SetColor(colorToApply);
 		rightLaser.damage = Damage;
 		rightLaser.damageType = damageType;
+		rightLaser.SetColor(colorToApply);
 	}
 }

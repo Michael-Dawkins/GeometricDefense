@@ -16,4 +16,8 @@ public class TargetedBullet : Projectile {
 			transform.position = Vector3.MoveTowards(transform.position, Target.transform.position, Time.deltaTime * speed);
 		}
 	}
+
+	public override void OnEnemyHit() {
+		Destroy(gameObject);
+	}
 }
