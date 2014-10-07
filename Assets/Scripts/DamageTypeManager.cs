@@ -11,19 +11,16 @@ public class DamageTypeManager : MonoBehaviour{
 	public enum DamageType {
 		Plasma,
 		Antimatter,
-		Ionic,
-		Gravity
+		IonBeam
 	}
 
 	public Color GetDamageTypeColor(DamageType damageType){
 		switch(damageType){
 		case DamageType.Plasma:
-			return new Color(0.82f,0.15f,1f);
-		case DamageType.Antimatter:
 			return new Color(0.15f,0.86f,1f);
-		case DamageType.Ionic:
-			return new Color(0.34f,1f,0.15f);
-		case DamageType.Gravity:
+		case DamageType.Antimatter:
+			return new Color(0.82f,0.15f,1f);
+		case DamageType.IonBeam:
 			return new Color(1f,1f,0.15f);
 		}
 		return Color.white;
@@ -35,16 +32,25 @@ public class DamageTypeManager : MonoBehaviour{
 			currentDamageType = DamageType.Antimatter;
 			break;
 		case DamageType.Antimatter:
-			currentDamageType = DamageType.Ionic;
+			currentDamageType = DamageType.IonBeam;
 			break;
-		case DamageType.Ionic:
-			currentDamageType = DamageType.Gravity;
-			break;
-		case DamageType.Gravity:
+		case DamageType.IonBeam:
 			currentDamageType = DamageType.Plasma;
 			break;
 		}
 		DamageTypeSelectionChange();
+	}
+
+	public string GetDamageTypeLabel(DamageType DamageType){
+		switch(currentDamageType){
+			case DamageType.Plasma:
+				return "Plasma";
+			case DamageType.Antimatter:
+				return "Antimatter";
+			case DamageType.IonBeam:
+				return "Ion Beam";
+		}
+		return "Wrong damage type";
 	}
 
 	public void SelectCurrentDamageType(DamageType DamageType){

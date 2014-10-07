@@ -15,7 +15,7 @@ public class DamageTypeLabel : MonoBehaviour {
 	}
 
 	void UpdateDamageTypeLabel(){
-		damageTypeLabel.text = damageTypeManager.currentDamageType.ToString();
+		damageTypeLabel.text = damageTypeManager.GetDamageTypeLabel(damageTypeManager.currentDamageType);
 	}
 
 }

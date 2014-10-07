@@ -1,7 +1,8 @@
 fileFormatVersion: 2
 guid: 1a94da4b49f49a244b366357c8d4797e
 TextureImporter:
-  fileIDToRecycleName: {}
+  fileIDToRecycleName:
+    21300000: enemy-triangle
   serializedVersion: 2
   mipmaps:
     mipMapMode: 0
