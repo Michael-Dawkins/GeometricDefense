@@ -5,7 +5,7 @@ using System.Collections;
 public class CanShootOnArea : CanShoot {
 
 	bool isAttacking = false;
-	Animator puslingWaveAnimator;
+	Animator pulsingWaveAnimator;
 	SpriteRenderer puslingWaveRenderer;
 
 	protected virtual float ColliderRadius {
@@ -17,9 +17,11 @@ public class CanShootOnArea : CanShoot {
 	protected override void Start() {
 		base.Start();
 		Transform pulsingWaveTransform = transform.Find("SquareWave");
-		puslingWaveAnimator = pulsingWaveTransform.GetComponent<Animator>();
+		pulsingWaveAnimator = pulsingWaveTransform.GetComponent<Animator>();
 		puslingWaveRenderer = pulsingWaveTransform.GetComponent<SpriteRenderer>();
-		puslingWaveRenderer.color = new Color(puslingWaveRenderer.color.r, puslingWaveRenderer.color.g, puslingWaveRenderer.color.b, 0f);
+		pulsingWaveAnimator.enabled = false;
+		Color towerColor = transform.Find("TowerSpriteGlow").GetComponent<SpriteRenderer>().color;
+		puslingWaveRenderer.color = new Color(towerColor.r, towerColor.g, towerColor.b, 0f);
 	}
 	
 	void Update() {
@@ -40,13 +42,13 @@ public class CanShootOnArea : CanShoot {
 	}
 
 	void StartPuslingWaveAnimation(){
-		Debug.Log("Attack !");
-		puslingWaveAnimator.SetBool("isAttacking", true);
+		pulsingWaveAnimator.enabled = true;
+		pulsingWaveAnimator.SetBool("isAttacking", true);
 	}
 
 	void StopPulsingWaveAnimation(){
-		Debug.Log("Stop attack !");
-		puslingWaveAnimator.SetBool("isAttacking", false);
+		pulsingWaveAnimator.SetBool("isAttacking", false);
+		pulsingWaveAnimator.enabled = false;
 		puslingWaveRenderer.color = new Color(puslingWaveRenderer.color.r, puslingWaveRenderer.color.g, puslingWaveRenderer.color.b, 0f);
 	}
 
