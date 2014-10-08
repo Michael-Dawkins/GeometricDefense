@@ -12,7 +12,7 @@ public class PathFinder : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		map = GameObject.Find("Map").GetComponent<Map>();
+		map = Singletons.map;
 		FindGlobalPath(map.GetCellAt(map.xStart,map.yStart), map.GetCellAt(map.xGoal, map.yGoal));
 	}
 	

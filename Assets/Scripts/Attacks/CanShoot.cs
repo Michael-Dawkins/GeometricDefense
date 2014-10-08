@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent (typeof(Collider2D))]
-public class CanShoot : MonoBehaviour {
+public abstract class CanShoot : MonoBehaviour {
 
 	public float Damage;
 	public float cellRange;
@@ -30,19 +30,19 @@ public class CanShoot : MonoBehaviour {
 	protected virtual void Start () {
 		towerSpriteCenter = transform.Find("TowerSpriteCenter").gameObject;
 		towerSpriteGlow = transform.Find("TowerSpriteGlow").gameObject;
-		map = GameObject.Find("Map").GetComponent<Map>();
+		map = Singletons.map;
+		Damage = Singletons.values.Towers[towerType].Levels[1].Damage;
+		cellRange = Singletons.values.Towers[towerType].Levels[1].CellRange;
 		towerSpriteCenterAnimator = towerSpriteCenter.GetComponent<Animator> ();
 		towerSpriteGlowAnimator = towerSpriteGlow.GetComponent<Animator> ();
 		bulletColor = towerSpriteCenter.GetComponent<SpriteRenderer>().color;
 		UpdateColliderRadius();
 	}
 
-	
 	void OnTriggerEnter2D (Collider2D other) {
 		if (other.gameObject.GetComponent<CanTakeDamage> ()) {
 			targets.Add(other.GetComponent<CanTakeDamage> ());
 			other.gameObject.GetComponent<CanTakeDamage>().addTargetingTower(this);
-			Debug.Log("NEW ENEMY TO ATTACK");
 		} else {
 			Debug.LogError ("not an ennemy");
 		}

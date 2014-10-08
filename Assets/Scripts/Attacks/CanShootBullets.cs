@@ -7,12 +7,13 @@ public class CanShootBullets : CanShoot {
 
 	public GuidedBullet bulletPrefab;
 	private float nextShootingTime = 0f;
-	public float shootingSpeed;
+	public float shootingRate;
 	public AudioClip shootingSound;
 
 	// Use this for initialization
 	protected override void Start() {
 		base.Start();
+		shootingRate = Singletons.values.Towers[towerType].Levels[1].ShootingRate;
 	}
 	
 	// Update is called once per frame
@@ -38,7 +39,7 @@ public class CanShootBullets : CanShoot {
 			guidedBullet.damageType = damageType;
 			guidedBullet.GetComponent<SpriteRenderer>().color = bulletColor;
 			
-			nextShootingTime = Time.time + (1f / shootingSpeed);
+			nextShootingTime = Time.time + (1f / shootingRate);
 			audio.PlayOneShot(shootingSound, 0.5f);
 		}
 	}

@@ -6,7 +6,7 @@ public class TileGenerator : MonoBehaviour {
 	public GameObject tilePrefab;
 
 	void Start () {
-		Map map = GameObject.Find("Map").GetComponent<Map>();
+		Map map = Singletons.map;
 		GameObject tiles = new GameObject("Tiles");
 		for( int x = 0; x < map.mapWidth; x++){
 			for(int y = 0; y < map.mapHeight; y++){

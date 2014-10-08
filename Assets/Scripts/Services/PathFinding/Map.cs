@@ -13,7 +13,7 @@ public class Map : MonoBehaviour {
 	public int yStart = 4;
 	public GameObject goalSprite;
 
-	void Start () {
+	void Awake () {
 		for (int x = 0; x < mapWidth; x++){
 			for (int y = 0; y < mapHeight; y++){
 				cells.Add(new Cell(x, y, false));
@@ -21,10 +21,6 @@ public class Map : MonoBehaviour {
 		}
 
 		Instantiate(goalSprite, GetCellPos(GetCellAt(xGoal, yGoal)), Quaternion.identity);
-	}
-
-	void Update(){
-
 	}
 
 	//TODO Optimize this, too many foreach to find cells

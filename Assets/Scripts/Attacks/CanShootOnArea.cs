@@ -7,6 +7,7 @@ public class CanShootOnArea : CanShoot {
 	bool isAttacking = false;
 	Animator pulsingWaveAnimator;
 	SpriteRenderer puslingWaveRenderer;
+	Transform squareWaverWrapperTrans;
 
 	protected virtual float ColliderRadius {
 		get {
@@ -16,7 +17,8 @@ public class CanShootOnArea : CanShoot {
 
 	protected override void Start() {
 		base.Start();
-		Transform pulsingWaveTransform = transform.Find("SquareWave");
+		squareWaverWrapperTrans = transform.Find("SquareWaveWrapper");
+		Transform pulsingWaveTransform = squareWaverWrapperTrans.Find("SquareWave");
 		pulsingWaveAnimator = pulsingWaveTransform.GetComponent<Animator>();
 		puslingWaveRenderer = pulsingWaveTransform.GetComponent<SpriteRenderer>();
 		pulsingWaveAnimator.enabled = false;
@@ -39,6 +41,10 @@ public class CanShootOnArea : CanShoot {
 				StopPulsingWaveAnimation();
 			}
 		}
+	}
+
+	public void UpdateWaveSize(){
+		squareWaverWrapperTrans.localScale = new Vector3(cellRange, cellRange, 0f);
 	}
 
 	void StartPuslingWaveAnimation(){

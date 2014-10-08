@@ -14,7 +14,7 @@ public class MapBackground : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		map = GameObject.Find("Map").GetComponent<Map>();
+		map = Singletons.map;
 		left = Instantiate(lineSpritePrefab, Vector3.zero, Quaternion.identity) as GameObject;
 		top = Instantiate(lineSpritePrefab, Vector3.zero, Quaternion.identity) as GameObject;
 		right = Instantiate(lineSpritePrefab, Vector3.zero, Quaternion.identity) as GameObject;

@@ -10,11 +10,9 @@ public class Cell {
 	public bool isObstacle;
 	public Vector3 position{
 		get {
-			return new Vector3(x * map.cellSize, y * map.cellSize, 0);
+			return new Vector3(x * Singletons.map.cellSize, y * Singletons.map.cellSize, 0);
 		}
 	}
-
-	Map map;
 
 	public int FScore {
 		get {
@@ -26,7 +24,6 @@ public class Cell {
 		this.x = x;
 		this.y = y;
 		this.isObstacle = obstacle;
-		map = GameObject.Find("Map").GetComponent<Map>();
 	}
 
 	public override string ToString() {

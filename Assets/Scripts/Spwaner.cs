@@ -62,8 +62,7 @@ public class Spwaner : MonoBehaviour {
 	}
 
 	void Win(){
-		GameObject playerState = GameObject.Find("PlayerState");
-		PlayerLife playerLife = playerState.GetComponent<PlayerLife>();
+		PlayerLife playerLife = Singletons.playerLife;
 		playerLife.WinTheGame();
 	}
 }

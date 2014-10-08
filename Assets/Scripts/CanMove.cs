@@ -18,10 +18,9 @@ public class CanMove : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		map = GameObject.Find("Map").GetComponent<Map>();
-		pathFinder = GameObject.Find ("PathFinder").GetComponent<PathFinder> ();
-		GameObject playerState = GameObject.Find("PlayerState");
-		playerLife = playerState.GetComponent<PlayerLife>();
+		map = Singletons.map;
+		pathFinder = Singletons.pathFinder;
+		playerLife = Singletons.playerLife;
 	}
 	
 	// Update is called once per frame

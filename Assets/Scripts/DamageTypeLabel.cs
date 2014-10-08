@@ -8,8 +8,7 @@ public class DamageTypeLabel : MonoBehaviour {
 	DamageTypeManager damageTypeManager;
 
 	void Start () {
-		GameObject playerState = GameObject.Find("PlayerState");
-		damageTypeManager = playerState.GetComponent<DamageTypeManager>();
+		damageTypeManager = Singletons.damageTypeManager;
 		damageTypeManager.AddDamageTypeSelectionChangeListener(UpdateDamageTypeLabel);
 		damageTypeLabel = GetComponent<Text>();
 	}

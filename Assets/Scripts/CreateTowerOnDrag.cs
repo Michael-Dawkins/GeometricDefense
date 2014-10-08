@@ -11,10 +11,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 
 	//Tower specs
 	public int towerCost;
-	public float cellRange;
 	public GameObject ghost;
-	public float damage;
-	public float shootingSpeed;
 	public bool applyButtonColorToTowers = true;
 	public float upgradeCost;
 	public TowerTypeManager.TowerType towerType;
@@ -36,15 +33,10 @@ public class CreateTowerOnDrag : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		map = GameObject.Find("Map").GetComponent<Map>();
-		if (playerMoney == null){
-			GameObject playerState = GameObject.Find("PlayerState");
-			if (playerState == null){
-				throw new UnityException("PlayerState cannot be found in scene");
-			}
-			playerMoney = playerState.GetComponent<PlayerMoney>();
-			damageTypeManager = playerState.GetComponent<DamageTypeManager>();
-		}
+		map = Singletons.map;
+		playerMoney = Singletons.playerMoney;
+		damageTypeManager = Singletons.damageTypeManager;
+
 		towerCostLabel = transform.GetComponentInChildren<Text>();
 		towerCostLabel.text = towerCost.ToString();
 		playerMoney.AddOnMoneyChangeListener(UpdateTowerCostLabelStatus);
@@ -159,7 +151,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 				Destroy(lastTowerCreated);
 				return;
 			}
-			PathFinder pathFinder = GameObject.Find("PathFinder").GetComponent<PathFinder>();
+			PathFinder pathFinder = Singletons.pathFinder;
 			cellAtPos.isObstacle = true;
 
 			if (pathFinder.requestNewGlobalPath(map.GetCellAt(map.xStart,map.yStart), map.GetCellAt(map.xGoal, map.yGoal))){
@@ -167,22 +159,6 @@ public class CreateTowerOnDrag : MonoBehaviour {
 				pathFinder.RecalculatePathForCurrentEnemies();
 				tmpPos = map.GetCellPos(cellAtPos);
 				lastTowerCreated.transform.position = tmpPos;
-
-				CanShoot canShoot = lastTowerCreated.GetComponent<CanShoot>();
-				canShoot.Damage = damage;
-				canShoot.cellRange = cellRange;
-				switch(towerType){
-				case TowerTypeManager.TowerType.Circle:
-					CanShootBullets canShootBullets = lastTowerCreated.GetComponent<CanShootBullets>();
-					canShootBullets.shootingSpeed = shootingSpeed;
-					break;
-				case TowerTypeManager.TowerType.Square:
-					//TODO
-					break;
-				case TowerTypeManager.TowerType.Triangle:
-					//TODO
-					break;
-				}
 				//Might not be necessary be it could solve a bug where a towerObject disapear on next tower positioning
 				lastTowerCreated = null;
 			} else {
@@ -205,8 +181,9 @@ public class CreateTowerOnDrag : MonoBehaviour {
 			if (currentGhost == null){
 				currentGhost = Instantiate(ghost, closestPos, Quaternion.identity) as GameObject;
 				currentTowerRangeObject = Instantiate(towerRangePrefab, closestPos, Quaternion.identity) as GameObject;
+				float range = Singletons.values.Towers[towerType].Levels[1].CellRange;
 				GDUtils.ScaleTransformToXWorldUnit(
-					currentTowerRangeObject.transform, (map.cellSize * cellRange + map.cellSize / 2f) * 2f);
+					currentTowerRangeObject.transform, (map.cellSize * range + map.cellSize / 2f) * 2f);
 				SpriteRenderer ghostRenderer = currentGhost.GetComponent<SpriteRenderer>();
 				SpriteRenderer towerRangeRenderer = currentTowerRangeObject.GetComponent<SpriteRenderer>();
 
