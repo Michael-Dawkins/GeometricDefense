@@ -42,6 +42,7 @@ public class CanShoot : MonoBehaviour {
 		if (other.gameObject.GetComponent<CanTakeDamage> ()) {
 			targets.Add(other.GetComponent<CanTakeDamage> ());
 			other.gameObject.GetComponent<CanTakeDamage>().addTargetingTower(this);
+			Debug.Log("NEW ENEMY TO ATTACK");
 		} else {
 			Debug.LogError ("not an ennemy");
 		}

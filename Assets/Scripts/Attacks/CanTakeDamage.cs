@@ -16,12 +16,15 @@ public class CanTakeDamage : MonoBehaviour {
 		}
 	}
 	public GameObject healthBarSPrite;
-
-	private float initialHp = 100f;
-	private float currentHp;
-	private GameObject healthBar;
-	private List<CanShoot> TargetedBy = new List<CanShoot>();
-	private PlayerMoney playerMoney;
+	
+	float slowTime = 0.2f;
+	float slowStartTime;
+	float initialHp = 100f;
+	float currentHp;
+	GameObject healthBar;
+	List<CanShoot> TargetedBy = new List<CanShoot>();
+	PlayerMoney playerMoney;
+	CanMove canMove;
 
 	// Use this for initialization
 	void Start () {
@@ -37,11 +40,12 @@ public class CanTakeDamage : MonoBehaviour {
 			}
 			playerMoney = playerState.GetComponent<PlayerMoney>();
 		}
+		canMove = GetComponent<CanMove>();
 	}
 	
 	// Update is called once per frame
 	void Update () {
-
+		canMove.slowed = Time.time < (slowStartTime + slowTime);
 	}
 
 	public void addTargetingTower(CanShoot tower){
@@ -55,16 +59,15 @@ public class CanTakeDamage : MonoBehaviour {
 	void OnTriggerEnter2D(Collider2D other){
 		Projectile projectile = other.gameObject.GetComponent<Projectile>();
 		if(projectile){
-			currentHp -= projectile.damage;
+			takeDamage(projectile.damage, projectile.damageType);
 			projectile.OnEnemyHit();
-			updateHealthBar();
-			if (currentHp <=0){
-				Die();
-			}
 		}
 	}
 
 	public void takeDamage(float damage, DamageTypeManager.DamageType damageType){
+		if (damageType == DamageTypeManager.DamageType.Antimatter){
+			slowStartTime = Time.time;
+		}
 		currentHp -= damage;
 		updateHealthBar();
 		if (currentHp <=0){

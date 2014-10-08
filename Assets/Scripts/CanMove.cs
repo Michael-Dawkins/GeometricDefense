@@ -5,7 +5,9 @@ using System.Collections.Generic;
 public class CanMove : MonoBehaviour {
 
 	public float speed = 2f;
+	public bool slowed = false;
 
+	float slowRatio = 0.5f;
 	PathFinder pathFinder;
 	int indexInPath = 0;
 	List<Cell> path;
@@ -75,10 +77,13 @@ public class CanMove : MonoBehaviour {
 			                                 		 Vector3.forward);
 			transformToRotate.eulerAngles = new Vector3(0,0,angle);
 		}
+		float amountOfMotion = Time.deltaTime * speed;
+		if (slowed){
+			amountOfMotion *= slowRatio;
+		}
 		transform.position = Vector2.MoveTowards(
 			transform.position,
-			currentTargetPos, 
-			Time.deltaTime * speed);
+			currentTargetPos, amountOfMotion);
 	}
 
 	void ReachGoal(){

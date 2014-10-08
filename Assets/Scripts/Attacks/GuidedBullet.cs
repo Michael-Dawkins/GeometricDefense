@@ -1,7 +1,7 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 
-public class TargetedBullet : Projectile {
+public class GuidedBullet : Projectile {
 
 	public CanTakeDamage Target {get; set;}
 
