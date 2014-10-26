@@ -28,10 +28,10 @@ public class UpgradableTower : MonoBehaviour {
 
 	// Use this for initialization
 	void Start() {
-		map = Singletons.map;
+		map = Map.instance;
 		towerSpriteCenterObj = transform.Find("TowerSpriteCenter").gameObject;
 		towerSpriteGlowObj = transform.Find("TowerSpriteGlow").gameObject;
-		playerMoney = Singletons.playerMoney;
+		playerMoney = PlayerMoney.instance;
 		upgradeCanvas =  GetComponentsInChildren<Canvas>(true)[0];
 		upgradeButtonObject = upgradeCanvas.transform.Find("UpgradeButton").gameObject;
 		upgradeButtonBackground = upgradeCanvas.transform.Find("UpgradeButtonBackground").gameObject;
@@ -92,12 +92,12 @@ public class UpgradableTower : MonoBehaviour {
 			playerMoney.Money -= (int) upgradeCost;
 			towerLevel += 1;
 			CanShoot canShoot = GetComponent<CanShoot>();
-			canShoot.Damage = Singletons.values.Towers[canShoot.towerType].Levels[towerLevel].Damage;
-			canShoot.cellRange = Singletons.values.Towers[canShoot.towerType].Levels[towerLevel].CellRange;
+			canShoot.Damage = Values.instance.Towers[canShoot.towerType].Levels[towerLevel].Damage;
+			canShoot.cellRange = Values.instance.Towers[canShoot.towerType].Levels[towerLevel].CellRange;
 			switch(canShoot.towerType){
 			case TowerTypeManager.TowerType.Circle:
 				CanShootBullets canShootBullets = GetComponent<CanShootBullets>();
-				canShootBullets.shootingRate = Singletons.values.Towers[canShoot.towerType].Levels[towerLevel].ShootingRate;
+				canShootBullets.shootingRate = Values.instance.Towers[canShoot.towerType].Levels[towerLevel].ShootingRate;
 				break;
 			case TowerTypeManager.TowerType.Square:
 				CanShootOnArea canShootOnArea = GetComponent<CanShootOnArea>();
@@ -105,7 +105,7 @@ public class UpgradableTower : MonoBehaviour {
 				break;
 			case TowerTypeManager.TowerType.Triangle:
 				CanShootLasers canShootLasers = GetComponent<CanShootLasers>();
-				canShootLasers.coolDownTime = Singletons.values.Towers[canShoot.towerType].Levels[towerLevel].CoolDown;
+				canShootLasers.coolDownTime = Values.instance.Towers[canShoot.towerType].Levels[towerLevel].CoolDown;
 				break;
 			}
 
@@ -128,7 +128,7 @@ public class UpgradableTower : MonoBehaviour {
 		Cell cell = map.GetCellAtPos(transform.position.x, transform.position.y);
 		cell.isObstacle = false;
 		clickReceptor.RemoveOnClickListener(OnDeselect);
-		PathFinder pathFinder = Singletons.pathFinder;
+		PathFinder pathFinder = PathFinder.instance;
 		pathFinder.requestNewGlobalPath(map.GetCellAt(map.xStart,map.yStart), map.GetCellAt(map.xGoal, map.yGoal));
 		pathFinder.RecalculatePathForCurrentEnemies();
 	}

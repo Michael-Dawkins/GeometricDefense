@@ -4,6 +4,12 @@ using System.Collections.Generic;
 
 public class Values : MonoBehaviour {
 
+	public static Values instance;
+	
+	void Awake(){
+		instance = this;
+	}
+
 	void Start(){
 		TowerLevels circleLevels = new TowerLevels();
 		TowerLevels squareLevels = new TowerLevels();

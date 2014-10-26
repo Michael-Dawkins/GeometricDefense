@@ -4,6 +4,8 @@ using System.Collections;
 
 public class PlayerLife : MonoBehaviour {
 
+	public static PlayerLife instance;
+
 	private int _Lives = 10;
 	public int Lives {
 		get{return _Lives;}
@@ -21,6 +23,10 @@ public class PlayerLife : MonoBehaviour {
 	//Prefabs
 	public Text label;
 	public Text endingSentence;
+
+	void Awake(){
+		instance = this;
+	}
 
 	void Start(){
 		UpdateLivesLabel();

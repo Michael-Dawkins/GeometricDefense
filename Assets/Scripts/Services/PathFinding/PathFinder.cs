@@ -4,15 +4,21 @@ using System.Collections.Generic;
 
 public class PathFinder : MonoBehaviour {
 
+	public static PathFinder instance;
+
 	private List<Cell> openList = new List<Cell>();
 	private List<Cell> closedList = new List<Cell>();
 
 	public List<Cell> pathFound = new List<Cell>();
 	private Map map;
 
+	void Awake(){
+		instance = this;
+	}
+
 	// Use this for initialization
 	void Start () {
-		map = Singletons.map;
+		map = Map.instance;
 		FindGlobalPath(map.GetCellAt(map.xStart,map.yStart), map.GetCellAt(map.xGoal, map.yGoal));
 	}
 	

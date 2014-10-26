@@ -4,6 +4,8 @@ using System.Collections.Generic;
 
 public class DamageTypeManager : MonoBehaviour{
 
+	public static DamageTypeManager instance;
+
 	public DamageType currentDamageType = DamageType.Plasma;
 	public delegate void OnDamageTypeSelectionChange();
 	public List<OnDamageTypeSelectionChange> callbacks = new List<OnDamageTypeSelectionChange>();
@@ -12,6 +14,10 @@ public class DamageTypeManager : MonoBehaviour{
 		Plasma,
 		Antimatter,
 		IonBeam
+	}
+
+	void Awake(){
+		instance = this;
 	}
 
 	public Color GetDamageTypeColor(DamageType damageType){

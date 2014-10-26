@@ -5,6 +5,8 @@ using System.Collections.Generic;
 
 public class PlayerMoney : MonoBehaviour {
 
+	public static PlayerMoney instance;
+
 	public Text goldLabel;
 	public int money = 1000;
 	public int Money {
@@ -24,6 +26,10 @@ public class PlayerMoney : MonoBehaviour {
 	}
 	public delegate void OnMoneyChange(float amount);
 	List<OnMoneyChange> callbacks = new List<OnMoneyChange>();
+	
+	void Awake(){
+		instance = this;
+	}
 
 	void Start () {
 		UpdateMoneyLabel();

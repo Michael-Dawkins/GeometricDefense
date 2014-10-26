@@ -33,9 +33,9 @@ public class CreateTowerOnDrag : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		map = Singletons.map;
-		playerMoney = Singletons.playerMoney;
-		damageTypeManager = Singletons.damageTypeManager;
+		map = Map.instance;
+		playerMoney = PlayerMoney.instance;
+		damageTypeManager = DamageTypeManager.instance;
 
 		towerCostLabel = transform.GetComponentInChildren<Text>();
 		towerCostLabel.text = towerCost.ToString();
@@ -151,7 +151,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 				Destroy(lastTowerCreated);
 				return;
 			}
-			PathFinder pathFinder = Singletons.pathFinder;
+			PathFinder pathFinder = PathFinder.instance;
 			cellAtPos.isObstacle = true;
 
 			if (pathFinder.requestNewGlobalPath(map.GetCellAt(map.xStart,map.yStart), map.GetCellAt(map.xGoal, map.yGoal))){
@@ -181,7 +181,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 			if (currentGhost == null){
 				currentGhost = Instantiate(ghost, closestPos, Quaternion.identity) as GameObject;
 				currentTowerRangeObject = Instantiate(towerRangePrefab, closestPos, Quaternion.identity) as GameObject;
-				float range = Singletons.values.Towers[towerType].Levels[1].CellRange;
+				float range = Values.instance.Towers[towerType].Levels[1].CellRange;
 				GDUtils.ScaleTransformToXWorldUnit(
 					currentTowerRangeObject.transform, (map.cellSize * range + map.cellSize / 2f) * 2f);
 				SpriteRenderer ghostRenderer = currentGhost.GetComponent<SpriteRenderer>();

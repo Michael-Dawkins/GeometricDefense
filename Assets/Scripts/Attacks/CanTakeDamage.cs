@@ -32,7 +32,7 @@ public class CanTakeDamage : MonoBehaviour {
 		healthBar = Instantiate(healthBarSPrite,new Vector3(pos.x - 0.15f, pos.y + 0.15f, 0f), transform.rotation) as GameObject;
 		healthBar.transform.parent = gameObject.transform;
 		healthBar.gameObject.transform.localScale = new Vector3(0,1,1);
-		playerMoney = Singletons.playerMoney;
+		playerMoney = PlayerMoney.instance;
 		canMove = GetComponent<CanMove>();
 	}
 	

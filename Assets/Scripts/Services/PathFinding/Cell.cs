@@ -10,7 +10,7 @@ public class Cell {
 	public bool isObstacle;
 	public Vector3 position{
 		get {
-			return new Vector3(x * Singletons.map.cellSize, y * Singletons.map.cellSize, 0);
+			return new Vector3(x * Map.instance.cellSize, y * Map.instance.cellSize, 0);
 		}
 	}
 

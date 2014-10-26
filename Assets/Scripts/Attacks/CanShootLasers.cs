@@ -33,7 +33,7 @@ public class CanShootLasers : CanShoot {
 
 	protected override void LateUpdate() {
 		base.LateUpdate();
-		coolDownTime = Singletons.values.Towers[towerType].Levels[1].CoolDown;
+		coolDownTime = Values.instance.Towers[towerType].Levels[1].CoolDown;
 	}
 
 	void Shoot() {

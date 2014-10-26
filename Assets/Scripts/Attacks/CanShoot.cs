@@ -30,9 +30,9 @@ public abstract class CanShoot : MonoBehaviour {
 	protected virtual void Start () {
 		towerSpriteCenter = transform.Find("TowerSpriteCenter").gameObject;
 		towerSpriteGlow = transform.Find("TowerSpriteGlow").gameObject;
-		map = Singletons.map;
-		Damage = Singletons.values.Towers[towerType].Levels[1].Damage;
-		cellRange = Singletons.values.Towers[towerType].Levels[1].CellRange;
+		map = Map.instance;
+		Damage = Values.instance.Towers[towerType].Levels[1].Damage;
+		cellRange = Values.instance.Towers[towerType].Levels[1].CellRange;
 		towerSpriteCenterAnimator = towerSpriteCenter.GetComponent<Animator> ();
 		towerSpriteGlowAnimator = towerSpriteGlow.GetComponent<Animator> ();
 		bulletColor = towerSpriteCenter.GetComponent<SpriteRenderer>().color;

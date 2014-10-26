@@ -13,7 +13,7 @@ public class CanShootBullets : CanShoot {
 	// Use this for initialization
 	protected override void Start() {
 		base.Start();
-		shootingRate = Singletons.values.Towers[towerType].Levels[1].ShootingRate;
+		shootingRate = Values.instance.Towers[towerType].Levels[1].ShootingRate;
 	}
 	
 	// Update is called once per frame

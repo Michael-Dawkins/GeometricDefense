@@ -3,10 +3,16 @@ using System.Collections;
 
 public class TileGenerator : MonoBehaviour {
 
+	public static TileGenerator instance;
+
 	public GameObject tilePrefab;
+	
+	void Awake(){
+		instance = this;
+	}
 
 	void Start () {
-		Map map = Singletons.map;
+		Map map = Map.instance;
 		GameObject tiles = new GameObject("Tiles");
 		for( int x = 0; x < map.mapWidth; x++){
 			for(int y = 0; y < map.mapHeight; y++){

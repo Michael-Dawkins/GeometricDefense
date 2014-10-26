@@ -18,9 +18,9 @@ public class CanMove : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-		map = Singletons.map;
-		pathFinder = Singletons.pathFinder;
-		playerLife = Singletons.playerLife;
+		map = Map.instance;
+		pathFinder = PathFinder.instance;
+		playerLife = PlayerLife.instance;
 	}
 	
 	// Update is called once per frame

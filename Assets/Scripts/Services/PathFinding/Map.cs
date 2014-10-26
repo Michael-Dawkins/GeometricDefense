@@ -3,6 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 
 public class Map : MonoBehaviour {
+
+	public static Map instance;
+
 	public List<Cell> cells = new List<Cell>();
 	public int mapWidth = 15;
 	public int mapHeight = 10;
@@ -14,6 +17,8 @@ public class Map : MonoBehaviour {
 	public GameObject goalSprite;
 
 	void Awake () {
+		instance = this;
+
 		for (int x = 0; x < mapWidth; x++){
 			for (int y = 0; y < mapHeight; y++){
 				cells.Add(new Cell(x, y, false));

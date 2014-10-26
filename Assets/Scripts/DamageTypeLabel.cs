@@ -8,7 +8,7 @@ public class DamageTypeLabel : MonoBehaviour {
 	DamageTypeManager damageTypeManager;
 
 	void Start () {
-		damageTypeManager = Singletons.damageTypeManager;
+		damageTypeManager = DamageTypeManager.instance;
 		damageTypeManager.AddDamageTypeSelectionChangeListener(UpdateDamageTypeLabel);
 		damageTypeLabel = GetComponent<Text>();
 	}

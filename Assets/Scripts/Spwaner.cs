@@ -62,7 +62,7 @@ public class Spwaner : MonoBehaviour {
 	}
 
 	void Win(){
-		PlayerLife playerLife = Singletons.playerLife;
+		PlayerLife playerLife = PlayerLife.instance;
 		playerLife.WinTheGame();
 	}
 }
