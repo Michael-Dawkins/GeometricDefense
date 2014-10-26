@@ -9,7 +9,7 @@ public class CanShootOnArea : CanShoot {
 	SpriteRenderer puslingWaveRenderer;
 	Transform squareWaverWrapperTrans;
 
-	protected virtual float ColliderRadius {
+	override protected float ColliderRadius {
 		get {
 			return map.cellSize * cellRange * 2f + map.cellSize;
 		}
@@ -33,7 +33,7 @@ public class CanShootOnArea : CanShoot {
 				StartPuslingWaveAnimation();
 			}
 			foreach(CanTakeDamage enemy in targets) {
-				shoot(enemy);
+				Shoot(enemy);
 			}
 		} else {
 			if (isAttacking == true){
@@ -62,7 +62,8 @@ public class CanShootOnArea : CanShoot {
 		base.LateUpdate();
 	}
 
-	void shoot(CanTakeDamage target) {
+	override protected void Shoot(CanTakeDamage target) {
+		base.Shoot(target);
 		if(target != null) {
 			target.takeDamage(Damage * Time.deltaTime, damageType);
 		}

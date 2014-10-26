@@ -13,7 +13,7 @@ public class DamageTypeManager : MonoBehaviour{
 	public enum DamageType {
 		Plasma,
 		Antimatter,
-		IonBeam
+		IonCharge
 	}
 
 	void Awake(){
@@ -26,7 +26,7 @@ public class DamageTypeManager : MonoBehaviour{
 			return new Color(0.15f,0.86f,1f);
 		case DamageType.Antimatter:
 			return new Color(0.82f,0.15f,1f);
-		case DamageType.IonBeam:
+		case DamageType.IonCharge:
 			return new Color(1f,1f,0.15f);
 		}
 		return Color.white;
@@ -38,9 +38,9 @@ public class DamageTypeManager : MonoBehaviour{
 			currentDamageType = DamageType.Antimatter;
 			break;
 		case DamageType.Antimatter:
-			currentDamageType = DamageType.IonBeam;
+			currentDamageType = DamageType.IonCharge;
 			break;
-		case DamageType.IonBeam:
+		case DamageType.IonCharge:
 			currentDamageType = DamageType.Plasma;
 			break;
 		}
@@ -53,8 +53,8 @@ public class DamageTypeManager : MonoBehaviour{
 				return "Plasma";
 			case DamageType.Antimatter:
 				return "Antimatter";
-			case DamageType.IonBeam:
-				return "Ion Beam";
+			case DamageType.IonCharge:
+				return "Ion Charge";
 		}
 		return "Wrong damage type";
 	}

@@ -49,6 +49,11 @@ public class GDUtils {
 		trans.localScale = new Vector3(trans.localScale.x * ratio, trans.localScale.y * ratio, 0);
 	}
 
+	public static void ScaleTransformToXWorldUnitHorinzontally(Transform trans, float xScale){
+		Bounds bounds = trans.gameObject.renderer.bounds;
+		float ratio = xScale / bounds.size.x;
+		trans.localScale = new Vector3(trans.localScale.x * ratio, trans.localScale.y, 0);
+	}
 	
 	public static float SignedAngleBetween(Vector3 a, Vector3 b, Vector3 n){
 		// angle in [0,180]

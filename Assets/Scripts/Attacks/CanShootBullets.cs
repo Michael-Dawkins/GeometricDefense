@@ -20,7 +20,7 @@ public class CanShootBullets : CanShoot {
 	void Update() {
 		if(nextShootingTime < Time.time) {
 			if(targets.Count > 0) {
-				shoot(targets [0]);
+				Shoot(targets [0]);
 			}
 		}
 	}
@@ -29,7 +29,8 @@ public class CanShootBullets : CanShoot {
 		base.LateUpdate();
 	}
 	
-	void shoot(CanTakeDamage target) {
+	override protected void Shoot(CanTakeDamage target) {
+		base.Shoot(target);
 		if(target != null) {
 			towerSpriteCenterAnimator.SetTrigger("shooting");
 			towerSpriteGlowAnimator.SetTrigger("shooting");

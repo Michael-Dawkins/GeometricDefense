@@ -17,7 +17,7 @@ public class UpgradableTower : MonoBehaviour {
 	PlayerMoney playerMoney;
 	GameObject upgradeButtonObject;
 	GameObject sellButtonObject;
-	GameObject towerSpriteCenterObj;
+//	GameObject towerSpriteCenterObj;
 	GameObject towerSpriteGlowObj;
 	Text upgradeCostLabel;
 	Map map;
@@ -29,7 +29,7 @@ public class UpgradableTower : MonoBehaviour {
 	// Use this for initialization
 	void Start() {
 		map = Map.instance;
-		towerSpriteCenterObj = transform.Find("TowerSpriteCenter").gameObject;
+//		towerSpriteCenterObj = transform.Find("TowerSpriteCenter").gameObject;
 		towerSpriteGlowObj = transform.Find("TowerSpriteGlow").gameObject;
 		playerMoney = PlayerMoney.instance;
 		upgradeCanvas =  GetComponentsInChildren<Canvas>(true)[0];

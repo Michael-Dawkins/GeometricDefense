@@ -26,6 +26,8 @@ public abstract class CanShoot : MonoBehaviour {
 	protected List<CanTakeDamage> deadTargets = new List<CanTakeDamage>();
 	protected Color bulletColor;
 
+	IonCharger ionCharger;
+
 	// Use this for initialization
 	protected virtual void Start () {
 		towerSpriteCenter = transform.Find("TowerSpriteCenter").gameObject;
@@ -37,6 +39,9 @@ public abstract class CanShoot : MonoBehaviour {
 		towerSpriteGlowAnimator = towerSpriteGlow.GetComponent<Animator> ();
 		bulletColor = towerSpriteCenter.GetComponent<SpriteRenderer>().color;
 		UpdateColliderRadius();
+		if (damageType == DamageTypeManager.DamageType.IonCharge){
+			ionCharger = gameObject.AddComponent<IonCharger>();
+		}
 	}
 
 	void OnTriggerEnter2D (Collider2D other) {
@@ -72,6 +77,12 @@ public abstract class CanShoot : MonoBehaviour {
 		}
 		if (deadTargets.Count > 0){
 			deadTargets = new List<CanTakeDamage>();
+		}
+	}
+
+	protected virtual void Shoot(CanTakeDamage target){
+		if (ionCharger != null){
+			ionCharger.Charge(Damage);
 		}
 	}
 

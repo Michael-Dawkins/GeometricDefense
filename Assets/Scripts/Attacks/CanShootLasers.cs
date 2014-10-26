@@ -26,9 +26,9 @@ public class CanShootLasers : CanShoot {
 		leftColliderObj.AddComponent<BoxCollider2D>();
 		rightColliderObj.AddComponent<BoxCollider2D>();
 
-		topColliderObj.AddComponent<CanShootLasersCollider>().OnCollision(Shoot);
-		leftColliderObj.AddComponent<CanShootLasersCollider>().OnCollision(Shoot);
-		rightColliderObj.AddComponent<CanShootLasersCollider>().OnCollision(Shoot);
+		topColliderObj.AddComponent<CanShootLasersCollider>().OnCollision(ShootCallback);
+		leftColliderObj.AddComponent<CanShootLasersCollider>().OnCollision(ShootCallback);
+		rightColliderObj.AddComponent<CanShootLasersCollider>().OnCollision(ShootCallback);
 	}
 
 	protected override void LateUpdate() {
@@ -36,7 +36,12 @@ public class CanShootLasers : CanShoot {
 		coolDownTime = Values.instance.Towers[towerType].Levels[1].CoolDown;
 	}
 
-	void Shoot() {
+	void ShootCallback(){
+		Shoot(null);
+	}
+
+	override protected void Shoot(CanTakeDamage target) {
+		base.Shoot(target);
 		audio.PlayOneShot(shootingSound, 0.5f);
 
 		GameObject topLaserObj = Instantiate(laserPrefab) as GameObject;
