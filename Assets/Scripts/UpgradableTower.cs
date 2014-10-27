@@ -25,6 +25,7 @@ public class UpgradableTower : MonoBehaviour {
 	ClickReceptor clickReceptor;
 	GameObject upgradeButtonBackground;
 	GameObject sellButtonBackground;
+	bool isContextualMenuOpen = false;
 
 	// Use this for initialization
 	void Start() {
@@ -49,9 +50,14 @@ public class UpgradableTower : MonoBehaviour {
 	}
 
 	public void TowerSelection(){
-		UIState.TowerSelection();
-		DisplaySellButton();
-		DisplayUpgradeButton();
+		if(!isContextualMenuOpen){
+			UIState.TowerSelection();
+			DisplaySellButton();
+			DisplayUpgradeButton();
+			isContextualMenuOpen = true;
+		} else {
+			OnDeselect();
+		}
 	}
 	
 	public void DisplayUpgradeButton() {
@@ -139,5 +145,6 @@ public class UpgradableTower : MonoBehaviour {
 		upgradeButtonBackground.SetActive(false);
 		sellButtonBackground.SetActive(false);
 		HideTowerRange();
+		isContextualMenuOpen = false;
 	}
 }
