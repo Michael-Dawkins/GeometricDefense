@@ -32,39 +32,33 @@ public class IonCharger : MonoBehaviour {
 
 		//storing position for quick check during Update
 		bottomLeft = new Vector2(chargeBarObj.transform.position.x,chargeBarObj.transform.position.y);
+		UIState.AddTowerSelectionListener(StopShrinking);
+		TowerButton towerButton =  transform.Find("TowerButtonCanvas/TowerButton")
+										.gameObject.GetComponent<TowerButton>();
+		towerButton.OnMouseDown += new TowerButton.OnMouseDownHandler(StartShrinking);
+		towerButton.OnMouseUp += new TowerButton.OnMouseUpHandler(StopShrinking);
 	}
 
 	void Update(){
-		if (Input.GetMouseButtonDown(0))
-		{
-			Vector3 wp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-			Vector2 touchPos = new Vector2(wp.x, wp.y);
-			if (IsPosInsideIonCharger(touchPos)) {
-				Debug.Log("Mouse down on ionCharger");
-				mouseDown = true;
-				lastMouseDownTime = Time.time;
-			}
-		} else if (mouseDown){
-			if(Input.GetMouseButtonUp(0)){
-				mouseDown = false;
-				Vector3 wp = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-				Vector2 touchPos = new Vector2(wp.x, wp.y);
-				
-				if (IsPosInsideIonCharger(touchPos)) {
-					Debug.Log("Mouse up on ionCharger");
-				}
-			} else {
-				if (lastMouseDownTime + longPressDelay < Time.time){
-					Debug.Log("Shrinking");
-					ShrinkChargingSpriteDown();
-					if (lastMouseDownTime + longPressDelay + timeToShrink < Time.time){
-						mouseDown = false;
-						Destroy(chargingSpriteObj);
-						chargingSpriteObj = null;
-					}
+		if (mouseDown){
+			if (lastMouseDownTime + longPressDelay < Time.time){
+				ShrinkChargingSpriteDown();
+				if (lastMouseDownTime + longPressDelay + timeToShrink < Time.time){
+					StopShrinking();
 				}
 			}
 		}
+	}
+
+	void StartShrinking(){
+		mouseDown = true;
+		lastMouseDownTime = Time.time;
+	}
+
+	void StopShrinking(){
+		mouseDown = false;
+		Destroy(chargingSpriteObj);
+		chargingSpriteObj = null;
 	}
 
 	bool IsPosInsideIonCharger(Vector2 mousePos){
