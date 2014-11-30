@@ -24,7 +24,7 @@ public abstract class CanShoot : MonoBehaviour {
 	protected List<CanTakeDamage> targets = new List<CanTakeDamage>();
 	//dead targets is used to postpone dead targets deletion until LateUpdate
 	protected List<CanTakeDamage> deadTargets = new List<CanTakeDamage>();
-	protected Color bulletColor;
+	public Color bulletColor;
 
 	IonCharger ionCharger;
 
@@ -41,6 +41,7 @@ public abstract class CanShoot : MonoBehaviour {
 		UpdateColliderRadius();
 		if (damageType == DamageTypeManager.DamageType.IonCharge){
 			ionCharger = gameObject.AddComponent<IonCharger>();
+			ionCharger.canShoot = this;
 		}
 	}
 

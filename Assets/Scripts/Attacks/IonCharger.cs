@@ -4,6 +4,7 @@ using UnityEngine.UI;
 using UnityEngine.EventSystems;
 
 public class IonCharger : MonoBehaviour {
+	public CanShoot canShoot;
 	BoxCollider2D boxCollider2D;
 	float chargeLevel;
 	float maxCharge = 500f;
@@ -49,9 +50,32 @@ public class IonCharger : MonoBehaviour {
 				ShrinkChargingSpriteDown();
 				if (lastMouseDownTime + longPressDelay + timeToShrink < Time.time){
 					StopShrinking();
+					Attack();
 				}
 			}
 		}
+	}
+
+	void Attack() {
+		Debug.Log("Ion charge attack!");
+		GameObject attackObj = new GameObject("IonChargeAttack");
+		switch(canShoot.towerType){
+		case TowerTypeManager.TowerType.Circle:
+			attackObj.AddComponent<IonChargeAttackCircle>();
+			break;
+		case TowerTypeManager.TowerType.Square:
+			attackObj.AddComponent<IonChargeAttackSquare>();
+			break;
+		case TowerTypeManager.TowerType.Triangle:
+			attackObj.AddComponent<IonChargeAttackTriangle>();
+			break;
+		}
+		IonChargeAttack ionChargeAttack = attackObj.GetComponent<IonChargeAttack>();
+		ionChargeAttack.canShoot = canShoot;
+		ionChargeAttack.BaseDamage = chargeLevel;
+		attackObj.transform.position = canShoot.transform.position;
+		chargeLevel = 0f;
+		UpdateChargeBarWidth();
 	}
 
 	void StartShrinking(){
@@ -84,7 +108,7 @@ public class IonCharger : MonoBehaviour {
 	}
 
 	public void Charge(float damage){
-		chargeLevel += damage / 10f;;
+		chargeLevel += damage / 4f;;
 		UpdateChargeBarWidth();
 		if (chargeLevel > maxCharge){
 			chargeLevel = maxCharge;

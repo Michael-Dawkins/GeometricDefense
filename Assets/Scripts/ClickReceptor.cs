@@ -9,7 +9,6 @@ public class ClickReceptor : MonoBehaviour {
 	List<OnClickListener> callbacks = new List<OnClickListener>();
 
 	public void OnClick(){
-		Debug.Log("Click receptor");
 		foreach (OnClickListener callback in callbacks){
 			callback();
 		}

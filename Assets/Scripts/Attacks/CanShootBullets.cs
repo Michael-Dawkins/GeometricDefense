@@ -41,7 +41,7 @@ public class CanShootBullets : CanShoot {
 			guidedBullet.GetComponent<SpriteRenderer>().color = bulletColor;
 			
 			nextShootingTime = Time.time + (1f / shootingRate);
-			audio.PlayOneShot(shootingSound, 0.5f);
+			audio.PlayOneShot(shootingSound, 0.4f);
 		}
 	}
 }
