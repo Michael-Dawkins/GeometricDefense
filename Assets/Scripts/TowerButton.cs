@@ -6,6 +6,9 @@ using UnityEngine.EventSystems;
 [RequireComponent (typeof(Button))]
 public class TowerButton : MonoBehaviour, IPointerClickHandler, IPointerUpHandler, IPointerDownHandler  {
 
+	//Used to avoid tower selection when ion charge is launched
+	bool isNextTowerSelectionCanceled = false;
+
 	public delegate void OnClickHandler();
 	public delegate void OnMouseDownHandler();
 	public delegate void OnMouseUpHandler();
@@ -22,9 +25,15 @@ public class TowerButton : MonoBehaviour, IPointerClickHandler, IPointerUpHandle
 	
 	}
 
+	public void CancelNextTowerSelection(){
+		isNextTowerSelectionCanceled = true;
+	}
+
 	public void OnPointerClick(PointerEventData eventData) {
-		if (OnClick != null){
-			OnClick();
+		if(!isNextTowerSelectionCanceled){
+			if (OnClick != null){
+				OnClick();
+			}
 		}
 	}
 
@@ -35,6 +44,7 @@ public class TowerButton : MonoBehaviour, IPointerClickHandler, IPointerUpHandle
 	}
 
 	public void OnPointerDown(PointerEventData eventData) {
+		isNextTowerSelectionCanceled = false;
 		if (OnMouseDown != null){
 			OnMouseDown();
 		}	

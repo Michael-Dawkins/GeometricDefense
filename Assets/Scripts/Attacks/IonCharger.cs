@@ -16,6 +16,7 @@ public class IonCharger : MonoBehaviour {
 	float longPressDelay = 0.15f;
 	GameObject chargingSpriteObj;
 	float timeToShrink = 1f;
+	TowerButton towerButton;
 
 	void Start () {
 		width = Map.instance.cellSize;
@@ -32,11 +33,14 @@ public class IonCharger : MonoBehaviour {
 
 		//storing position for quick check during Update
 		bottomLeft = new Vector2(chargeBarObj.transform.position.x,chargeBarObj.transform.position.y);
+
+		//shrinking animation
 		UIState.AddTowerSelectionListener(StopShrinking);
-		TowerButton towerButton =  transform.Find("TowerButtonCanvas/TowerButton")
+		towerButton =  transform.Find("TowerButtonCanvas/TowerButton")
 										.gameObject.GetComponent<TowerButton>();
 		towerButton.OnMouseDown += new TowerButton.OnMouseDownHandler(StartShrinking);
 		towerButton.OnMouseUp += new TowerButton.OnMouseUpHandler(StopShrinking);
+		//UIState.AddTowerSelectionListener(StopCoroutine);
 	}
 
 	void Update(){
@@ -67,6 +71,7 @@ public class IonCharger : MonoBehaviour {
 	}
 
 	void ShrinkChargingSpriteDown(){
+		towerButton.CancelNextTowerSelection();
 		if (chargingSpriteObj == null){
 			chargingSpriteObj = Instantiate(Resources.Load("TowerRangeCircle")) as GameObject;
 			chargingSpriteObj.transform.parent = transform;
