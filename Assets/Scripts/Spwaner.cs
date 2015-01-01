@@ -52,6 +52,7 @@ public class Spwaner : MonoBehaviour {
 
 	void SpawnEnemy(){
 		CanTakeDamage enemy = Instantiate (enemyToSpawn, transform.position, transform.rotation) as CanTakeDamage;
+		enemy.transform.SetParent(transform);
 		CanTakeDamage damageable = enemy.GetComponent<CanTakeDamage>();
 		if (currentBaseLife == 0){
 			currentBaseLife = damageable.InitialHp;

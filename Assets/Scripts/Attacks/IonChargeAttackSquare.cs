@@ -15,23 +15,38 @@ public class IonChargeAttackSquare : IonChargeAttack {
 	}
 	
 	void Shoot(){
+		PulsateAdjacentTiles();
+		InflictDamageToEnemiesOnAdjacentTiles();
+	}
+
+	void InflictDamageToEnemiesOnAdjacentTiles(){
+		GameObject enemySpawner = GameObject.Find("EnemySpawner");
+		foreach(CanTakeDamage enemy in enemySpawner.GetComponentsInChildren<CanTakeDamage>()){
+			if (IsObjectAdjacent(enemy.gameObject)){
+				enemy.takeDamage(BaseDamage * DamageMultiplier, DamageTypeManager.DamageType.IonCharge);
+			}
+		}
+	}
+
+	void PulsateAdjacentTiles(){
 		if (adjacentTiles.Count == 0){
 			GameObject tilesObj = GameObject.Find("Tiles");
 			foreach(Transform tileTrans in tilesObj.transform){
 				Tile tile = tileTrans.gameObject.GetComponent<Tile>();
-				if (IsTileAdjacent(tileTrans.gameObject)){
-					adjacentTiles.Add(tileTrans.gameObject.GetComponent<Tile>());
-					tile.Pulsate(
-						DamageTypeManager.instance.GetDamageTypeColor(DamageTypeManager.DamageType.IonCharge),
-						4f,//3 pulsations
-						0.25f);//each one lasts for a second
+				if (IsObjectAdjacent(tileTrans.gameObject)){
+					adjacentTiles.Add(tile);
 				}
 			}
 		}
-
+		foreach (Tile tile in adjacentTiles){
+			tile.Pulsate(
+				DamageTypeManager.instance.GetDamageTypeColor(DamageTypeManager.DamageType.IonCharge),
+				4f,//3 pulsations
+				0.25f);//each one lasts for a second
+		}
 	}
 
-	bool IsTileAdjacent(GameObject tile){
-		return Vector3.Distance(tile.transform.position, transform.position) < (Map.instance.cellSize + 0.2f);
+	bool IsObjectAdjacent(GameObject obj){
+		return Vector3.Distance(obj.transform.position, transform.position) < (Map.instance.cellSize + Map.instance.cellSize / 2f);
 	}
 }
