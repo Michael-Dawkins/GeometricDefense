@@ -53,7 +53,7 @@ public class PlayerMoney : MonoBehaviour {
 		deltaText.text = delta.ToString();
 		deltaText.font = goldLabel.font;
 		deltaText.fontSize = goldLabel.fontSize - 6;
-		deltaObj.transform.parent = goldLabel.transform;
+		deltaObj.transform.SetParent(goldLabel.transform);
 		deltaObj.transform.localPosition = new Vector3(40f,10f,0);
 		deltaObj.transform.localScale = Vector3.one;
 		DisappearingText disappearingText = deltaObj.AddComponent<DisappearingText>();
