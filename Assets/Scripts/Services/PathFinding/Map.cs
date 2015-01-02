@@ -6,7 +6,7 @@ public class Map : MonoBehaviour {
 
 	public static Map instance;
 
-	public List<Cell> cells = new List<Cell>();
+	public List<Cell> cellsList = new List<Cell>();
 	public int mapWidth = 15;
 	public int mapHeight = 10;
 	public float cellSize = 0.4f;
@@ -15,17 +15,55 @@ public class Map : MonoBehaviour {
 	public int xStart = 0;
 	public int yStart = 4;
 	public GameObject goalSprite;
+	Dictionary<Cell, List<OnTowerAdd>> onTowerAddCallbacks;
+	Dictionary<Cell, List<OnTowerUpgrade>> onTowerUpgradeCallbacks;
+	public delegate void OnTowerAdd();
+	public delegate void OnTowerUpgrade();
+	public Cell[,] cellsArray;
 
 	void Awake () {
 		instance = this;
+		cellsArray = new Cell[mapWidth, mapHeight];
 
 		for (int x = 0; x < mapWidth; x++){
 			for (int y = 0; y < mapHeight; y++){
-				cells.Add(new Cell(x, y, false));
+				Cell cell = new Cell(x, y, false);
+				cellsList.Add(cell);
+				cellsArray[x, y] = cell;
 			}
 		}
 
 		Instantiate(goalSprite, GetCellPos(GetCellAt(xGoal, yGoal)), Quaternion.identity);
+		onTowerAddCallbacks = new Dictionary<Cell, List<OnTowerAdd>>();
+		onTowerUpgradeCallbacks = new Dictionary<Cell, List<OnTowerUpgrade>>();
+	}
+
+	public void NotifyAddTowerObservers(Cell cell){
+		foreach(OnTowerAdd callback in onTowerAddCallbacks[cell]){
+			callback();
+		}
+	}
+
+	public void NotifyUpgradeTowerObservers(Cell cell){
+		foreach(OnTowerUpgrade callback in onTowerUpgradeCallbacks[cell]){
+			callback();
+		}
+	}
+
+	public void AddOnTowerAddCallback(Cell cell, OnTowerAdd callback){
+		onTowerAddCallbacks[cell].Add(callback);
+	}
+
+	public void RemoveOnTowerAddCallback(Cell cell, OnTowerAdd callback){
+		onTowerAddCallbacks[cell].Remove(callback);
+	}
+
+	public void AddOnTowerUpgradeCallback(Cell cell, OnTowerUpgrade callback){
+		onTowerUpgradeCallbacks[cell].Add(callback);
+	}
+
+	public void RemoveOnTowerUpgradeCallback(Cell cell, OnTowerUpgrade callback){
+		onTowerUpgradeCallbacks[cell].Remove(callback);
 	}
 
 	//TODO Optimize this, too many foreach to find cells
@@ -68,7 +106,7 @@ public class Map : MonoBehaviour {
 	}
 
 	bool IsCoordWalkable(int x, int y){
-		foreach (Cell cell in cells){
+		foreach (Cell cell in cellsList){
 			if (cell.x == x && cell.y == y){
 				return !cell.isObstacle;
 			}
@@ -77,12 +115,10 @@ public class Map : MonoBehaviour {
 	}
 
 	public Cell GetCellAt(int x, int y){
-		foreach (Cell cell in cells){
-			if (cell.x == x && cell.y == y){
-				return cell;
-			}
+		if (x < 0 || x >= mapWidth || y < 0 || y >= mapHeight){
+			return null;
 		}
-		return null;
+		return cellsArray[x,y];
 	}
 	
 	public Cell GetCellAtPos(float xPos, float yPos){

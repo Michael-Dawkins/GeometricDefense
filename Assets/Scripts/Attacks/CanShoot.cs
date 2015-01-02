@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public abstract class CanShoot : MonoBehaviour {
 
 	public float Damage;
+	public Dictionary<string,int> damageMultipliers; //ex: "Plasma" > 40 for à 40% boost from a plasma tower
 	public float cellRange;
 	public TowerTypeManager.TowerType towerType;
 	public DamageTypeManager.DamageType damageType;

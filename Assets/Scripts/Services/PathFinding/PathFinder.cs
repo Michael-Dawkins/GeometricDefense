@@ -1,4 +1,4 @@
-﻿using UnityEngine;
+using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
 
@@ -184,7 +184,7 @@ public class PathFinder : MonoBehaviour {
 	}
 	
 	void DebugMapObstacles(){
-		List<Cell> cells = map.cells;
+		List<Cell> cells = map.cellsList;
 		foreach(Cell cell in cells){
 			Color color;
 			if (cell.isObstacle){
