@@ -2,6 +2,8 @@ using System;
 using UnityEngine;
 
 public class Cell {
+	public LocalizableOnMap localizableOnMap;
+	public Tile tile;
 	public int x;
 	public int y;
 	public int gScore;

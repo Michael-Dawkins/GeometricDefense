@@ -69,7 +69,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 	}
 
 	public void ChangeTowerDamageType(){
-		ApplyColorToButton(damageTypeManager.GetDamageTypeColor(damageTypeManager.currentDamageType));
+		ApplyColorToButton(DamageTypeManager.GetDamageTypeColor(damageTypeManager.currentDamageType));
 		UpdateTowerCostLabelStatus(playerMoney.Money);
 	}
 
@@ -112,6 +112,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 		CanShoot canShoot = lastTowerCreated.GetComponent<CanShoot>();
 		canShoot.towerType = towerType;
 		canShoot.damageType = damageTypeManager.currentDamageType;
+		canShoot.towerColor = buttonGlowRenderer.color;
 	}
 
 	void ApplyColorToButton(Color colorToApply){
@@ -159,8 +160,18 @@ public class CreateTowerOnDrag : MonoBehaviour {
 				pathFinder.RecalculatePathForCurrentEnemies();
 				tmpPos = map.GetCellPos(cellAtPos);
 				lastTowerCreated.transform.position = tmpPos;
+				LocalizableOnMap localizableOnMap = lastTowerCreated.GetComponent<LocalizableOnMap>();
+				localizableOnMap.cell = cellAtPos;
+				//Here we set up the two way association cell <--> localizable on map
+				//This enables us to find tower from their cells and vice versa
+				localizableOnMap.cell.localizableOnMap = localizableOnMap; 
+				if (lastTowerCreated.GetComponent<CanShoot>().damageType == DamageTypeManager.DamageType.Plasma){
+					lastTowerCreated.AddComponent<PlasmaBooster>();
+				}
+
 				//Might not be necessary be it could solve a bug where a towerObject disapear on next tower positioning
 				lastTowerCreated = null;
+				map.NotifyAddTowerObservers(cellAtPos);
 			} else {
 				cellAtPos.isObstacle = false;
 				Debug.Log("Cannot place tower, it is blocking enemies");

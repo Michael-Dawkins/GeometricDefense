@@ -40,7 +40,7 @@ public class IonChargeAttackSquare : IonChargeAttack {
 		}
 		foreach (Tile tile in adjacentTiles){
 			tile.Pulsate(
-				DamageTypeManager.instance.GetDamageTypeColor(DamageTypeManager.DamageType.IonCharge),
+				DamageTypeManager.GetDamageTypeColor(DamageTypeManager.DamageType.IonCharge),
 				4f,//3 pulsations
 				0.25f);//each one lasts for a second
 		}

@@ -26,12 +26,14 @@ public class UpgradableTower : MonoBehaviour {
 	GameObject upgradeButtonBackground;
 	GameObject sellButtonBackground;
 	bool isContextualMenuOpen = false;
+	LocalizableOnMap localizableOnMap;
 
 	// Use this for initialization
 	void Start() {
 		map = Map.instance;
 //		towerSpriteCenterObj = transform.Find("TowerSpriteCenter").gameObject;
 		towerSpriteGlowObj = transform.Find("TowerSpriteGlow").gameObject;
+		localizableOnMap = GetComponent<LocalizableOnMap>();
 		playerMoney = PlayerMoney.instance;
 		upgradeCanvas =  GetComponentsInChildren<Canvas>(true)[0];
 		upgradeButtonObject = upgradeCanvas.transform.Find("UpgradeButton").gameObject;
@@ -124,12 +126,14 @@ public class UpgradableTower : MonoBehaviour {
 			spriteRendererCenter.sprite = Resources.Load(resourceName + "_" + towerLevel, typeof(Sprite)) as Sprite;
 			SpriteRenderer spriteRendererGlow = transform.Find("TowerSpriteGlow").GetComponent<SpriteRenderer>();
 			spriteRendererGlow.sprite = Resources.Load(resourceName + "_" + towerLevel + "-glow", typeof(Sprite)) as Sprite;
+			map.NotifyUpgradeTowerObservers(localizableOnMap.cell);
 		}
 		OnDeselect();
 	}
 
 	public void SellTower(){
 		Debug.Log("Tower sold for " + (int)(towerCost / 2f));
+		map.NotifySellTowerObservers(localizableOnMap.cell);
 		playerMoney.Money += (int)(towerCost / 2f);
 		Destroy(gameObject);
 		Destroy(currentTowerRangeObject);

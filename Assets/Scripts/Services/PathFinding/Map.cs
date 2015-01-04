@@ -17,36 +17,117 @@ public class Map : MonoBehaviour {
 	public GameObject goalSprite;
 	Dictionary<Cell, List<OnTowerAdd>> onTowerAddCallbacks;
 	Dictionary<Cell, List<OnTowerUpgrade>> onTowerUpgradeCallbacks;
+	Dictionary<Cell, List<OnTowerSell>> onTowerSellCallbacks;
+
 	public delegate void OnTowerAdd();
 	public delegate void OnTowerUpgrade();
+	public delegate void OnTowerSell();
 	public Cell[,] cellsArray;
 
 	void Awake () {
 		instance = this;
 		cellsArray = new Cell[mapWidth, mapHeight];
+		
+		onTowerAddCallbacks = new Dictionary<Cell, List<OnTowerAdd>>();
+		onTowerUpgradeCallbacks = new Dictionary<Cell, List<OnTowerUpgrade>>();
+		onTowerSellCallbacks = new Dictionary<Cell, List<OnTowerSell>>();
 
 		for (int x = 0; x < mapWidth; x++){
 			for (int y = 0; y < mapHeight; y++){
 				Cell cell = new Cell(x, y, false);
 				cellsList.Add(cell);
 				cellsArray[x, y] = cell;
+				onTowerAddCallbacks[cell] = new List<OnTowerAdd>();
+				onTowerSellCallbacks[cell] = new List<OnTowerSell>();
+				onTowerUpgradeCallbacks[cell] = new List<OnTowerUpgrade>();
+
 			}
 		}
 
 		Instantiate(goalSprite, GetCellPos(GetCellAt(xGoal, yGoal)), Quaternion.identity);
-		onTowerAddCallbacks = new Dictionary<Cell, List<OnTowerAdd>>();
-		onTowerUpgradeCallbacks = new Dictionary<Cell, List<OnTowerUpgrade>>();
+	}
+
+	//Up to 4 cells are found (these are up, left, right, bottom)
+	public List<Cell> FindDirectlyAdjacentCells(Cell cell){
+		List<Cell> directlyAdjacentCells = new List<Cell>();
+		int x = cell.x;
+		int y = cell.y;
+		Cell cellToAdd;
+
+		//Left
+		cellToAdd = GetCellAt(x - 1, y);
+		if (cellToAdd != null){
+			directlyAdjacentCells.Add(cellToAdd);
+		}
+		//Up
+		cellToAdd = GetCellAt(x, y + 1);
+		if (cellToAdd != null){
+			directlyAdjacentCells.Add(cellToAdd);
+		}
+		//Right
+		cellToAdd = GetCellAt(x + 1, y);
+		if (cellToAdd != null){
+			directlyAdjacentCells.Add(cellToAdd);
+		}
+		//Bottom
+		cellToAdd = GetCellAt(x, y - 1);
+		if (cellToAdd != null){
+			directlyAdjacentCells.Add(cellToAdd);
+		}
+		return directlyAdjacentCells;
+	}
+
+	//Up to 8 cells can be found (these are up, left, right, bottom and the four equivalent diagonals)
+	public List<Cell> FindAdjacentCells(Cell cell){
+		List<Cell> adjacentCells = new List<Cell>();
+		int x = cell.x;
+		int y = cell.y;
+		Cell cellToAdd;
+		adjacentCells = FindDirectlyAdjacentCells(cell);
+		//Top left
+		cellToAdd = GetCellAt(x - 1, y + 1);
+		if (cellToAdd != null){
+			adjacentCells.Add(cellToAdd);
+		}
+		//Top right
+		cellToAdd = GetCellAt(x + 1, y + 1);
+		if (cellToAdd != null){
+			adjacentCells.Add(cellToAdd);
+		}
+		//Bottom Left
+		cellToAdd = GetCellAt(x - 1, y - 1);
+		if (cellToAdd != null){
+			adjacentCells.Add(cellToAdd);
+		}
+		//Bottom right
+		cellToAdd = GetCellAt(x + 1, y - 1);
+		if (cellToAdd != null){
+			adjacentCells.Add(cellToAdd);
+		}
+		return adjacentCells;
 	}
 
 	public void NotifyAddTowerObservers(Cell cell){
-		foreach(OnTowerAdd callback in onTowerAddCallbacks[cell]){
-			callback();
+		if (onTowerAddCallbacks.ContainsKey(cell)){
+			foreach(OnTowerAdd callback in onTowerAddCallbacks[cell]){
+				callback();
+			}
 		}
 	}
 
 	public void NotifyUpgradeTowerObservers(Cell cell){
-		foreach(OnTowerUpgrade callback in onTowerUpgradeCallbacks[cell]){
-			callback();
+		if (onTowerUpgradeCallbacks.ContainsKey(cell)){
+			foreach(OnTowerUpgrade callback in onTowerUpgradeCallbacks[cell]){
+				callback();
+			}
+		}
+	}
+
+	public void NotifySellTowerObservers(Cell cell){
+		if (onTowerSellCallbacks.ContainsKey(cell)){
+			foreach(OnTowerSell callback in onTowerSellCallbacks[cell]){
+				callback();
+			}
 		}
 	}
 
@@ -64,6 +145,14 @@ public class Map : MonoBehaviour {
 
 	public void RemoveOnTowerUpgradeCallback(Cell cell, OnTowerUpgrade callback){
 		onTowerUpgradeCallbacks[cell].Remove(callback);
+	}
+
+	public void AddOnTowerSellCallback(Cell cell, OnTowerSell callback){
+		onTowerSellCallbacks[cell].Add(callback);
+	}
+	
+	public void RemoveOnTowerSellCallback(Cell cell, OnTowerSell callback){
+		onTowerSellCallbacks[cell].Remove(callback);
 	}
 
 	//TODO Optimize this, too many foreach to find cells

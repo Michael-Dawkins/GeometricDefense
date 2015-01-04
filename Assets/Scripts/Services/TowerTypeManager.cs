@@ -15,8 +15,4 @@ public class TowerTypeManager : MonoBehaviour {
 		instance = this;
 	}
 
-	void Start () {
-	
-	}
-
 }

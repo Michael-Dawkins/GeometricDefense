@@ -20,7 +20,7 @@ public class DamageTypeManager : MonoBehaviour{
 		instance = this;
 	}
 
-	public Color GetDamageTypeColor(DamageType damageType){
+	public static Color GetDamageTypeColor(DamageType damageType){
 		switch(damageType){
 		case DamageType.Plasma:
 			return new Color(0.15f,0.86f,1f);

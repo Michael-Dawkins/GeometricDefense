@@ -6,10 +6,12 @@ using System.Collections.Generic;
 public abstract class CanShoot : MonoBehaviour {
 
 	public float Damage;
-	public Dictionary<string,int> damageMultipliers; //ex: "Plasma" > 40 for à 40% boost from a plasma tower
+	//ex: "Plasma" > 40 for à 40% boost from a plasma tower
+	public Dictionary<string,float> damageMultipliers = new Dictionary<string, float>();
 	public float cellRange;
 	public TowerTypeManager.TowerType towerType;
 	public DamageTypeManager.DamageType damageType;
+	public Color towerColor;
 
 	protected Animator towerSpriteCenterAnimator;
 	protected Animator towerSpriteGlowAnimator;
@@ -84,8 +86,18 @@ public abstract class CanShoot : MonoBehaviour {
 
 	protected virtual void Shoot(CanTakeDamage target){
 		if (ionCharger != null){
-			ionCharger.Charge(Damage);
+			ionCharger.Charge(GetDamage());
 		}
+	}
+
+	public float GetDamage(){
+		float calculatedDamage = Damage;
+		float totalPercentageToApply = 0f;
+		foreach(KeyValuePair<string, float> damagePercentage in damageMultipliers){
+			totalPercentageToApply += damagePercentage.Value;
+		}
+		calculatedDamage += (totalPercentageToApply / 100f) * calculatedDamage;
+		return calculatedDamage;
 	}
 
 }
