@@ -141,20 +141,11 @@ public class PathFinder : MonoBehaviour {
 	}
 
 	public void RecalculatePathForCurrentEnemies(){
-		List<GameObject> rootObjects = new List<GameObject>();
-		foreach (GameObject obj in UnityEngine.Object.FindObjectsOfType(typeof(GameObject))){
-			if (obj.transform.parent == null)			{
-				rootObjects.Add(obj);
-			}
-		}
 		float timeBeforePathFinding = Time.realtimeSinceStartup;
 		int counter = 0;
-		foreach (GameObject obj in rootObjects){
-			CanMove enemy;
-			if (enemy = obj.GetComponent<CanMove>()){
-				enemy.SetOwnPath();
-				counter++;
-			}
+		foreach (CanMove enemy in GameObject.Find("EnemySpawner").GetComponentsInChildren<CanMove>()){
+			enemy.SetOwnPath();
+			counter++;
 		}
 		Debug.Log("Time to find paths for " + counter + " enemies : "
 		          + ((Time.realtimeSinceStartup - timeBeforePathFinding)*1000).ToString()
