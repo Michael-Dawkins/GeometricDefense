@@ -2,7 +2,7 @@
 using UnityEngine.UI;
 using System.Collections;
 
-public class Spwaner : MonoBehaviour {
+public class Spawner : MonoBehaviour {
 	
 	public CanTakeDamage enemyToSpawn;
 
@@ -18,6 +18,7 @@ public class Spwaner : MonoBehaviour {
 	public int currentWave = 0;
 	public Text waveCounterText;
 	private bool waitingForUserToStartWave = true;
+	private int enemiesAlive = 0;
 
 
 	void Start () {
@@ -32,18 +33,14 @@ public class Spwaner : MonoBehaviour {
 					nextSpawningTime = Time.time + everyXSeconds;
 					SpawnEnemy();
 				} else {
-					if (currentWave == numberOfWaves){
-						Win();
-					} else {
-						waitingForUserToStartWave = true;
-					}
+					waitingForUserToStartWave = true;
 				}
 			}
 		}
 	}
 
 	public void StartNextWave(){
-		if(waitingForUserToStartWave){
+		if(waitingForUserToStartWave && !PlayerLife.instance.playerDied){
 			currentWave ++;
 			UpdateWaveCounterDisplay();
 			nextSpawningTime = 0f;//start now
@@ -54,12 +51,22 @@ public class Spwaner : MonoBehaviour {
 		}
 	}
 
+	public void NotifyThatEnemyDied(){
+		enemiesAlive --;
+		if (currentWave == numberOfWaves && enemiesAlive == 0){
+			if(!PlayerLife.instance.playerDied){
+				Win();
+			}
+		}
+	}
+
 	void UpdateWaveCounterDisplay(){
 		waveCounterText.text = currentWave.ToString() + " / " + numberOfWaves.ToString();
 	}
 
 	void SpawnEnemy(){
 		CanTakeDamage enemy = Instantiate (enemyToSpawn, transform.position, transform.rotation) as CanTakeDamage;
+		enemy.spawner = this;
 		enemy.transform.SetParent(transform);
 		CanTakeDamage damageable = enemy.GetComponent<CanTakeDamage>();
 		if (currentBaseLife == 0){
@@ -68,6 +75,7 @@ public class Spwaner : MonoBehaviour {
 			currentBaseLife *= hpIncreaseMultiplier;
 		}
 		damageable.InitialHp = currentBaseLife * hpIncreaseMultiplier;
+		enemiesAlive++;
 	}
 
 	void Win(){

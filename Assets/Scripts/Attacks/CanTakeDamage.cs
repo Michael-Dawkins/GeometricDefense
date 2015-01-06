@@ -16,7 +16,8 @@ public class CanTakeDamage : MonoBehaviour {
 		}
 	}
 	public GameObject healthBarSPrite;
-	
+	public Spawner spawner;
+
 	float slowTime = 0.2f;
 	float slowStartTime;
 	float initialHp = 100f;
@@ -78,5 +79,9 @@ public class CanTakeDamage : MonoBehaviour {
 		}
 		Destroy(gameObject);
 		playerMoney.Money += 6 + (int) initialHp / 16;
+	}
+
+	void OnDestroy(){
+		spawner.NotifyThatEnemyDied();
 	}
 }

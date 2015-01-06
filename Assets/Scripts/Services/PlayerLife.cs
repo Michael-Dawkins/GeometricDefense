@@ -5,6 +5,7 @@ using System.Collections;
 public class PlayerLife : MonoBehaviour {
 
 	public static PlayerLife instance;
+	public bool playerDied = false;
 
 	private int _Lives = 10;
 	public int Lives {
@@ -14,7 +15,7 @@ public class PlayerLife : MonoBehaviour {
 				_Lives = value;
 				UpdateLivesLabel();
 				if (_Lives <= 0){
-					DisplayGameOver();
+					GameOver();
 				}
 			}
 		}
@@ -32,13 +33,14 @@ public class PlayerLife : MonoBehaviour {
 		UpdateLivesLabel();
 	}
 
-	void UpdateLivesLabel () {
+	void UpdateLivesLabel() {
 		label.text = "lives: " + _Lives;
 	}
 	
-	void DisplayGameOver () {
+	void GameOver() {
 		endingSentence.enabled = true;
 		endingSentence.text = "Game Over";
+		playerDied = true;
 	}
 
 	public void WinTheGame(){
