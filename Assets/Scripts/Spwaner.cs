@@ -9,40 +9,48 @@ public class Spwaner : MonoBehaviour {
 	public float everyXSeconds = 1.5f;
 	public int numberOfWaves = 20;
 	public int numberOfAddedEnemyPerWave = 3;
-	public float pauseBetweenWaves = 10;
 
 	public float hpIncreaseMultiplier = 1.5f;
 	public float currentBaseLife;
 	private float nextSpawningTime = 0;
 	public int totalNumberOfEnemyInCurrentWave = 10;
 	public int currentWaveProgress = 0;
-	public int currentWave = 1;
+	public int currentWave = 0;
 	public Text waveCounterText;
+	private bool waitingForUserToStartWave = true;
 
 
 	void Start () {
 		UpdateWaveCounterDisplay();
-		nextSpawningTime = Time.time + pauseBetweenWaves;
 	}
 
 	void Update(){
-		if (nextSpawningTime < Time.time){
-			if (currentWaveProgress < totalNumberOfEnemyInCurrentWave){
-				currentWaveProgress ++;
-				nextSpawningTime = Time.time + everyXSeconds;
-				SpawnEnemy();
-			} else {
-				if (currentWave == numberOfWaves){
-					Win();
-				} else {
-					currentWave ++;
-					UpdateWaveCounterDisplay();
-					nextSpawningTime = Time.time + pauseBetweenWaves;
-					currentWaveProgress = 0;
-					totalNumberOfEnemyInCurrentWave += numberOfAddedEnemyPerWave;
+		if(!waitingForUserToStartWave){
+			if (nextSpawningTime < Time.time){
+				if (currentWaveProgress < totalNumberOfEnemyInCurrentWave){
+					currentWaveProgress ++;
+					nextSpawningTime = Time.time + everyXSeconds;
 					SpawnEnemy();
+				} else {
+					if (currentWave == numberOfWaves){
+						Win();
+					} else {
+						waitingForUserToStartWave = true;
+					}
 				}
 			}
+		}
+	}
+
+	public void StartNextWave(){
+		if(waitingForUserToStartWave){
+			currentWave ++;
+			UpdateWaveCounterDisplay();
+			nextSpawningTime = 0f;//start now
+			currentWaveProgress = 0;
+			totalNumberOfEnemyInCurrentWave += numberOfAddedEnemyPerWave;
+			SpawnEnemy();
+			waitingForUserToStartWave = false;
 		}
 	}
 
