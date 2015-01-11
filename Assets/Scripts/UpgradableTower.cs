@@ -47,6 +47,7 @@ public class UpgradableTower : MonoBehaviour {
 		UIState.AddTowerSelectionListener(OnDeselect);
 		GameObject towerButtonObject =  transform.Find("TowerButtonCanvas/TowerButton").gameObject;
 		towerButtonObject.GetComponent<TowerButton>().OnClick += new TowerButton.OnClickHandler(TowerSelection);
+		playerMoney.AddOnMoneyChangeListener(UpdateUpgradeButtonAvailability);
 	}
 
 	void OnDestroy(){
@@ -70,8 +71,24 @@ public class UpgradableTower : MonoBehaviour {
 			upgradeButtonBackground.SetActive(true);
 			upgradeCostLabel = upgradeButtonObject.GetComponentInChildren<Text>();
 			upgradeCostLabel.text = "$" + upgradeCost;
+			UpdateUpgradeButtonAvailability(playerMoney.Money);
 		}
 		DisplayTowerRange();
+	}
+
+	void UpdateUpgradeButtonAvailability(float amountOfMoney){
+		if(!isContextualMenuOpen){
+			return;
+		}
+		Image upgradeButtonImage = upgradeButtonObject.GetComponent<Image>();
+		//Grey out button when not enough gold to upgrade
+		if (upgradeCost < amountOfMoney){
+			upgradeButtonImage.SetAlpha(1f);
+			upgradeCostLabel.SetAlpha(1f);
+		} else {
+			upgradeButtonImage.SetAlpha(0.3f);
+			upgradeCostLabel.SetAlpha(0.3f);
+		}
 	}
 
 	public void DisplaySellButton() {
