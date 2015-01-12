@@ -70,7 +70,7 @@ public class CanTakeDamage : MonoBehaviour {
 	}
 
 	void updateHealthBar(){
-		healthBar.gameObject.transform.localScale = new Vector3((currentHp / initialHp) * 0.4f, 0.3f, 1f);
+		healthBar.gameObject.transform.localScale = new Vector3((currentHp / initialHp) * 0.7f, 0.3f, 1f);
 	}
 
 	void Die(){
