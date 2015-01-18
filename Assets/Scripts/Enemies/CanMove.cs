@@ -15,7 +15,8 @@ public class CanMove : MonoBehaviour {
 	List<Cell> path;
 	Vector3 currentTargetPos;
 	Map map;
-	Transform transformToRotate;
+	Transform neonCenterTransform;
+	Transform neonGlowTransform;
 	private PlayerLife playerLife;
 
 	// Use this for initialization
@@ -68,15 +69,19 @@ public class CanMove : MonoBehaviour {
 			currentTargetPos = map.GetCellPos (path [indexInPath]);
 		}
 		if (indexInPath > 0){
-			if (transformToRotate == null){
+			if (neonCenterTransform == null){
 				Transform[] t = transform.gameObject.GetComponentsInChildren<Transform>();
 				//get the first child
-				transformToRotate = t[1];
+				neonCenterTransform = transform.FindChild("NeonCenter");
+				neonGlowTransform = transform.FindChild("NeonGlow");
+
 			}
 			float angle = GDUtils.SignedAngleBetween(Vector3.right, 
 			                                 		 map.GetCellPos (path [indexInPath]) - map.GetCellPos (path [indexInPath - 1]), 
 			                                 		 Vector3.forward);
-			transformToRotate.eulerAngles = new Vector3(0,0,angle);
+			neonCenterTransform.eulerAngles = new Vector3(0,0,angle);
+			neonGlowTransform.eulerAngles = new Vector3(0,0,angle);
+
 		}
 		float amountOfMotion = Time.deltaTime * speed;
 		if (slowed){

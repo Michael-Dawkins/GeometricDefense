@@ -28,6 +28,7 @@ public class CanTakeDamage : MonoBehaviour {
 	List<CanShoot> TargetedBy = new List<CanShoot>();
 	PlayerMoney playerMoney;
 	CanMove canMove;
+	IonShield ionShield;
 
 	// Use this for initialization
 	void Start () {
@@ -37,6 +38,7 @@ public class CanTakeDamage : MonoBehaviour {
 		healthBar.gameObject.transform.localScale = new Vector3(0,1,1);
 		playerMoney = PlayerMoney.instance;
 		canMove = GetComponent<CanMove>();
+		ionShield = GetComponent<IonShield>();
 	}
 	
 	// Update is called once per frame
@@ -64,6 +66,9 @@ public class CanTakeDamage : MonoBehaviour {
 		if (damageType == DamageTypeManager.DamageType.Antimatter){
 			slowStartTime = Time.time;
 		}
+		if(ionShield != null){
+			damage = ionShield.TakeDamage(damage);
+		}
 		currentHp -= damage;
 		if (healthChanged != null){
 			healthChanged();
@@ -75,7 +80,7 @@ public class CanTakeDamage : MonoBehaviour {
 	}
 
 	void updateHealthBar(){
-		healthBar.gameObject.transform.localScale = new Vector3((currentHp / initialHp) * 0.7f, 0.3f, 1f);
+		healthBar.gameObject.transform.localScale = new Vector3((currentHp / initialHp) * 0.7f, 1f, 1f);
 	}
 
 	void Die(){

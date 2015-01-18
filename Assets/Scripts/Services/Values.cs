@@ -36,8 +36,8 @@ public class Values : MonoBehaviour {
 		squareLevels.Levels.Add(3, new SquareStats(Damage: 16f, CellRange: 1f));
 		squareLevels.Levels.Add(4, new SquareStats(Damage: 22f, CellRange: 1f));
 		squareLevels.Levels.Add(5, new SquareStats(Damage: 28f, CellRange: 1f));
-		squareLevels.Levels.Add(6, new SquareStats(Damage: 40f, CellRange: 1.5f));
-		squareLevels.Levels.Add(7, new SquareStats(Damage: 55f, CellRange: 2f));
+		squareLevels.Levels.Add(6, new SquareStats(Damage: 40f, CellRange: 1f));
+		squareLevels.Levels.Add(7, new SquareStats(Damage: 55f, CellRange: 1f));
 
 		//Triangle
 		triangleLevels.Levels.Add(1, new TriangleStats(Damage: 10f, CoolDown: 2f));
