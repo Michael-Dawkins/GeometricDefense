@@ -3,8 +3,13 @@ using UnityEngine.UI;
 using System.Collections;
 
 public class Spawner : MonoBehaviour {
-	
-	public CanTakeDamage enemyToSpawn;
+
+	public CanTakeDamage enemyToSpawn1;
+	public CanTakeDamage enemyToSpawn2;
+	public CanTakeDamage enemyToSpawn3;
+	public CanTakeDamage enemyToSpawnBoss1;
+	public CanTakeDamage enemyToSpawnBoss2;
+	public CanTakeDamage enemyToSpawnBoss3;
 
 	public float everyXSeconds = 1.5f;
 	public int numberOfWaves = 20;
@@ -65,7 +70,7 @@ public class Spawner : MonoBehaviour {
 	}
 
 	void SpawnEnemy(){
-		CanTakeDamage enemy = Instantiate (enemyToSpawn, transform.position, transform.rotation) as CanTakeDamage;
+		CanTakeDamage enemy = Instantiate(GetEnemyToSpaw(), transform.position, transform.rotation) as CanTakeDamage;
 		enemy.spawner = this;
 		enemy.transform.SetParent(transform);
 		CanTakeDamage damageable = enemy.GetComponent<CanTakeDamage>();
@@ -76,6 +81,17 @@ public class Spawner : MonoBehaviour {
 		}
 		damageable.InitialHp = currentBaseLife * hpIncreaseMultiplier;
 		enemiesAlive++;
+	}
+
+	CanTakeDamage GetEnemyToSpaw(){
+		float random = Random.value;
+		if(random < 0.33f){
+			return enemyToSpawn1;
+		} else if(random < 0.66f){
+			return enemyToSpawn2;
+		} else {
+			return enemyToSpawn3;
+		}
 	}
 
 	void Win(){
