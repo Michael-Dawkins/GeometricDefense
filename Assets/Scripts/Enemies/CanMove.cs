@@ -6,7 +6,9 @@ public class CanMove : MonoBehaviour {
 
 	public float speed = 2f;
 	public bool slowed = false;
+	public bool speedUp = false;
 
+	float speedUpRatio = 2f;
 	float slowRatio = 0.5f;
 	PathFinder pathFinder;
 	int indexInPath = 0;
@@ -79,6 +81,9 @@ public class CanMove : MonoBehaviour {
 		float amountOfMotion = Time.deltaTime * speed;
 		if (slowed){
 			amountOfMotion *= slowRatio;
+		}
+		if (speedUp){
+			amountOfMotion *= speedUpRatio;
 		}
 		transform.position = Vector2.MoveTowards(
 			transform.position,

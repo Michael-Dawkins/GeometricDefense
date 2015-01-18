@@ -17,11 +17,13 @@ public class CanTakeDamage : MonoBehaviour {
 	}
 	public GameObject healthBarSPrite;
 	public Spawner spawner;
+	public event OnHealthChanged healthChanged;
+	public delegate void OnHealthChanged();
 
 	float slowTime = 0.2f;
 	float slowStartTime;
 	float initialHp = 100f;
-	float currentHp;
+	public float currentHp;
 	GameObject healthBar;
 	List<CanShoot> TargetedBy = new List<CanShoot>();
 	PlayerMoney playerMoney;
@@ -63,6 +65,9 @@ public class CanTakeDamage : MonoBehaviour {
 			slowStartTime = Time.time;
 		}
 		currentHp -= damage;
+		if (healthChanged != null){
+			healthChanged();
+		}
 		updateHealthBar();
 		if (currentHp <=0){
 			Die();
