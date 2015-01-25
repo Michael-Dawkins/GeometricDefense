@@ -51,7 +51,6 @@ public class Spawner : MonoBehaviour {
 			nextSpawningTime = 0f;//start now
 			currentWaveProgress = 0;
 			totalNumberOfEnemyInCurrentWave += numberOfAddedEnemyPerWave;
-			SpawnEnemy();
 			waitingForUserToStartWave = false;
 		}
 	}
