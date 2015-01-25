@@ -145,6 +145,7 @@ public class UpgradableTower : MonoBehaviour {
 			SpriteRenderer spriteRendererGlow = transform.Find("TowerSpriteGlow").GetComponent<SpriteRenderer>();
 			spriteRendererGlow.sprite = Resources.Load(resourceName + "_" + towerLevel + "-glow", typeof(Sprite)) as Sprite;
 			map.NotifyUpgradeTowerObservers(localizableOnMap.cell);
+            upgradeCost += upgradeCost / 2f;
 		}
 		OnDeselect();
 	}
