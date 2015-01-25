@@ -34,10 +34,10 @@ public class Values : MonoBehaviour {
 		squareLevels.Levels.Add(4, new SquareStats(Damage: 55f, CellRange: 1f));
 
 		//Triangle
-		triangleLevels.Levels.Add(1, new TriangleStats(Damage: 10f, CoolDown: 2f));
-		triangleLevels.Levels.Add(2, new TriangleStats(Damage: 18f, CoolDown: 1.4f));
-		triangleLevels.Levels.Add(3, new TriangleStats(Damage: 32f, CoolDown: 0.8f));
-		triangleLevels.Levels.Add(4, new TriangleStats(Damage: 70f, CoolDown: 0.2f));
+		triangleLevels.Levels.Add(1, new TriangleStats(Damage: 12f, CoolDown: 2f));
+		triangleLevels.Levels.Add(2, new TriangleStats(Damage: 22f, CoolDown: 1.4f));
+		triangleLevels.Levels.Add(3, new TriangleStats(Damage: 40f, CoolDown: 0.8f));
+		triangleLevels.Levels.Add(4, new TriangleStats(Damage: 85f, CoolDown: 0.2f));
 	}
 
 	public Dictionary<TowerTypeManager.TowerType, TowerLevels> Towers = new Dictionary<TowerTypeManager.TowerType, TowerLevels>();
