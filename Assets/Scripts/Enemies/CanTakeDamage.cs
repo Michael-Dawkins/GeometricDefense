@@ -79,6 +79,18 @@ public class CanTakeDamage : MonoBehaviour {
 		}
 	}
 
+    public void Heal(float hp) {
+        currentHp = Mathf.Clamp(currentHp + hp, 0f, InitialHp);
+        if (healthChanged != null) {
+            healthChanged();
+        }
+        updateHealthBar();
+    }
+
+    public void HealPercentage(float percentage) {
+        Heal(InitialHp * percentage / 100f);
+    }
+
 	void updateHealthBar(){
 		healthBar.gameObject.transform.localScale = new Vector3((currentHp / initialHp) * 0.7f, 1f, 1f);
 	}

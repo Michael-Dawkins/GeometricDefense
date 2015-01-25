@@ -70,8 +70,6 @@ public class CanMove : MonoBehaviour {
 		}
 		if (indexInPath > 0){
 			if (neonCenterTransform == null){
-				Transform[] t = transform.gameObject.GetComponentsInChildren<Transform>();
-				//get the first child
 				neonCenterTransform = transform.FindChild("NeonCenter");
 				neonGlowTransform = transform.FindChild("NeonGlow");
 
