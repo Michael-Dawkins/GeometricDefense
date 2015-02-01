@@ -8,6 +8,7 @@ mapEditor.controller("MainCtrl", function($scope){
     initMapData(null);
 
     $scope.onCellClick = onCellClick;
+    $scope.copyMapToClipboard = copyMapToClipboard;
     setUpDragFromDesktop();
     setUpDownloadBtn();
   }
@@ -96,7 +97,7 @@ mapEditor.controller("MainCtrl", function($scope){
   function assignFileToButton(){
     setTimeout(function(){
       var link = document.getElementById('map-download-btn');
-      link.href = makeTextFile(JSON.stringify(getMapJson()));
+      link.href = makeTextFile(JSON.stringify(getMapJson(), null, 2));
     }, 250);
   }
 
@@ -130,5 +131,13 @@ mapEditor.controller("MainCtrl", function($scope){
       }
     });
     return mapJson;
+  }
+
+  function copyMapToClipboard(){
+    copyToClipboard(JSON.stringify(getMapJson(), null, 2));
+  }
+
+  function copyToClipboard(text) {
+    window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
   }
 });
