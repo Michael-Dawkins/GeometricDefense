@@ -1,0 +1,1 @@
+mapEditor = angular.module("mapEditor", []);

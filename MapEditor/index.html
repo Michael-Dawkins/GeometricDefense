@@ -1,0 +1,23 @@
+<html ng-app="mapEditor">
+    <head>
+        <script src="lib/angular.js"></script>
+        <script src="lib/underscore.js"></script>
+
+        <!--  project files-->
+        <script src="app/mapEditor.js"></script>
+        <script src="app/controllers/MainCtrl.js"></script>
+        <script src="app/directives/cell.js"></script>
+
+        <link rel="stylesheet" href="app/css/style.css"/>
+
+        <link rel="stylesheet" href="app/css/bootstrap-theme.css"/>
+        <link rel="stylesheet" href="app/css/bootstrap.css"/>
+
+    </head>
+    <body ng-controller="MainCtrl">
+        <div id="map-editor-body">
+            <h1>Map Editor</h1>
+            <div ng-include="'app/views/main.html'"></div>
+        </div>
+    </body>
+</html>

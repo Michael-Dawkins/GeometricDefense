@@ -1,0 +1,30 @@
+#map-editor-body{
+    margin-left: 100px;
+    margin-top: 50px;
+}
+
+.cell-container{
+  display: inline-block;
+  width: 40px;
+  height: 40px;
+  border: solid 1px rgb(187, 187, 187);
+  cursor: pointer;
+}
+
+.cell-wrapper {
+  display: inline-block;
+  position: absolute;
+}
+
+.main-wrapper{
+  position: relative;
+}
+
+* {
+  -webkit-user-select: none;
+}
+
+#map-download-btn{
+  position: absolute;
+  left: 0;
+}
