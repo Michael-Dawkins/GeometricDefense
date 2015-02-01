@@ -52,7 +52,7 @@ public class UpgradableTower : MonoBehaviour {
 
 	void OnDestroy(){
 		UIState.RemoveTowerSelectionListener(OnDeselect);
-		playerMoney.RemoveOnMoneyChangeListener(UpdateUpgradeButtonAvailability);
+        PlayerMoney.instance.RemoveOnMoneyChangeListener(UpdateUpgradeButtonAvailability);
 	}
 
 	public void TowerSelection(){
