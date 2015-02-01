@@ -8,7 +8,8 @@ public class Tile : MonoBehaviour {
 
 	SpriteRenderer spriteRenderer;
 	bool animationStarted = false;
-	Color targetColor = new Color(1f,1f,1f,0.15f);
+	public Color targetColor = new Color(1f,1f,1f,0.15f);
+    public bool isAnimatable = true;
 
 	//pulsation
 	float pulsateTimer;
@@ -26,6 +27,9 @@ public class Tile : MonoBehaviour {
 	
 	// Update is called once per frame
 	void Update () {
+        if (!isAnimatable) {
+            return;
+        }
 		if (animationStarted){
 			if(!isPulsating){
 				//This type of lerp is smooth, it never actually gets to the destination
