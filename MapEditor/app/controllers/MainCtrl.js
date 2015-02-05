@@ -5,7 +5,13 @@ mapEditor.controller("MainCtrl", function($scope){
   init();
 
   function init(){
-    initMapData(null);
+    var mapModelFromLocalStorage = localStorage.getItem("map");
+    if (mapModelFromLocalStorage !== null){
+      $scope.mapModel = JSON.parse(mapModelFromLocalStorage);
+      //Map gotten from localstorage, no init needed
+    } else {
+      initMapData(null);
+    }
 
     $scope.onCellClick = onCellClick;
     $scope.copyMapToClipboard = copyMapToClipboard;
@@ -16,7 +22,9 @@ mapEditor.controller("MainCtrl", function($scope){
   function initMapData(mapObj){
     $scope.mapModel = {
       width: mapObj ? mapObj.dimensions.width : 15,
-      height: mapObj ? mapObj.dimensions.height : 10
+      height: mapObj ? mapObj.dimensions.height : 10,
+      cells: [],
+      fileName: $scope.mapModel.fileName || ""
     };
     initCellMatrix();
     if (mapObj){
@@ -27,7 +35,7 @@ mapEditor.controller("MainCtrl", function($scope){
   }
 
   function findCell(x, y){
-    return _.findWhere(_.flatten($scope.cells), {x: x, y: y});
+    return _.findWhere(_.flatten($scope.mapModel.cells), {x: x, y: y});
   }
 
   function loadMap(mapObj){
@@ -35,13 +43,12 @@ mapEditor.controller("MainCtrl", function($scope){
   }
 
   function initCellMatrix(){
-    $scope.cells = [];
     for(var i=0; i< $scope.mapModel.width; i++) {
-      $scope.cells[i] = new Array($scope.mapModel.height);
+      $scope.mapModel.cells[i] = new Array($scope.mapModel.height);
     }
 
     //init cells
-    _.each($scope.cells, function(column, x){
+    _.each($scope.mapModel.cells, function(column, x){
       _.each(column, function(cell, y){
         column[y] = {
           x: x,
@@ -74,7 +81,9 @@ mapEditor.controller("MainCtrl", function($scope){
 
         var file = e.dataTransfer.files[0],
             reader = new FileReader();
-        reader.onload = function(event) {
+        var fileName = file.name.split(".")[0];
+        reader.onload = function(event, file) {
+            $scope.mapModel.fileName = fileName;
             var map = JSON.parse(event.target.result);
             loadMap(map);
             $scope.$apply();
@@ -86,10 +95,8 @@ mapEditor.controller("MainCtrl", function($scope){
   }
 
   function setUpDownloadBtn(){
-    $scope.$watch('cells', function(){
-      assignFileToButton();
-    }, true);
     $scope.$watch('mapModel', function(){
+      localStorage.setItem("map", JSON.stringify($scope.mapModel));
       assignFileToButton();
     }, true);
   }
@@ -122,7 +129,7 @@ mapEditor.controller("MainCtrl", function($scope){
         walls: []
       }
     }
-    _.each(_.flatten($scope.cells), function(cell){
+    _.each(_.flatten($scope.mapModel.cells), function(cell){
       if (cell.isObstacle){
         mapJson.cells.walls.push({
           x: cell.x,

@@ -1,12 +1,13 @@
+<div class="map-name">{{mapModel.fileName}}</div>
 <div class="main-wrapper">
-  <div ng-repeat="column in cells">
+  <div ng-repeat="column in mapModel.cells">
     <div ng-repeat="cell in column"
       class="cell-wrapper"
       ng-style="{top: cell.y * 41, left: cell.x * 41}">
       <gd-cell model="cell" on-click="onCellClick(cell)"></gd-cell>
     </div>
   </div>
-  <a id="map-download-btn" download="map.txt"
+  <a id="map-download-btn" ng-attr-download="{{mapModel.fileName}}.txt"
    class="btn btn-default" ng-style="{top: mapModel.height * 42}">
     Download map file
   </a>
