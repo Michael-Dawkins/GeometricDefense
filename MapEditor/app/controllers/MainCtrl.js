@@ -20,11 +20,12 @@ mapEditor.controller("MainCtrl", function($scope){
   }
 
   function initMapData(mapObj){
+    var fileName = $scope.mapModel ? $scope.mapModel.fileName : "";
     $scope.mapModel = {
       width: mapObj ? mapObj.dimensions.width : 15,
       height: mapObj ? mapObj.dimensions.height : 10,
       cells: [],
-      fileName: $scope.mapModel.fileName || ""
+      fileName: fileName
     };
     initCellMatrix();
     if (mapObj){
