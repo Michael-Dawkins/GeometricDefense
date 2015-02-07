@@ -6,16 +6,33 @@ public class MapSelector : MonoBehaviour {
 
     public ScrollRect mapSelectorScrollRect;
     public RectTransform buttonPrefab;
+    bool isMenuDisplayed = false;
 
     GameObject mapListPanel;
 
 	void Start () {
         mapListPanel = mapSelectorScrollRect.transform.Find("MapListPanel").gameObject;
-        mapSelectorScrollRect.gameObject.SetActive(true);
         TextAsset mapListTextAsset = (TextAsset)Resources.Load("map_list", typeof(TextAsset));
         JSONObject mapListJson = new JSONObject(mapListTextAsset.text);
         ConstructButtonsForJson(mapListJson);
+        ClickReceptor.instance.AddOnClickListener(OnClickReceptorClick);
 	}
+
+    void OnClickReceptorClick() {
+        if (isMenuDisplayed) {
+            HideMapSelector();
+        }
+    }
+
+    public void ShowMapSelector() {
+        mapSelectorScrollRect.gameObject.SetActive(true);
+        isMenuDisplayed = true;
+    }
+
+    public void HideMapSelector() {
+        mapSelectorScrollRect.gameObject.SetActive(false);
+        isMenuDisplayed = false;
+    }
 
     void ConstructButtonsForJson(JSONObject mapListJson) {
         JSONObject mapList = mapListJson.list[mapListJson.keys.IndexOf("maps")];
@@ -23,18 +40,24 @@ public class MapSelector : MonoBehaviour {
         foreach (JSONObject mapObj in mapList.list) {
             string mapName = mapObj.list[mapObj.keys.IndexOf("label")].str;
             string mapResourceName = mapObj.list[mapObj.keys.IndexOf("resourceName")].str;
-            RectTransform button = Instantiate(buttonPrefab, Vector3.zero, Quaternion.identity) as RectTransform;
-            button.localScale = Vector3.one;
-            button.SetParent(mapListPanel.transform, false);
+            RectTransform buttonTrans = Instantiate(buttonPrefab, Vector3.zero, Quaternion.identity) as RectTransform;
+            buttonTrans.localScale = Vector3.one;
+            buttonTrans.SetParent(mapListPanel.transform, false);
             if (lastButton != null){
-                button.anchoredPosition = new Vector2(0, (lastButton.anchoredPosition.y - button.rect.height));
+                buttonTrans.anchoredPosition = new Vector2(0, (lastButton.anchoredPosition.y - buttonTrans.rect.height));
             } else {
-                button.anchoredPosition = new Vector2(0, -(button.rect.height / 2f));
+                buttonTrans.anchoredPosition = new Vector2(0, -(buttonTrans.rect.height / 2f));
             }
-            Text buttonText = button.FindChild("Text").gameObject.GetComponent<Text>();
+            Text buttonText = buttonTrans.FindChild("Text").gameObject.GetComponent<Text>();
+            Button button = buttonTrans.GetComponent<Button>();
+            button.onClick.AddListener(() => LoadMap(mapResourceName));
             buttonText.text = mapName;
-            lastButton = button;
+            lastButton = buttonTrans;
         }
     }
-	
+
+    void LoadMap(string mapResourceName) {
+        HideMapSelector();
+        MapLoader.instance.LoadMap(mapResourceName);
+    }
 }

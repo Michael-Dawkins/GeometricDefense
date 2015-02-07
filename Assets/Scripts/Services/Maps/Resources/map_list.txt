@@ -11,18 +11,6 @@
 		{
 			"label": "Third map",
 			"resourceName": "map_3"
-		},
-		{
-			"label": "Fourth map",
-			"resourceName": "map_4"
-		},
-		{
-			"label": "Fifth map",
-			"resourceName": "map_5"
-		},
-		{
-			"label": "Sixth map",
-			"resourceName": "map_6"
 		}
 	]
 }

@@ -4,7 +4,13 @@ using System.Collections.Generic;
 
 public class ClickReceptor : MonoBehaviour {
 
+    public static ClickReceptor instance;
+
 	public delegate void OnClickListener();
+
+    void Awake() {
+        instance = this;
+    }
 
 	List<OnClickListener> callbacks = new List<OnClickListener>();
 

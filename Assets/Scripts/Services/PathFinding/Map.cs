@@ -6,7 +6,7 @@ public class Map : MonoBehaviour {
 
 	public static Map instance;
 
-	public List<Cell> cellsList = new List<Cell>();
+    public List<Cell> cellsList;
 	public int mapWidth = 15;
 	public int mapHeight = 10;
 	public float cellSize = 0.4f;
@@ -26,26 +26,32 @@ public class Map : MonoBehaviour {
 
 	void Awake () {
 		instance = this;
-		cellsArray = new Cell[mapWidth, mapHeight];
-		
-		onTowerAddCallbacks = new Dictionary<Cell, List<OnTowerAdd>>();
-		onTowerUpgradeCallbacks = new Dictionary<Cell, List<OnTowerUpgrade>>();
-		onTowerSellCallbacks = new Dictionary<Cell, List<OnTowerSell>>();
-
-		for (int x = 0; x < mapWidth; x++){
-			for (int y = 0; y < mapHeight; y++){
-				Cell cell = new Cell(x, y, false);
-				cellsList.Add(cell);
-				cellsArray[x, y] = cell;
-				onTowerAddCallbacks[cell] = new List<OnTowerAdd>();
-				onTowerSellCallbacks[cell] = new List<OnTowerSell>();
-				onTowerUpgradeCallbacks[cell] = new List<OnTowerUpgrade>();
-
-			}
-		}
-
+        InitEmptyMap(mapWidth, mapHeight);
 		Instantiate(goalSprite, GetCellPos(GetCellAt(xGoal, yGoal)), Quaternion.identity);
 	}
+
+    public void InitEmptyMap(int width, int height) {
+        mapWidth = width;
+        mapHeight = height;
+        cellsArray = new Cell[mapWidth, mapHeight];
+        cellsList = new List<Cell>();
+
+        onTowerAddCallbacks = new Dictionary<Cell, List<OnTowerAdd>>();
+        onTowerUpgradeCallbacks = new Dictionary<Cell, List<OnTowerUpgrade>>();
+        onTowerSellCallbacks = new Dictionary<Cell, List<OnTowerSell>>();
+
+        for (int x = 0; x < width; x++) {
+            for (int y = 0; y < height; y++) {
+                Cell cell = new Cell(x, y, false);
+                cellsList.Add(cell);
+                cellsArray[x, y] = cell;
+                onTowerAddCallbacks[cell] = new List<OnTowerAdd>();
+                onTowerSellCallbacks[cell] = new List<OnTowerSell>();
+                onTowerUpgradeCallbacks[cell] = new List<OnTowerUpgrade>();
+
+            }
+        }
+    }
 
 	//Up to 4 cells are found (these are up, left, right, bottom)
 	public List<Cell> FindDirectlyAdjacentCells(Cell cell){

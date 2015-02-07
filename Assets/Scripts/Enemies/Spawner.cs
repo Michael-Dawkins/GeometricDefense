@@ -4,6 +4,8 @@ using System.Collections;
 
 public class Spawner : MonoBehaviour {
 
+    public static Spawner instance;
+
 	public CanTakeDamage enemyToSpawn1;
 	public CanTakeDamage enemyToSpawn2;
 	public CanTakeDamage enemyToSpawn3;
@@ -12,7 +14,7 @@ public class Spawner : MonoBehaviour {
 	public CanTakeDamage enemyToSpawnBoss3;
 
 	public float everyXSeconds = 1.5f;
-	public int numberOfWaves = 20;
+	public int numberOfWaves = 4;
 	public int numberOfAddedEnemyPerWave = 3;
 
 	public float hpIncreaseMultiplier = 1.5f;
@@ -25,6 +27,9 @@ public class Spawner : MonoBehaviour {
 	private bool waitingForUserToStartWave = true;
 	private int enemiesAlive = 0;
 
+    void Awake() {
+        instance = this;
+    }
 
 	void Start () {
 		UpdateWaveCounterDisplay();
@@ -43,6 +48,15 @@ public class Spawner : MonoBehaviour {
 			}
 		}
 	}
+
+    public void Reset() {
+        waitingForUserToStartWave = true;
+        currentWaveProgress = 0;
+        nextSpawningTime = 0;
+        currentWave = 0;
+        enemiesAlive = 0;
+        totalNumberOfEnemyInCurrentWave = 10;
+    }
 
 	public void StartNextWave(){
 		if(waitingForUserToStartWave && !PlayerLife.instance.playerDied){
