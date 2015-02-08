@@ -1,5 +1,7 @@
 <div class="map-name">{{mapModel.fileName}}</div>
-<div class="main-wrapper">
+
+<div class="relative-pos"
+  ng-style="{height: mapModel.height * 42, width: mapModel.width * 42}">
   <div ng-repeat="column in mapModel.cells">
     <div ng-repeat="cell in column"
       class="cell-wrapper"
@@ -7,14 +9,53 @@
       <gd-cell model="cell" on-click="onCellClick(cell)"></gd-cell>
     </div>
   </div>
-  <a id="map-download-btn" ng-attr-download="{{mapModel.fileName}}.txt"
-   class="btn btn-default" ng-style="{top: mapModel.height * 42}">
+</div>
+
+<md-button id="map-download-btn"
+class="md-raised">
+  <a ng-attr-download="{{mapModel.fileName}}.txt">
     Download map file
   </a>
-  <button class="btn btn-default"
-  style="position: absolute; left: 150px"
-  ng-style="{top: mapModel.height * 42}"
+</md-button>
+<md-button
+  class="md-raised copy-json-btn"
   ng-click="copyMapToClipboard()">
-    Copy Json
-  </button>
+  Copy Json
+</md-button>
+<div>
 </div>
+
+<md-content class="md-padding sliders-panel">
+  <div layout>
+    <div flex="10" layout
+      layout-align="center center">
+      <span>Map Width</span>
+    </div>
+    <md-slider flex min="10" max="26"
+    ng-model="mapModel.width" aria-label="red"
+    id="red-slider" class="md-warn">
+    </md-slider>
+    <div flex="20" layout
+    layout-align="center center">
+      <input type="number"
+      ng-model="mapModel.width" aria-label="red"
+      aria-controls="red-slider">
+    </div>
+  </div>
+  <div layout>
+    <div flex="10" layout
+      layout-align="center center">
+      <span>Map Height</span>
+    </div>
+    <md-slider flex min="10" max="20"
+    ng-model="mapModel.height" aria-label="red"
+    id="red-slider" class="md-warn">
+    </md-slider>
+    <div flex="20" layout
+    layout-align="center center">
+      <input type="number"
+      ng-model="mapModel.height" aria-label="red"
+      aria-controls="red-slider">
+    </div>
+  </div>
+</md-content>

@@ -17,19 +17,35 @@ mapEditor.controller("MainCtrl", function($scope){
     $scope.copyMapToClipboard = copyMapToClipboard;
     setUpDragFromDesktop();
     setUpDownloadBtn();
+
+    $scope.$watch('mapModel.width', function(){
+      initMapData();
+    });
+    $scope.$watch('mapModel.height', function(){
+      initMapData();
+    });
   }
 
-  function initMapData(mapObj){
+  function initMapData(mapJsonFromFile){
     var fileName = $scope.mapModel ? $scope.mapModel.fileName : "";
+    var width = $scope.mapModel ? $scope.mapModel.width : 15;
+    var height = $scope.mapModel ? $scope.mapModel.height : 10;
+    width = mapJsonFromFile ? mapJsonFromFile.dimensions.width : width;
+    height = mapJsonFromFile ? mapJsonFromFile.dimensions.height : height;
+    var cells = $scope.mapModel ? $scope.mapModel.cells : [];
     $scope.mapModel = {
-      width: mapObj ? mapObj.dimensions.width : 15,
-      height: mapObj ? mapObj.dimensions.height : 10,
-      cells: [],
+      width: width,
+      height: height,
+      cells: cells,
       fileName: fileName
     };
-    initCellMatrix();
-    if (mapObj){
-      _.each(mapObj.cells.walls, function(cell){
+    if (mapJsonFromFile){
+      initCellMatrix(false);
+    } else {
+      initCellMatrix(true);
+    }
+    if (mapJsonFromFile){
+      _.each(mapJsonFromFile.cells.walls, function(cell){
         findCell(cell.x, cell.y).isObstacle = true;
       });
     }
@@ -39,11 +55,13 @@ mapEditor.controller("MainCtrl", function($scope){
     return _.findWhere(_.flatten($scope.mapModel.cells), {x: x, y: y});
   }
 
-  function loadMap(mapObj){
-    initMapData(mapObj);
+  function loadMap(mapJsonFromFile){
+    initMapData(mapJsonFromFile);
   }
 
-  function initCellMatrix(){
+  function initCellMatrix(keepOldData){
+    var oldCells = $scope.mapModel.cells;
+    $scope.mapModel.cells = [];
     for(var i=0; i< $scope.mapModel.width; i++) {
       $scope.mapModel.cells[i] = new Array($scope.mapModel.height);
     }
@@ -51,10 +69,16 @@ mapEditor.controller("MainCtrl", function($scope){
     //init cells
     _.each($scope.mapModel.cells, function(column, x){
       _.each(column, function(cell, y){
+        var isObstacle = false;
+        if (keepOldData){
+          if (oldCells[x] !== undefined && oldCells[x][y] !== undefined){
+            isObstacle = oldCells[x][y].isObstacle;
+          }
+        }
         column[y] = {
           x: x,
           y: y,
-          isObstacle: false
+          isObstacle: isObstacle
         }
       });
     });
@@ -104,7 +128,7 @@ mapEditor.controller("MainCtrl", function($scope){
 
   function assignFileToButton(){
     setTimeout(function(){
-      var link = document.getElementById('map-download-btn');
+      var link = document.querySelector("#map-download-btn a");
       link.href = makeTextFile(JSON.stringify(getMapJson(), null, 2));
     }, 250);
   }

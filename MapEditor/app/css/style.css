@@ -1,13 +1,16 @@
+div, span {
+  font-family: RobotoDraft, Roboto, 'Helvetica Neue', sans-serif;
+}
+
 #map-editor-body{
     margin-left: 100px;
-    margin-top: 50px;
+    margin-top: 30px;
 }
 
 .cell-container{
   display: inline-block;
   width: 40px;
   height: 40px;
-  border: solid 1px rgb(187, 187, 187);
   cursor: pointer;
 }
 
@@ -16,7 +19,7 @@
   position: absolute;
 }
 
-.main-wrapper{
+.relative-pos{
   position: relative;
 }
 
@@ -24,11 +27,20 @@
   -webkit-user-select: none;
 }
 
-#map-download-btn{
-  position: absolute;
-  left: 0;
+.copy-json-btn{
+  margin-left: 10px;
+}
+
+#map-download-btn > a {
+  text-decoration: none;
 }
 
 .map-name{
   font-size: 2em;
+}
+
+.sliders-panel{
+  overflow-x: hidden;
+  margin-top: 5px;
+  width: 70%;
 }

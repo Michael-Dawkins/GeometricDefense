@@ -1,1 +1,1 @@
-mapEditor = angular.module("mapEditor", []);
+mapEditor = angular.module("mapEditor", ["ngAnimate","ngMaterial"]);

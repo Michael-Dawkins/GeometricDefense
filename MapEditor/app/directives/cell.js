@@ -14,7 +14,7 @@ mapEditor.directive("gdCell", function(){
       }, true);
 
       function updateStyleObj(){
-        var color = "white";
+        var color = "rgb(230,230,230)";
         if (scope.cell.isObstacle){
           color = "red";
         }

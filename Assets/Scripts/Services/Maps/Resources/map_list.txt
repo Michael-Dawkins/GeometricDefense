@@ -11,6 +11,10 @@
 		{
 			"label": "Third map",
 			"resourceName": "map_3"
+		},
+		{
+			"label": "Fourth map",
+			"resourceName": "map_4"
 		}
 	]
 }
