@@ -16,7 +16,7 @@ public class PlayerUpgradeMoney : MonoBehaviour {
     }
     
     void Start () {
-        _Money = 0;
+        _Money = 25;
 	}
 
     void OnDestroy() {

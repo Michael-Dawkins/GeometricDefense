@@ -2,12 +2,16 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class PlayerUgrades : MonoBehaviour {
+public class PlayerUpgrades: MonoBehaviour {
 
-    public static PlayerUgrades instance;
+    public static PlayerUpgrades instance;
     PlayerUpgradeMoney playerUpgradeMoney;
-    public event OnPlayerUpgradesLoaded PlayerUpgradesLoaded;
+    public event OnPlayerUpgradesLoaded PlayerUpgradesLoaded = delegate { };
     public delegate void OnPlayerUpgradesLoaded();
+
+    public event OnPlayerUpgradeBought PlayerUgradeBought = delegate { };
+    public delegate void OnPlayerUpgradeBought();
+
     public bool loaded = false;
 
     public List<Upgrade> Upgrades {
@@ -28,9 +32,7 @@ public class PlayerUgrades : MonoBehaviour {
         JSONObject upgradesJson = upgradesJsonRoot.list[upgradesJsonRoot.keys.IndexOf("upgrades")];
         upgradesJson.list.ForEach(u => _Upgrades.Add(new Upgrade(u)));
         _Upgrades.ForEach(u => Debug.Log(u.name));
-        if (PlayerUpgradesLoaded != null) {
-            PlayerUpgradesLoaded();
-        }
+        PlayerUpgradesLoaded();
         loaded = true;
 	}
 
@@ -40,6 +42,7 @@ public class PlayerUgrades : MonoBehaviour {
                 + upgrade.cost + " player upgrade money");
             playerUpgradeMoney.Money -= upgrade.cost;
             upgrade.bought = true;
+            PlayerUgradeBought();
             //TODO save in PlayerPrefs
         } else {
             Debug.Log("Couldn't buy " + upgrade.name + " for "

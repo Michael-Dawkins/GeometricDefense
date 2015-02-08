@@ -12,17 +12,17 @@ public class UpgradeMenu : MonoBehaviour {
 
     void Start() {
         //Like an angular promise
-        if (PlayerUgrades.instance.loaded) {
+        if (PlayerUpgrades.instance.loaded) {
             Init();
         } else {
-            PlayerUgrades.instance.PlayerUpgradesLoaded += Init;
+            PlayerUpgrades.instance.PlayerUpgradesLoaded += Init;
         }
     }
 
     void Init() {
         upgradeListPanel = upgradeMenuScrollRect.transform.Find("UpgradeListPanel").gameObject;
         ClickReceptor.instance.AddOnClickListener(OnClickReceptorClick);
-        ConstructButtonsFromUpgradeslist(PlayerUgrades.instance.Upgrades);
+        ConstructButtonsFromUpgradeslist(PlayerUpgrades.instance.Upgrades);
     }
 
     public void ShowMenu() {
@@ -54,9 +54,13 @@ public class UpgradeMenu : MonoBehaviour {
             }
             Text buttonText = buttonTrans.FindChild("Text").gameObject.GetComponent<Text>();
             Button button = buttonTrans.GetComponent<Button>();
-            button.onClick.AddListener(() => PlayerUgrades.instance.BuyUpgrade(upgrade));
+            AddButtonListener(button, upgrade);
             buttonText.text = upgrade.name + ": " + upgrade.cost;
             lastButton = buttonTrans;
         }
+    }
+
+    void AddButtonListener(Button button, Upgrade upgrade) {
+        button.onClick.AddListener(() => PlayerUpgrades.instance.BuyUpgrade(upgrade));
     }
 }
