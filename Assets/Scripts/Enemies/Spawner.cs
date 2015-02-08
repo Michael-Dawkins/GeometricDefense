@@ -4,8 +4,6 @@ using System.Collections;
 
 public class Spawner : MonoBehaviour {
 
-    public static Spawner instance;
-
 	public CanTakeDamage enemyToSpawn1;
 	public CanTakeDamage enemyToSpawn2;
 	public CanTakeDamage enemyToSpawn3;
@@ -26,10 +24,6 @@ public class Spawner : MonoBehaviour {
 	public Text waveCounterText;
 	private bool waitingForUserToStartWave = true;
 	private int enemiesAlive = 0;
-
-    void Awake() {
-        instance = this;
-    }
 
 	void Start () {
 		UpdateWaveCounterDisplay();

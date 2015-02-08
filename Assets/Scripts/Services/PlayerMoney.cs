@@ -8,7 +8,7 @@ public class PlayerMoney : MonoBehaviour {
 	public static PlayerMoney instance;
 
 	public Text goldLabel;
-	public int money = 1000;
+	int money;
 	public int Money {
 		get {
 			return money;
@@ -32,8 +32,12 @@ public class PlayerMoney : MonoBehaviour {
 	}
 
 	void Start () {
-		UpdateMoneyLabel();
+        ResetAmount();
 	}
+
+    public void ResetAmount() {
+        Money = 1000;
+    }
 
 	void UpdateMoneyLabel(){
 		goldLabel.text = "gold: " + money.ToString();

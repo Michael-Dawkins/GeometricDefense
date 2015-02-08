@@ -52,6 +52,10 @@ public class UpgradableTower : MonoBehaviour {
 
 	void OnDestroy(){
 		UIState.RemoveTowerSelectionListener(OnDeselect);
+        if (clickReceptor == null) {
+            clickReceptor = GameObject.Find("ClickReceptorCanvas").GetComponentInChildren<ClickReceptor>();
+        }
+        clickReceptor.RemoveOnClickListener(OnDeselect);
         PlayerMoney.instance.RemoveOnMoneyChangeListener(UpdateUpgradeButtonAvailability);
 	}
 
@@ -101,7 +105,8 @@ public class UpgradableTower : MonoBehaviour {
 		if (currentTowerRangeObject == null){
 			CanShoot canShoot = GetComponent<CanShoot>();
 			currentTowerRangeObject = Instantiate (towerRangePrefab, transform.position, Quaternion.identity) as GameObject;
-			GDUtils.ScaleTransformToXWorldUnit(
+            currentTowerRangeObject.transform.SetParent(transform);
+            GDUtils.ScaleTransformToXWorldUnit(
 				currentTowerRangeObject.transform, (map.cellSize * canShoot.cellRange + map.cellSize / 2f) * 2f);
 			SpriteRenderer towerRangeRenderer = currentTowerRangeObject.GetComponent<SpriteRenderer>();
 			Color color = towerSpriteGlowObj.GetComponent<SpriteRenderer>().color;

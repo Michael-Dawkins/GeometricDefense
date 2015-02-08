@@ -33,6 +33,10 @@ public class PlayerLife : MonoBehaviour {
 		UpdateLivesLabel();
 	}
 
+    public void Reset() {
+        Lives = 10;
+    }
+
 	void UpdateLivesLabel() {
 		label.text = "lives: " + _Lives;
 	}

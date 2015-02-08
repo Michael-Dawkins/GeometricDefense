@@ -15,7 +15,7 @@ public class MapLoader : MonoBehaviour {
         TextAsset mapTextAsset = (TextAsset)Resources.Load("map_1", typeof(TextAsset));
         JSONObject mapJson = new JSONObject(mapTextAsset.text);
         LoadCells(mapJson);
-        PathFinder.instance.FindGlobalPath(map.GetCellAt(map.xStart, map.yStart), map.GetCellAt(map.xGoal, map.yGoal));
+        ResetGameState();
     }
 
     public void LoadMap(string mapResourceName) {
@@ -30,8 +30,30 @@ public class MapLoader : MonoBehaviour {
         TileGenerator.instance.ResetTiles();
         DestroyAllEnemies();
         LoadCells(mapJson);
-        Spawner.instance.Reset();
+        ResetGameState();
+        
+    }
+
+    void ResetGameState() {
         PathFinder.instance.FindGlobalPath(map.GetCellAt(map.xStart, map.yStart), map.GetCellAt(map.xGoal, map.yGoal));
+        PlayerLife.instance.Reset();
+        PlayerMoney.instance.ResetAmount();
+        MapBackground.instance.UpdateNeonBorderPosition();
+        AdjustCameraToMapSize();
+        Spawners.instance.Reset();
+        Towers.instance.DestroyAllTowers();//TODO problem on onDeselect afterwards, check removal after tower selection
+    }
+
+    void AdjustCameraToMapSize() {
+        float mapHeightInWorldUnits = map.mapHeight * map.cellSize;
+        float mapWidthInWorldUnits = map.mapWidth * map.cellSize;
+        float bottomOffset = 2.2f * map.cellSize;
+        Camera camera = Camera.main;
+        camera.orthographicSize = (mapHeightInWorldUnits + bottomOffset) / 2f;
+        camera.transform.position = new Vector3(
+            mapWidthInWorldUnits / 2f,
+            (mapHeightInWorldUnits + bottomOffset) / 2f - bottomOffset + bottomOffset / 10f,
+            -1f);
     }
 
     void DestroyAllEnemies() {
