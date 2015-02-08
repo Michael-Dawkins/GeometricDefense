@@ -1,0 +1,20 @@
+{
+  "upgrades": [
+    {
+      "upgradeName": "TowerSquare",
+      "upgradeCost": 10
+    },
+    {
+      "upgradeName": "TowerTriangle",
+      "upgradeCost": 10
+    },
+    {
+      "upgradeName": "IonCharge",
+      "upgradeCost": 20
+    },
+    {
+      "upgradeName" : "Plasma",
+      "upgradeCost" : 15
+    }
+  ]
+}
