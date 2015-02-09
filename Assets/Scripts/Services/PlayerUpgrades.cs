@@ -1,9 +1,11 @@
 ﻿using UnityEngine;
 using System.Collections;
 using System.Collections.Generic;
+using System;
 
 public class PlayerUpgrades: MonoBehaviour {
 
+    static string PLAYER_PREF_KEY = "UPGRADES";
     public static PlayerUpgrades instance;
     PlayerUpgradeMoney playerUpgradeMoney;
     public event OnPlayerUpgradesLoaded PlayerUpgradesLoaded = delegate { };
@@ -25,16 +27,38 @@ public class PlayerUpgrades: MonoBehaviour {
     }
 
 	void Start () {
+        LoadUpgradesFromPrefsAndJson();
+        PlayerUpgradesLoaded();
+        loaded = true;
+	}
+
+    void LoadUpgradesFromPrefsAndJson() {
         playerUpgradeMoney = PlayerUpgradeMoney.instance;
+        List<Upgrade> upgradesLoaded = null;
+        try {
+            upgradesLoaded = SaveTools.LoadFromPlayerPrefs(PLAYER_PREF_KEY) as List<Upgrade>;
+        } catch (Exception e) {
+            Debug.Log("First load, no upgrades found in player prefs");
+        }
         _Upgrades = new List<Upgrade>();
         TextAsset upgradesTextAsset = (TextAsset)Resources.Load("upgrades", typeof(TextAsset));
         JSONObject upgradesJsonRoot = new JSONObject(upgradesTextAsset.text);
         JSONObject upgradesJson = upgradesJsonRoot.list[upgradesJsonRoot.keys.IndexOf("upgrades")];
         upgradesJson.list.ForEach(u => _Upgrades.Add(new Upgrade(u)));
-        _Upgrades.ForEach(u => Debug.Log(u.name));
-        PlayerUpgradesLoaded();
-        loaded = true;
-	}
+        if (upgradesLoaded != null) {
+            _Upgrades.ForEach(u => {
+                Upgrade upgradeFromPlayerPrefs = upgradesLoaded.Find(e => e.name == u.name);
+                if (upgradeFromPlayerPrefs != null) {
+                    u.bought = upgradeFromPlayerPrefs.bought;
+                }
+            });
+        }
+    }
+
+    public void ClearPlayerPrefs() {
+        Debug.Log("PlayerPref " + PLAYER_PREF_KEY + " was deleted from PlayPrefs");
+        PlayerPrefs.DeleteKey(PLAYER_PREF_KEY);
+    }
 
     public void BuyUpgrade(Upgrade upgrade) {
         if (upgrade.cost <= playerUpgradeMoney.Money) {
@@ -43,7 +67,8 @@ public class PlayerUpgrades: MonoBehaviour {
             playerUpgradeMoney.Money -= upgrade.cost;
             upgrade.bought = true;
             PlayerUgradeBought();
-            //TODO save in PlayerPrefs
+            SaveTools.SaveInPlayerPrefs(PLAYER_PREF_KEY, Upgrades);
+
         } else {
             Debug.Log("Couldn't buy " + upgrade.name + " for "
                 + upgrade.cost + "player upgrade money, player only has"
