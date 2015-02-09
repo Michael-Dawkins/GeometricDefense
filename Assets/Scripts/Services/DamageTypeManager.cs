@@ -9,6 +9,7 @@ public class DamageTypeManager : MonoBehaviour{
 	public DamageType currentDamageType = DamageType.Plasma;
 	public delegate void OnDamageTypeSelectionChange();
 	public List<OnDamageTypeSelectionChange> callbacks = new List<OnDamageTypeSelectionChange>();
+    PlayerUpgrades playerUpgrades;
 
 	public enum DamageType {
 		Plasma,
@@ -19,6 +20,10 @@ public class DamageTypeManager : MonoBehaviour{
 	void Awake(){
 		instance = this;
 	}
+
+    void Start() {
+        playerUpgrades = PlayerUpgrades.instance;
+    }
 
 	public static Color GetDamageTypeColor(DamageType damageType){
 		switch(damageType){
@@ -34,15 +39,27 @@ public class DamageTypeManager : MonoBehaviour{
 
 	public void SelectNextDamageType(){
 		switch(currentDamageType){
-		case DamageType.Plasma:
-			currentDamageType = DamageType.Antimatter;
-			break;
 		case DamageType.Antimatter:
-			currentDamageType = DamageType.IonCharge;
+            if (playerUpgrades.HasPLayerGotUpgrade("IonCharge")) {
+                currentDamageType = DamageType.IonCharge;
+            } else {
+                if (playerUpgrades.HasPLayerGotUpgrade("Plasma")) {
+                    currentDamageType = DamageType.Plasma;
+                } else {
+                    return;
+                }
+            }
 			break;
 		case DamageType.IonCharge:
-			currentDamageType = DamageType.Plasma;
+            if (playerUpgrades.HasPLayerGotUpgrade("Plasma")) {
+                 currentDamageType = DamageType.Plasma;
+            } else {
+                currentDamageType = DamageType.Antimatter;
+            }
 			break;
+        case DamageType.Plasma:
+            currentDamageType = DamageType.Antimatter;
+            break;
 		}
 		DamageTypeSelectionChange();
 	}

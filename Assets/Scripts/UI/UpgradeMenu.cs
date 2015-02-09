@@ -5,33 +5,32 @@ using UnityEngine.UI;
 
 public class UpgradeMenu : MonoBehaviour {
 
-    public ScrollRect upgradeMenuScrollRect;
+    public GameObject upgradeMenu;
     public RectTransform buttonPrefab;
     bool isMenuDisplayed = false;
     GameObject upgradeListPanel;
+    Dictionary<Upgrade, Text> upgradeTexts;
 
     void Start() {
-        //Like an angular promise
-        if (PlayerUpgrades.instance.loaded) {
-            Init();
-        } else {
-            PlayerUpgrades.instance.PlayerUpgradesLoaded += Init;
-        }
+        PlayerUpgrades.instance.OnLoad(Init);
     }
 
     void Init() {
-        upgradeListPanel = upgradeMenuScrollRect.transform.Find("UpgradeListPanel").gameObject;
+        upgradeTexts = new Dictionary<Upgrade, Text>();
+        upgradeListPanel = upgradeMenu.transform.Find("PlayerUpgradesView/UpgradeListPanel").gameObject;
         ClickReceptor.instance.AddOnClickListener(OnClickReceptorClick);
         ConstructButtonsFromUpgradeslist(PlayerUpgrades.instance.Upgrades);
+        UpdateButtonStates();
+        PlayerUpgrades.instance.PlayerUgradeBought += UpdateButtonStates;
     }
 
     public void ShowMenu() {
-        upgradeMenuScrollRect.gameObject.SetActive(true);
+        upgradeMenu.gameObject.SetActive(true);
         isMenuDisplayed = true;
     }
 
     public void HideMenu() {
-        upgradeMenuScrollRect.gameObject.SetActive(false);
+        upgradeMenu.gameObject.SetActive(false);
         isMenuDisplayed = false;
     }
 
@@ -56,11 +55,22 @@ public class UpgradeMenu : MonoBehaviour {
             Button button = buttonTrans.GetComponent<Button>();
             AddButtonListener(button, upgrade);
             buttonText.text = upgrade.name + ": " + upgrade.cost;
+            upgradeTexts.Add(upgrade, buttonText);
             lastButton = buttonTrans;
         }
     }
 
     void AddButtonListener(Button button, Upgrade upgrade) {
         button.onClick.AddListener(() => PlayerUpgrades.instance.BuyUpgrade(upgrade));
+    }
+
+    void UpdateButtonStates() {
+        foreach(KeyValuePair<Upgrade, Text> entry in upgradeTexts){
+            entry.Value.SetAlpha(entry.Key.bought ? 0.3f : 1f);
+        }
+    }
+
+    void OnDestroy() {
+        PlayerUpgrades.instance.PlayerUgradeBought -= UpdateButtonStates;
     }
 }

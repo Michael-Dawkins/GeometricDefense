@@ -5,11 +5,11 @@ using System;
 
 public class PlayerUpgrades: MonoBehaviour {
 
-    static string PLAYER_PREF_KEY = "UPGRADES";
+    static string PLAYER_PREFS_KEY = "UPGRADES";
     public static PlayerUpgrades instance;
     PlayerUpgradeMoney playerUpgradeMoney;
-    public event OnPlayerUpgradesLoaded PlayerUpgradesLoaded = delegate { };
     public delegate void OnPlayerUpgradesLoaded();
+    List<OnPlayerUpgradesLoaded> loadCallbacks = new List<OnPlayerUpgradesLoaded>();
 
     public event OnPlayerUpgradeBought PlayerUgradeBought = delegate { };
     public delegate void OnPlayerUpgradeBought();
@@ -28,16 +28,16 @@ public class PlayerUpgrades: MonoBehaviour {
 
 	void Start () {
         LoadUpgradesFromPrefsAndJson();
-        PlayerUpgradesLoaded();
+        loadCallbacks.ForEach(c => c());
         loaded = true;
 	}
 
     void LoadUpgradesFromPrefsAndJson() {
         playerUpgradeMoney = PlayerUpgradeMoney.instance;
         List<Upgrade> upgradesLoaded = null;
-        try {
-            upgradesLoaded = SaveTools.LoadFromPlayerPrefs(PLAYER_PREF_KEY) as List<Upgrade>;
-        } catch (Exception e) {
+        if (PlayerPrefs.HasKey(PLAYER_PREFS_KEY)) {
+            upgradesLoaded = SaveTools.LoadFromPlayerPrefs(PLAYER_PREFS_KEY) as List<Upgrade>;
+        } else {
             Debug.Log("First load, no upgrades found in player prefs");
         }
         _Upgrades = new List<Upgrade>();
@@ -55,24 +55,36 @@ public class PlayerUpgrades: MonoBehaviour {
         }
     }
 
+    public void OnLoad(OnPlayerUpgradesLoaded callback) {
+        if (!loaded) {
+            loadCallbacks.Add(callback);
+        } else {
+            callback();
+        }
+    }
+
     public void ClearPlayerPrefs() {
-        Debug.Log("PlayerPref " + PLAYER_PREF_KEY + " was deleted from PlayPrefs");
-        PlayerPrefs.DeleteKey(PLAYER_PREF_KEY);
+        Debug.Log("PlayerPref " + PLAYER_PREFS_KEY + " was deleted from PlayPrefs");
+        PlayerPrefs.DeleteKey(PLAYER_PREFS_KEY);
     }
 
     public void BuyUpgrade(Upgrade upgrade) {
+        if (upgrade.bought) {
+            Debug.Log("Upgrade " + upgrade.name + " is already own");
+            return;
+        }
         if (upgrade.cost <= playerUpgradeMoney.Money) {
             Debug.Log("Bought " + upgrade.name + " for " 
                 + upgrade.cost + " player upgrade money");
             playerUpgradeMoney.Money -= upgrade.cost;
             upgrade.bought = true;
             PlayerUgradeBought();
-            SaveTools.SaveInPlayerPrefs(PLAYER_PREF_KEY, Upgrades);
+            SaveTools.SaveInPlayerPrefs(PLAYER_PREFS_KEY, Upgrades);
 
         } else {
             Debug.Log("Couldn't buy " + upgrade.name + " for "
-                + upgrade.cost + "player upgrade money, player only has"
-                + playerUpgradeMoney.Money);
+                + upgrade.cost + "player upgrade money, player only has "
+                + playerUpgradeMoney.Money + " playerUpgradeMoney");
         }
     }
 

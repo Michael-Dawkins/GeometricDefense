@@ -9,12 +9,7 @@ public class UpgradeDependent : MonoBehaviour {
 	void Start () {
         playerUpgrades = PlayerUpgrades.instance;
         playerUpgrades.PlayerUgradeBought += UpdateGameObjectState;
-        //My promise pattern
-        if (playerUpgrades.loaded) {
-            UpdateGameObjectState();
-        } else {
-            playerUpgrades.PlayerUpgradesLoaded += UpdateGameObjectState;
-        }
+        playerUpgrades.OnLoad(UpdateGameObjectState);
 	}
 
     void UpdateGameObjectState() {
