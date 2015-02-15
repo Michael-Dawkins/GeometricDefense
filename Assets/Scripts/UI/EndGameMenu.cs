@@ -27,7 +27,7 @@ public class EndGameMenu : MonoBehaviour {
     void UpdateView() {
         string endGameText = "Mission " + (PlayerLife.instance.playerDied ? "Failed" : "Complete");
         endGameLabel.text = endGameText;
-        string pointsEarnedText = "Points earned: ";
+        string pointsEarnedText = "Upgrade points earned: ";
         upgradePointsEarnedLabel.text = pointsEarnedText + PlayerUpgrades.instance.lastAmountEarned;
     }
 }

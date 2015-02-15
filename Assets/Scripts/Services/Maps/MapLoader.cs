@@ -31,7 +31,6 @@ public class MapLoader : MonoBehaviour {
         DestroyAllEnemies();
         LoadCells(mapJson);
         ResetGameState();
-        
     }
 
     void ResetGameState() {

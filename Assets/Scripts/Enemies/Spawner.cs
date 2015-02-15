@@ -50,6 +50,7 @@ public class Spawner : MonoBehaviour {
         currentWave = 0;
         enemiesAlive = 0;
         totalNumberOfEnemyInCurrentWave = 10;
+        UpdateWaveCounterDisplay();
     }
 
 	public void StartNextWave(){
