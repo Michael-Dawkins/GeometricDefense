@@ -8,12 +8,13 @@ public class PlayerUpgrades: MonoBehaviour {
     static string PLAYER_PREFS_KEY = "UPGRADES";
     public static PlayerUpgrades instance;
     PlayerUpgradeMoney playerUpgradeMoney;
+    float moneyPerWin = 15f;
+    public float lastAmountEarned = 0f;
+    
     public delegate void OnPlayerUpgradesLoaded();
     List<OnPlayerUpgradesLoaded> loadCallbacks = new List<OnPlayerUpgradesLoaded>();
-
     public event OnPlayerUpgradeBought PlayerUgradeBought = delegate { };
     public delegate void OnPlayerUpgradeBought();
-
     public bool loaded = false;
 
     public List<Upgrade> Upgrades {
@@ -61,6 +62,16 @@ public class PlayerUpgrades: MonoBehaviour {
         } else {
             callback();
         }
+    }
+
+    //Win the default upgrade points amount specified in moneyPerwin field
+    public void WinUpgradePoints(){
+        playerUpgradeMoney.Money += moneyPerWin;
+        lastAmountEarned = moneyPerWin;
+    }
+
+    public void ResetLastAmountEarned() {
+        lastAmountEarned = 0f;
     }
 
     public void ClearPlayerPrefs() {

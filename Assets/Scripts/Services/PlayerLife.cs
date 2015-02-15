@@ -23,7 +23,6 @@ public class PlayerLife : MonoBehaviour {
 
 	//Prefabs
 	public Text label;
-	public Text endingSentence;
 
 	void Awake(){
 		instance = this;
@@ -35,6 +34,7 @@ public class PlayerLife : MonoBehaviour {
 
     public void Reset() {
         Lives = 10;
+        playerDied = false;
     }
 
 	void UpdateLivesLabel() {
@@ -42,13 +42,13 @@ public class PlayerLife : MonoBehaviour {
 	}
 	
 	void GameOver() {
-		endingSentence.enabled = true;
-		endingSentence.text = "Game Over";
-		playerDied = true;
+        playerDied = true;
+        PlayerUpgrades.instance.ResetLastAmountEarned();
+        EndGameMenu.instance.Show();
 	}
 
 	public void WinTheGame(){
-		endingSentence.enabled = true;
-		endingSentence.text = "You win!";
+        PlayerUpgrades.instance.WinUpgradePoints();
+        EndGameMenu.instance.Show();
 	}
 }
