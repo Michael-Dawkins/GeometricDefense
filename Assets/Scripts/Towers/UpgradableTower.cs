@@ -55,6 +55,9 @@ public class UpgradableTower : MonoBehaviour {
 	void OnDestroy(){
 		UIState.RemoveTowerSelectionListener(OnDeselect);
         if (clickReceptor == null) {
+            if (GameObject.Find("ClickReceptorCanvas") == null) {
+                return;
+            }
             clickReceptor = GameObject.Find("ClickReceptorCanvas").GetComponentInChildren<ClickReceptor>();
         }
         clickReceptor.RemoveOnClickListener(OnDeselect);

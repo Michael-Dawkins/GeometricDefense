@@ -43,6 +43,8 @@ public class CanShootLasers : CanShoot {
 
 	override protected void Shoot(CanTakeDamage target) {
 		base.Shoot(target);
+        towerSpriteCenterAnimator.SetTrigger("shooting");
+        towerSpriteGlowAnimator.SetTrigger("shooting");
 		audio.PlayOneShot(shootingSound, 0.5f);
 
 		GameObject topLaserObj = Instantiate(laserPrefab) as GameObject;
