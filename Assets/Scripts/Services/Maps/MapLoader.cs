@@ -14,6 +14,7 @@ public class MapLoader : MonoBehaviour {
         map = Map.instance;
         TextAsset mapTextAsset = (TextAsset)Resources.Load("map_1", typeof(TextAsset));
         JSONObject mapJson = new JSONObject(mapTextAsset.text);
+        Screen.sleepTimeout = SleepTimeout.NeverSleep;
         LoadCells(mapJson);
         ResetGameState();
     }
