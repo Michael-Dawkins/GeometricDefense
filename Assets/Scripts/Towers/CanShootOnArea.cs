@@ -32,6 +32,7 @@ public class CanShootOnArea : CanShoot {
 				isAttacking = true;
 				StartPuslingWaveAnimation();
 			}
+
 			foreach(CanTakeDamage enemy in targets) {
 				Shoot(enemy);
 			}
@@ -50,12 +51,20 @@ public class CanShootOnArea : CanShoot {
 	void StartPuslingWaveAnimation(){
 		pulsingWaveAnimator.enabled = true;
 		pulsingWaveAnimator.SetBool("isAttacking", true);
+
+        //Swirl
+        towerSpriteCenterAnimator.SetBool("squareRotation", true);
+        towerSpriteGlowAnimator.SetBool("squareRotation", true);
 	}
 
 	void StopPulsingWaveAnimation(){
 		pulsingWaveAnimator.SetBool("isAttacking", false);
 		pulsingWaveAnimator.enabled = false;
 		puslingWaveRenderer.color = new Color(puslingWaveRenderer.color.r, puslingWaveRenderer.color.g, puslingWaveRenderer.color.b, 0f);
+
+        //Swirl
+        towerSpriteCenterAnimator.SetBool("squareRotation", false);
+        towerSpriteGlowAnimator.SetBool("squareRotation", false);
 	}
 
 	protected override void LateUpdate(){
