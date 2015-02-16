@@ -16,6 +16,7 @@ public class UpgradableTower : MonoBehaviour {
 	GameObject clickableObject;
 	PlayerMoney playerMoney;
 	GameObject upgradeButtonObject;
+    GameObject dpsLabel;
 	GameObject sellButtonObject;
 //	GameObject towerSpriteCenterObj;
 	GameObject towerSpriteGlowObj;
@@ -37,6 +38,7 @@ public class UpgradableTower : MonoBehaviour {
 		playerMoney = PlayerMoney.instance;
 		upgradeCanvas =  GetComponentsInChildren<Canvas>(true)[0];
 		upgradeButtonObject = upgradeCanvas.transform.Find("UpgradeButton").gameObject;
+        dpsLabel = upgradeCanvas.transform.Find("DpsLabel").gameObject;
 		upgradeButtonBackground = upgradeCanvas.transform.Find("UpgradeButtonBackground").gameObject;
 		sellButtonBackground = upgradeCanvas.transform.Find("SellButtonBackground").gameObject;
 		sellButtonObject = upgradeCanvas.transform.Find("SellButton").gameObject;
@@ -64,11 +66,19 @@ public class UpgradableTower : MonoBehaviour {
 			UIState.TowerSelection();
 			DisplaySellButton();
 			DisplayUpgradeButton();
+            DisplayDPSLabel();
 			isContextualMenuOpen = true;
 		} else {
 			OnDeselect();
 		}
 	}
+
+    public void DisplayDPSLabel() {
+        CanShoot canShoot = GetComponent<CanShoot>();
+        float dps = canShoot.DPS;
+        dpsLabel.SetActive(true);
+        dpsLabel.GetComponent<Text>().text = dps + " " + canShoot.DpsLabel;
+    }
 	
 	public void DisplayUpgradeButton() {
 		if (towerLevel < maxLevel){
@@ -174,6 +184,7 @@ public class UpgradableTower : MonoBehaviour {
 		sellButtonObject.SetActive(false);
 		upgradeButtonBackground.SetActive(false);
 		sellButtonBackground.SetActive(false);
+        dpsLabel.SetActive(false);
 		HideTowerRange();
 		isContextualMenuOpen = false;
 	}

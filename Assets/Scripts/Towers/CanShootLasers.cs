@@ -10,6 +10,7 @@ public class CanShootLasers : CanShoot {
 
 	protected override void Start() {
 		base.Start();
+        DpsLabel = "Damage"; //For tower info on select, a triangle has no "DPS" per say, but a damage per laser
 		GameObject topColliderObj = new GameObject ("TopCollider");
 		GameObject leftColliderObj = new GameObject ("LeftCollider");
 		GameObject rightColliderObj = new GameObject ("RightCollider");

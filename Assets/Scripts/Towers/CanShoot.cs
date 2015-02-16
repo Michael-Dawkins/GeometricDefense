@@ -13,6 +13,11 @@ public abstract class CanShoot : MonoBehaviour {
 	public DamageTypeManager.DamageType damageType;
 	public Color towerColor;
 
+    public string DpsLabel = "DPS";
+    public virtual float DPS {
+        get { return Damage; }
+    }
+
 	protected Animator towerSpriteCenterAnimator;
 	protected Animator towerSpriteGlowAnimator;
 	protected virtual float ColliderRadius {

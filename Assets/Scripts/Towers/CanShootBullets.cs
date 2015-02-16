@@ -10,6 +10,12 @@ public class CanShootBullets : CanShoot {
 	public float shootingRate;
 	public AudioClip shootingSound;
 
+    public override float DPS {
+        get {
+            return Damage * shootingRate;
+        }
+    }
+
 	// Use this for initialization
 	protected override void Start() {
 		base.Start();
