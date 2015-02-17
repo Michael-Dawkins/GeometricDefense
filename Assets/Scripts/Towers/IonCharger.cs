@@ -97,6 +97,7 @@ public class IonCharger : MonoBehaviour {
 	void ShrinkChargingSpriteDown(){
 		towerButton.CancelNextTowerSelection();
 		if (chargingSpriteObj == null){
+            SoundManager.instance.PlaySound(SoundManager.ION_CHARGING);
 			chargingSpriteObj = Instantiate(Resources.Load("TowerRangeCircle")) as GameObject;
 			chargingSpriteObj.transform.parent = transform;
 			chargingSpriteObj.transform.localPosition = Vector3.zero;

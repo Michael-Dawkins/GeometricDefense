@@ -31,6 +31,7 @@ public class CanShootOnArea : CanShoot {
 			if (isAttacking == false){
 				isAttacking = true;
 				StartPuslingWaveAnimation();
+                SoundManager.instance.PlaySound(SoundManager.SQUARE_ATTACK_START);
 			}
 
 			foreach(CanTakeDamage enemy in targets) {

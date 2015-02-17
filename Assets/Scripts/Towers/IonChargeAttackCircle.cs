@@ -11,8 +11,7 @@ public class IonChargeAttackCircle : IonChargeAttack {
 		DamageMultiplier = 2f;
 		AcquireTarget();
 		SetUpGuidedBullet();
-		AudioClip clip = Instantiate(Resources.Load("laser11")) as AudioClip;
-		audio.PlayOneShot(clip, 1f);
+        SoundManager.instance.PlaySound(SoundManager.CIRCLE_ION_CHARGE);
 	}
 
 	void SetUpGuidedBullet() {

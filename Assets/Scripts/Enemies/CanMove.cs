@@ -18,12 +18,15 @@ public class CanMove : MonoBehaviour {
 	Transform neonCenterTransform;
 	Transform neonGlowTransform;
 	private PlayerLife playerLife;
+    AudioClip reachGoalSound;
 
 	// Use this for initialization
 	void Start () {
 		map = Map.instance;
 		pathFinder = PathFinder.instance;
 		playerLife = PlayerLife.instance;
+        reachGoalSound = Instantiate(Resources.Load("EnemyToBase")) as AudioClip;
+        gameObject.AddComponent<AudioSource>();
 	}
 	
 	// Update is called once per frame
@@ -95,6 +98,7 @@ public class CanMove : MonoBehaviour {
 
 	void ReachGoal(){
 		playerLife.Lives--;
+        SoundManager.instance.PlaySound(SoundManager.ENEMY_TO_BASE);
 		Destroy(gameObject);
 	}
 }

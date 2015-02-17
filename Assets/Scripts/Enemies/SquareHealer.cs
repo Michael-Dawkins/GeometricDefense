@@ -39,6 +39,7 @@ public class SquareHealer : MonoBehaviour {
     }
 
     void HealSurroundingEnemies(){
+        SoundManager.instance.PlaySound(SoundManager.SQUARE_HEALING);
         List<CanTakeDamage> surroundingEnemies = FindAllSurroundingEnemies();
         foreach (CanTakeDamage enemy in surroundingEnemies) {
             enemy.HealPercentage(healPercentage);

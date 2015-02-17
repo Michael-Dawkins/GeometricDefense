@@ -10,8 +10,7 @@ public class IonChargeAttackSquare : IonChargeAttack {
 		base.Start();
 		DamageMultiplier = 1.2f;
 		Shoot();
-		AudioClip clip = Instantiate(Resources.Load("laser11")) as AudioClip;
-		audio.PlayOneShot(clip, 1f);
+        SoundManager.instance.PlaySound(SoundManager.ION_CHARGE_SQUARE);
 	}
 	
 	void Shoot(){

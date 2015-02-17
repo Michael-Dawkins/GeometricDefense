@@ -8,13 +8,12 @@ public class CanShootBullets : CanShoot {
 	public GuidedBullet bulletPrefab;
 	private float nextShootingTime = 0f;
 	public float shootingRate;
-	public AudioClip shootingSound;
 
     public override float DPS {
         get {
             return Damage * shootingRate;
         }
-    }
+    }
 
 	// Use this for initialization
 	protected override void Start() {
@@ -47,7 +46,7 @@ public class CanShootBullets : CanShoot {
 			guidedBullet.GetComponent<SpriteRenderer>().color = bulletColor;
 			
 			nextShootingTime = Time.time + (1f / shootingRate);
-			audio.PlayOneShot(shootingSound, 0.4f);
+            SoundManager.instance.PlaySound(SoundManager.CIRCLE_SHOOT);
 		}
 	}
 }

@@ -7,8 +7,7 @@ public class IonChargeAttackTriangle : IonChargeAttack {
 		base.Start();
 		DamageMultiplier = 1f;
 		Shoot();
-		AudioClip clip = Instantiate(Resources.Load("laser11")) as AudioClip;
-		audio.PlayOneShot(clip, 1f);
+        SoundManager.instance.PlaySound(SoundManager.TRIANGLE_ION_CHARGE);
 	}
 
 	void Shoot() {

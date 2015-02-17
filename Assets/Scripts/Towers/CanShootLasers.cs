@@ -6,7 +6,6 @@ public class CanShootLasers : CanShoot {
 	public GameObject laserPrefab;
 	public float coolDownTime;
 	float lastShootingTime;
-	public AudioClip shootingSound;
 
 	protected override void Start() {
 		base.Start();
@@ -45,7 +44,7 @@ public class CanShootLasers : CanShoot {
 		base.Shoot(target);
         towerSpriteCenterAnimator.SetTrigger("shooting");
         towerSpriteGlowAnimator.SetTrigger("shooting");
-		audio.PlayOneShot(shootingSound, 0.5f);
+        SoundManager.instance.PlaySound(SoundManager.TRIANGLE_SHOOT);
 
 		GameObject topLaserObj = Instantiate(laserPrefab) as GameObject;
 		GameObject leftLaserObj = Instantiate(laserPrefab) as GameObject;
