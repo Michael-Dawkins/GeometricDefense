@@ -3,9 +3,11 @@ using System.Collections;
 
 public class ImmersiveModeEnabler : MonoBehaviour {
 
+#if UNITY_ANDROID
 	AndroidJavaObject unityActivity;
 	AndroidJavaObject javaObj;
 	AndroidJavaClass javaClass;
+
 	bool paused;
 	static bool created;
 
@@ -95,5 +97,6 @@ public class ImmersiveModeEnabler : MonoBehaviour {
 			javaObj.CallStatic("DisableAppPin",unityActivity);
 		}
 	}
+#endif
 
 }
