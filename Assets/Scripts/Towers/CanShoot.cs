@@ -82,7 +82,6 @@ public abstract class CanShoot : MonoBehaviour {
 	protected virtual void LateUpdate(){
 		foreach(CanTakeDamage target in deadTargets){
 			targets.Remove(target);
-			Debug.Log("Removing target from targets");
 		}
 		if (deadTargets.Count > 0){
 			deadTargets = new List<CanTakeDamage>();

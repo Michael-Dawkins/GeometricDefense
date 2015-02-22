@@ -15,6 +15,20 @@ public class SoundManager : MonoBehaviour {
     public static string TOWER_UPGRADE = "TowerUpgrade";
     public static string TRIANGLE_ION_CHARGE = "TriangleIonCharge";
     public static string TRIANGLE_SHOOT = "TriangleShoot";
+
+    public AudioClip ButtonClick;
+    public AudioClip CircleIonCharge;
+    public AudioClip CircleShoot;
+    public AudioClip EnemyToBase;
+    public AudioClip IonChargeSquare;
+    public AudioClip IonCharging;
+    public AudioClip SquareAttackStart;
+    public AudioClip SquareHealing;
+    public AudioClip TowerUpgrade;
+    public AudioClip TriangleIonCharge;
+    public AudioClip TriangleShoot;
+
+
     Dictionary<string, float> volumes;
     Dictionary<string, AudioClip> audioClips;
 
@@ -28,6 +42,7 @@ public class SoundManager : MonoBehaviour {
         gameObject.AddComponent<AudioSource>();
         audioClips = new Dictionary<string, AudioClip>();
         volumes = new Dictionary<string, float>();
+
         volumes.Add(BUTTON_CLICK, 0.4f);
         volumes.Add(CIRCLE_ION_CHARGE, 0.4f);
         volumes.Add(CIRCLE_SHOOT, 0.4f);
@@ -39,15 +54,23 @@ public class SoundManager : MonoBehaviour {
         volumes.Add(TOWER_UPGRADE, 0.4f);
         volumes.Add(TRIANGLE_ION_CHARGE, 0.4f);
         volumes.Add(TRIANGLE_SHOOT, 0.4f);
+
+        audioClips.Add(BUTTON_CLICK, ButtonClick);
+        audioClips.Add(CIRCLE_ION_CHARGE, CircleIonCharge);
+        audioClips.Add(CIRCLE_SHOOT, CircleShoot);
+        audioClips.Add(ENEMY_TO_BASE, EnemyToBase);
+        audioClips.Add(ION_CHARGE_SQUARE, IonChargeSquare);
+        audioClips.Add(ION_CHARGING, IonCharging);
+        audioClips.Add(SQUARE_ATTACK_START, SquareAttackStart);
+        audioClips.Add(SQUARE_HEALING, SquareHealing);
+        audioClips.Add(TOWER_UPGRADE, TowerUpgrade);
+        audioClips.Add(TRIANGLE_ION_CHARGE, TriangleIonCharge);
+        audioClips.Add(TRIANGLE_SHOOT, TriangleShoot);  
+
     }
 
     public void PlaySound(string soundKey) {
-        AudioClip clipToPlay;
-        if (!audioClips.ContainsKey(soundKey)) {
-            audioClips[soundKey] = Instantiate(Resources.Load(soundKey)) as AudioClip;
-        } 
-        clipToPlay = audioClips[soundKey];
-        audio.PlayOneShot(clipToPlay, volumes[soundKey]);
+        audio.PlayOneShot(audioClips[soundKey], volumes[soundKey]);
     }
 	
 }
