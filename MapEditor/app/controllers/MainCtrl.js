@@ -1,10 +1,19 @@
 mapEditor.controller("MainCtrl", function($scope){
 
+  //Cell types
+  var EMPTY_CELL = "empty";
+  var OBSTACLE_CELL = "obstacle";
+  var DAMAGE_BOOST_CELL = "damage";
+  var SPAWNER_CELL = "spawner";
+  var GOAL_CELL = "goal";
+
   var textFile = null;
 
   init();
 
   function init(){
+    exposeCellTypes();
+
     var mapModelFromLocalStorage = localStorage.getItem("map");
     if (mapModelFromLocalStorage !== null){
       $scope.mapModel = JSON.parse(mapModelFromLocalStorage);
@@ -26,6 +35,33 @@ mapEditor.controller("MainCtrl", function($scope){
     });
   }
 
+  function exposeCellTypes(){
+    $scope.cellTypes = [
+      {
+        label: EMPTY_CELL,
+        color: "rgb(230, 230, 230)"
+      }, {
+        label: OBSTACLE_CELL,
+        color: "red"
+      }, {
+        label: DAMAGE_BOOST_CELL,
+        color: "rgb(0, 255, 3)"
+      },
+      {
+        label: SPAWNER_CELL,
+        color: "black"
+      }, {
+        label: GOAL_CELL,
+        color: "white"
+      }];
+    $scope.selectCellType = selectCellType;
+    $scope.selectedCellTypeLabel = OBSTACLE_CELL;
+  }
+
+  function selectCellType(cellType){
+    $scope.selectedCellTypeLabel = cellType.label;
+  }
+
   function initMapData(mapJsonFromFile){
     var fileName = $scope.mapModel ? $scope.mapModel.fileName : "";
     var width = $scope.mapModel ? $scope.mapModel.width : 15;
@@ -45,10 +81,23 @@ mapEditor.controller("MainCtrl", function($scope){
       initCellMatrix(true);
     }
     if (mapJsonFromFile){
-      _.each(mapJsonFromFile.cells.walls, function(cell){
-        findCell(cell.x, cell.y).isObstacle = true;
-      });
+      loadMapWithMapJsonFromFile(mapJsonFromFile);
     }
+  }
+
+  function loadMapWithMapJsonFromFile(mapJsonFromFile){
+    _.each(mapJsonFromFile.cells.walls, function(cell){
+      findCell(cell.x, cell.y).type = _.findWhere($scope.cellTypes, {label: OBSTACLE_CELL});
+    });
+    _.each(mapJsonFromFile.cells.damageBoosters, function(cell){
+      findCell(cell.x, cell.y).type = _.findWhere($scope.cellTypes, {label: DAMAGE_BOOST_CELL});
+    });
+    _.each(mapJsonFromFile.cells.spawners, function(cell){
+      findCell(cell.x, cell.y).type = _.findWhere($scope.cellTypes, {label: SPAWNER_CELL});
+    });
+    _.each(mapJsonFromFile.cells.goals, function(cell){
+      findCell(cell.x, cell.y).type = _.findWhere($scope.cellTypes, {label: GOAL_CELL});
+    });
   }
 
   function findCell(x, y){
@@ -69,23 +118,29 @@ mapEditor.controller("MainCtrl", function($scope){
     //init cells
     _.each($scope.mapModel.cells, function(column, x){
       _.each(column, function(cell, y){
-        var isObstacle = false;
+        var cellType;
         if (keepOldData){
           if (oldCells[x] !== undefined && oldCells[x][y] !== undefined){
-            isObstacle = oldCells[x][y].isObstacle;
+            cellType = oldCells[x][y].type;
           }
         }
         column[y] = {
           x: x,
           y: y,
-          isObstacle: isObstacle
+          type: cellType || $scope.cellTypes[0]
         }
       });
     });
   }
 
   function onCellClick(cell){
-    cell.isObstacle = !cell.isObstacle;
+    var currentlySelectedCellType = _.findWhere($scope.cellTypes, {label: $scope.selectedCellTypeLabel});
+    var emptyCellType = _.findWhere($scope.cellTypes, {label: EMPTY_CELL});
+    if (cell.type.label === currentlySelectedCellType.label){
+      cell.type = emptyCellType;
+    } else {
+      cell.type = currentlySelectedCellType;
+    }
   }
 
   function setUpDragFromDesktop(){
@@ -151,15 +206,25 @@ mapEditor.controller("MainCtrl", function($scope){
         height: $scope.mapModel.height
       },
       cells: {
-        walls: []
+        walls: [],
+        spawners: [],
+        goals: [],
+        damageBoosters: []
       }
-    }
+    };
     _.each(_.flatten($scope.mapModel.cells), function(cell){
-      if (cell.isObstacle){
-        mapJson.cells.walls.push({
-          x: cell.x,
-          y: cell.y
-        });
+      var cellToPush = {
+        x: cell.x,
+        y: cell.y
+      };
+      if (cell.type.label === OBSTACLE_CELL){
+        mapJson.cells.walls.push(cellToPush);
+      } else if (cell.type.label === SPAWNER_CELL){
+        mapJson.cells.spawners.push(cellToPush);
+      }else if (cell.type.label === GOAL_CELL){
+        mapJson.cells.goals.push(cellToPush);
+      }else if (cell.type.label === DAMAGE_BOOST_CELL){
+        mapJson.cells.damageBoosters.push(cellToPush);
       }
     });
     return mapJson;

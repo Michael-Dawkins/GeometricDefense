@@ -15,6 +15,7 @@ public class Map : MonoBehaviour {
 	public int xStart = 0;
 	public int yStart = 4;
 	public GameObject goalSprite;
+    public GameObject goalInstance;
 	Dictionary<Cell, List<OnTowerAdd>> onTowerAddCallbacks;
 	Dictionary<Cell, List<OnTowerUpgrade>> onTowerUpgradeCallbacks;
 	Dictionary<Cell, List<OnTowerSell>> onTowerSellCallbacks;
@@ -27,7 +28,7 @@ public class Map : MonoBehaviour {
 	void Awake () {
 		instance = this;
         InitEmptyMap(mapWidth, mapHeight);
-		Instantiate(goalSprite, GetCellPos(GetCellAt(xGoal, yGoal)), Quaternion.identity);
+        UpdateGoalPosition();
 	}
 
     public void InitEmptyMap(int width, int height) {
@@ -50,6 +51,14 @@ public class Map : MonoBehaviour {
                 onTowerUpgradeCallbacks[cell] = new List<OnTowerUpgrade>();
 
             }
+        }
+    }
+
+    public void UpdateGoalPosition(){
+         if (goalInstance == null) {
+            goalInstance = Instantiate(goalSprite, GetCellPos(GetCellAt(xGoal, yGoal)), Quaternion.identity) as GameObject;
+        } else {
+            goalInstance.transform.position = GetCellPos(GetCellAt(xGoal, yGoal));
         }
     }
 

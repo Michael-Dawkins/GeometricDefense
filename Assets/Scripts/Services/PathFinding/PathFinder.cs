@@ -19,7 +19,6 @@ public class PathFinder : MonoBehaviour {
 	// Use this for initialization
 	void Start () {
 		map = Map.instance;
-		FindGlobalPath(map.GetCellAt(map.xStart,map.yStart), map.GetCellAt(map.xGoal, map.yGoal));
 	}
 	
 	// Update is called once per frame

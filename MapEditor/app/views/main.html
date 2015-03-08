@@ -1,15 +1,29 @@
 <div class="map-name">{{mapModel.fileName}}</div>
 
 <div class="relative-pos"
-  ng-style="{height: mapModel.height * 42, width: mapModel.width * 42}">
+  ng-style="{height: mapModel.height * 42, width: mapModel.width * 42, top: mapModel.height * 42 - 42}">
   <div ng-repeat="column in mapModel.cells">
     <div ng-repeat="cell in column"
       class="cell-wrapper"
-      ng-style="{top: cell.y * 41, left: cell.x * 41}">
-      <gd-cell model="cell" on-click="onCellClick(cell)"></gd-cell>
+      ng-style="{top: -cell.y * 41, left: cell.x * 41}">
+      <div class="cell-container"
+             ng-style="{'background-color': cell.type.color}"
+             ng-mousedown="onCellClick(cell)">
+      </div>
     </div>
   </div>
 </div>
+
+<md-card id="right-pane">
+    <div ng-repeat="cellType in cellTypes"
+            class="cell-type"
+            ng-click="selectCellType(cellType)"
+            ng-class="{'cell-type-selected': cellType.label == selectedCellTypeLabel}">
+        <span class="cell-type-coloured-square md-whiteframe-z1"
+                ng-style="{'background': cellType.color}"></span>
+        <span class="cell-type-label">{{cellType.label}}</span>
+    </div>
+</md-card>
 
 <md-button id="map-download-btn"
 class="md-raised">

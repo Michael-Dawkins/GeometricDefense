@@ -12,6 +12,7 @@ div, span {
   width: 40px;
   height: 40px;
   cursor: pointer;
+  transition: background-color 0.3s ease-out;
 }
 
 .cell-wrapper {
@@ -43,4 +44,39 @@ div, span {
   overflow-x: hidden;
   margin-top: 5px;
   width: 70%;
+}
+
+/*RIGHT PANE*/
+#right-pane{
+    position: fixed;
+    right: 40px;
+    top: 100px;
+    width: 180px;
+}
+
+.cell-type{
+    cursor: pointer;
+    font-weight: 700;
+    padding: 15px;
+}
+
+.cell-type:hover{
+    background-color: rgb(227, 248, 255);
+}
+
+.cell-type.cell-type-selected{
+    background-color: rgb(192, 239, 255);
+}
+
+.cell-type-label{
+    position: relative;
+    top: -14px;
+    text-transform: uppercase;
+}
+
+.cell-type-coloured-square{
+    width: 40px;
+    height: 40px;
+    margin-right: 10px;
+    display: inline-block;
 }

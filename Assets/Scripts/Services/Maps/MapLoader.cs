@@ -12,11 +12,9 @@ public class MapLoader : MonoBehaviour {
 
     void Start() {
         map = Map.instance;
-        TextAsset mapTextAsset = (TextAsset)Resources.Load("map_1", typeof(TextAsset));
-        JSONObject mapJson = new JSONObject(mapTextAsset.text);
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
-        LoadCells(mapJson);
-        ResetGameState();
+
+        LoadMap("map_1");
     }
 
     public void LoadMap(string mapResourceName) {
@@ -31,6 +29,7 @@ public class MapLoader : MonoBehaviour {
         TileGenerator.instance.ResetTiles();
         DestroyAllEnemies();
         LoadCells(mapJson);
+        map.UpdateGoalPosition();
         ResetGameState();
     }
 
@@ -66,6 +65,29 @@ public class MapLoader : MonoBehaviour {
     void LoadCells(JSONObject mapJson) {
         int cellsIndex = mapJson.keys.IndexOf("cells");
         LoadWalls(mapJson.list[cellsIndex]);
+        LoadGoal(mapJson.list[cellsIndex]);
+        LoadSpawner(mapJson.list[cellsIndex]);
+        LoadDamageBoosters(mapJson.list[cellsIndex]);
+    }
+
+    void LoadGoal(JSONObject cellsJson) {
+        int goalsIndex = cellsJson.keys.IndexOf("goals");
+        //Only support one goal for now
+        map.xGoal = (int)cellsJson.list[goalsIndex].list[0].list[0].n;
+        map.yGoal = (int)cellsJson.list[goalsIndex].list[0].list[1].n;
+    }
+
+    void LoadSpawner(JSONObject cellsJson) {
+        int spawnersIndex = cellsJson.keys.IndexOf("spawners");
+        //Only support one spawner for now
+        map.xStart = (int)cellsJson.list[spawnersIndex].list[0].list[0].n;
+        map.yStart = (int)cellsJson.list[spawnersIndex].list[0].list[1].n;
+        Spawners.instance.SpawnerList[0].transform.position = map.GetCellAt(map.xStart, map.yStart).position
+            + new Vector3(map.cellSize / 2f, map.cellSize / 2f, 0);
+    }
+
+    void LoadDamageBoosters(JSONObject cellsJson) {
+        //TODO
     }
 
     void LoadWalls(JSONObject cellsJson) {
