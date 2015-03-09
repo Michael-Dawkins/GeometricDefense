@@ -45,7 +45,7 @@ mapEditor.controller("MainCtrl", function($scope){
         color: "red"
       }, {
         label: DAMAGE_BOOST_CELL,
-        color: "rgb(0, 255, 3)"
+        color: "cyan"
       },
       {
         label: SPAWNER_CELL,

@@ -67,13 +67,13 @@ public class CanShootLasers : CanShoot {
 		Laser rightLaser = rightLaserObj.transform.Find("Laser").GetComponent<Laser>();
 
 		Color colorToApply = transform.Find("TowerSpriteGlow").GetComponent<SpriteRenderer>().color;
-		topLaser.damage = Damage;
+		topLaser.damage = GetDamage();
 		topLaser.damageType = damageType;
 		topLaser.SetColor(colorToApply);
-		leftLaser.damage = Damage;
+        leftLaser.damage = GetDamage();
 		leftLaser.damageType = damageType;
 		leftLaser.SetColor(colorToApply);
-		rightLaser.damage = Damage;
+        rightLaser.damage = GetDamage();
 		rightLaser.damageType = damageType;
 		rightLaser.SetColor(colorToApply);
 	}

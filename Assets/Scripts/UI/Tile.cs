@@ -11,6 +11,30 @@ public class Tile : MonoBehaviour {
 	public Color targetColor = new Color(1f,1f,1f,0.15f);
     public bool isAnimatable = true;
 
+    public enum TileType {
+        NORMAL, OBSTACLE, DAMAGE_BOOSTER
+    }
+    public TileType tileType {
+        get { return _tileType; }
+        set {
+            _tileType = value;
+            switch (_tileType) {
+                case TileType.NORMAL:
+                    isAnimatable = true;
+                    break;
+                case TileType.OBSTACLE:
+                    targetColor = Color.red;
+                    isAnimatable = false;
+                    break;
+                case TileType.DAMAGE_BOOSTER:
+                    targetColor = Color.cyan;
+                    isAnimatable = false;
+                    break;
+            }
+        }
+    }
+    public TileType _tileType;
+
 	//pulsation
 	float pulsateTimer;
 	bool isPulsating = false;

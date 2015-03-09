@@ -11,7 +11,7 @@ public class CanShootBullets : CanShoot {
 
     public override float DPS {
         get {
-            return Damage * shootingRate;
+            return GetDamage() * shootingRate;
         }
     }
 
@@ -41,7 +41,7 @@ public class CanShootBullets : CanShoot {
 			towerSpriteGlowAnimator.SetTrigger("shooting");
 			GuidedBullet guidedBullet = Instantiate(bulletPrefab, transform.position, transform.rotation) as GuidedBullet;
 			guidedBullet.Target = target;
-			guidedBullet.damage = Damage;
+			guidedBullet.damage = GetDamage();
 			guidedBullet.damageType = damageType;
 			guidedBullet.GetComponent<SpriteRenderer>().color = bulletColor;
 			

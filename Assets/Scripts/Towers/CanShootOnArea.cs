@@ -75,7 +75,7 @@ public class CanShootOnArea : CanShoot {
 	override protected void Shoot(CanTakeDamage target) {
 		base.Shoot(target);
 		if(target != null) {
-			target.takeDamage(Damage * Time.deltaTime, damageType);
+			target.takeDamage(GetDamage() * Time.deltaTime, damageType);
 		}
 	}
 

@@ -5,8 +5,16 @@ using System.Collections.Generic;
 public class PlasmaBoostable : MonoBehaviour {
 
 	public static string DAMAGE_BONUS_STRING= "PlasmaBoost";
+    public static string CELL_DAMAGE_BONUS_STRING = "cellPlasmaBoost";
 	CanShoot canShoot;
 	List<PlasmaBooster> activePlasmaBoosters;
+
+    void Start() {
+        if (GetComponent<LocalizableOnMap>().cell.tile.tileType == Tile.TileType.DAMAGE_BOOSTER) {
+            canShoot = GetComponent<CanShoot>();
+            canShoot.damageMultipliers.Add(CELL_DAMAGE_BONUS_STRING, 50f);
+        }
+    }
 
 	public void AddBooster(PlasmaBooster plasmaBooster){
 		//Start executes after AddBooster happens so we eed to initialize here for now

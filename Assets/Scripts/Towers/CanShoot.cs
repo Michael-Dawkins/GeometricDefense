@@ -15,7 +15,7 @@ public abstract class CanShoot : MonoBehaviour {
 
     public string DpsLabel = "DPS";
     public virtual float DPS {
-        get { return Damage; }
+        get { return GetDamage(); }
     }
 
 	protected Animator towerSpriteCenterAnimator;

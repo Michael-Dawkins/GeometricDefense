@@ -87,7 +87,13 @@ public class MapLoader : MonoBehaviour {
     }
 
     void LoadDamageBoosters(JSONObject cellsJson) {
-        //TODO
+        int damageBoostersIndex = cellsJson.keys.IndexOf("damageBoosters");
+        foreach (JSONObject damageBooster in cellsJson.list[damageBoostersIndex].list) {
+            int x = (int)damageBooster.list[0].n;
+            int y = (int)damageBooster.list[1].n;
+            Cell cell = map.GetCellAt(x, y);
+            cell.tile.tileType = Tile.TileType.DAMAGE_BOOSTER;
+        }
     }
 
     void LoadWalls(JSONObject cellsJson) {
@@ -101,8 +107,7 @@ public class MapLoader : MonoBehaviour {
             int y = (int) obj.list[1].n;
             Cell cell = map.GetCellAt(x, y);
             cell.isObstacle = true;
-            cell.tile.targetColor = Color.red;
-            cell.tile.isAnimatable = false;
+            cell.tile.tileType = Tile.TileType.OBSTACLE;
         }
     }
 }
