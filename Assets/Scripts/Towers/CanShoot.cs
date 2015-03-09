@@ -8,7 +8,14 @@ public abstract class CanShoot : MonoBehaviour {
 	public float Damage;
 	//ex: "Plasma" > 40 for à 40% boost from a plasma tower
 	public Dictionary<string,float> damageMultipliers = new Dictionary<string, float>();
-	public float cellRange;
+	public float cellRange{
+        get {return _cellRange;}
+        set {
+            _cellRange = value;
+            UpdateColliderRadius();
+        }
+    }
+    private float _cellRange;
 	public TowerTypeManager.TowerType towerType;
 	public DamageTypeManager.DamageType damageType;
 	public Color towerColor;

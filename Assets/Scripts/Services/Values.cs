@@ -23,9 +23,9 @@ public class Values : MonoBehaviour {
 
 		//Circle
 		circleLevels.Levels.Add(1, new CircleStats(Damage: 15f, CellRange: 1f, ShootingRate: 1f));
-		circleLevels.Levels.Add(2, new CircleStats(Damage: 30f, CellRange: 1.4f, ShootingRate: 1.5f));
-		circleLevels.Levels.Add(3, new CircleStats(Damage: 60f, CellRange: 1.8f, ShootingRate: 2.2f));
-		circleLevels.Levels.Add(4, new CircleStats(Damage: 110f, CellRange: 3f, ShootingRate: 2.5f));
+		circleLevels.Levels.Add(2, new CircleStats(Damage: 30f, CellRange: 1.3f, ShootingRate: 1.5f));
+		circleLevels.Levels.Add(3, new CircleStats(Damage: 60f, CellRange: 1.6f, ShootingRate: 2.2f));
+		circleLevels.Levels.Add(4, new CircleStats(Damage: 110f, CellRange: 2f, ShootingRate: 2.5f));
 
 		//Square
 		squareLevels.Levels.Add(1, new SquareStats(Damage: 8f, CellRange: 1f));
