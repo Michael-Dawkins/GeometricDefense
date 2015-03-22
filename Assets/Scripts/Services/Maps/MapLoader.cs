@@ -3,6 +3,7 @@ using System.Collections;
 
 public class MapLoader : MonoBehaviour {
 
+    static string LAST_MAP_PLAYED = "LAST_MAP_PLAYED";
     public static MapLoader instance;
     Map map;
 
@@ -14,7 +15,14 @@ public class MapLoader : MonoBehaviour {
         map = Map.instance;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
-        LoadMap("map_1");
+        string mapToLoad = "map_1";//default map if the game has never been launched before
+        if (PlayerPrefs.HasKey(LAST_MAP_PLAYED)) {
+            mapToLoad = SaveTools.LoadFromPlayerPrefs(LAST_MAP_PLAYED) as string;
+        } else {
+            Debug.Log("First load, no LAST_MAP_PLAYED found in PlayerPrefs");
+        }
+
+        LoadMap(mapToLoad);
     }
 
     public void LoadMap(string mapResourceName) {
@@ -31,6 +39,7 @@ public class MapLoader : MonoBehaviour {
         LoadCells(mapJson);
         map.UpdateGoalPosition();
         ResetGameState();
+        SaveTools.SaveInPlayerPrefs(LAST_MAP_PLAYED, mapResourceName);
     }
 
     void ResetGameState() {
