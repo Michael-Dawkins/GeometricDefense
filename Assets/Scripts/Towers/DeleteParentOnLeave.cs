@@ -7,7 +7,7 @@ public class DeleteParentOnLeave : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		if (!renderer.isVisible && hasAppeared){
+		if (!GetComponent<Renderer>().isVisible && hasAppeared){
 			Destroy(gameObject.transform.parent.gameObject);
 		} else {
 			hasAppeared = true;

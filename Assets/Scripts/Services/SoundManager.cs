@@ -70,7 +70,7 @@ public class SoundManager : MonoBehaviour {
     }
 
     public void PlaySound(string soundKey) {
-        audio.PlayOneShot(audioClips[soundKey], volumes[soundKey]);
+        GetComponent<AudioSource>().PlayOneShot(audioClips[soundKey], volumes[soundKey]);
     }
 	
 }
