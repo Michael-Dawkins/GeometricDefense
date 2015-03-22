@@ -12,7 +12,10 @@ public class PlayerLife : MonoBehaviour {
 		get{return _Lives;}
 		set{
 			if (_Lives > 0){
-				_Lives = value;
+                if (value < _Lives) {
+                    Camera.main.GetComponent<CameraShake>().Shake(0.4f);
+                }
+                _Lives = value;
 				UpdateLivesLabel();
 				if (_Lives <= 0){
 					GameOver();
