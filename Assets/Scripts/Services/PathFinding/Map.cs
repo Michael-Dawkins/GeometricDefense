@@ -238,18 +238,11 @@ public class Map : MonoBehaviour {
 	public Cell GetCellClosestToPos(float xPos, float yPos){
 		int x = (int) (xPos / cellSize);
 		int y = (int) (yPos / cellSize);
+        //warning, (int) rounds towards zero
+        //to handle the horizontal bottom bar as being too far, we forbif xPos < 0
 		//Clamping x and y to map bounds
-		if (x < 0){
-			x = 0;
-		}
-		if (y < 0){
-			y = 0;
-		}
-		if (x >= mapWidth){
-			x = mapWidth - 1;
-		}
-		if (y >= mapHeight){
-			y = mapHeight - 1;
+		if (x < 0 || y < 0 || x >= mapWidth || y >= mapHeight || yPos < 0){
+            return null;
 		}
 		return GetCellAt(x, y);
 	}

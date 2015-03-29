@@ -59,14 +59,23 @@ public class CreateTowerOnDrag : MonoBehaviour {
 				dragging = true;
 			}
 		} else if (Input.GetMouseButton(0) && dragging){
-			DrawGhostAtClosestInputPos();
+            if (GetClosestCell() != null) {
+                DrawGhostAtClosestInputPos();
+            } else if(currentGhost != null){
+                DestroyGhost();
+            }
+			
 		} else if (Input.GetMouseButtonUp(0) && dragging){
 			PlaceTower();
-			Destroy(currentGhost);
-			Destroy(currentTowerRangeObject);
+			DestroyGhost();
 			dragging = false;
 		}
 	}
+
+    private void DestroyGhost(){
+        Destroy(currentGhost);
+		Destroy(currentTowerRangeObject);
+    }
 
 	public void ChangeTowerDamageType(){
 		ApplyColorToButton(DamageTypeManager.GetDamageTypeColor(damageTypeManager.currentDamageType));
@@ -146,7 +155,14 @@ public class CreateTowerOnDrag : MonoBehaviour {
 	void PlaceTower(){
 		if (HasEnoughMoneyToBuyTower()){
 			CreateTower();
-			Vector3 tmpPos = GetClosestPos();
+            Cell closetCell = GetClosestCell();
+            if (closetCell == null) {
+                //User input is too far from the map to place a tower
+                Destroy(lastTowerCreated);
+                return;
+            }
+            Vector3 tmpPos = map.GetCellPos(closetCell);
+            
 			Cell cellAtPos = map.GetCellAtPos(tmpPos.x, tmpPos.y) ;
 			if (cellAtPos == null || cellAtPos.isObstacle || cellAtPos == map.GetStartCell()){
 				Destroy(lastTowerCreated);
@@ -187,7 +203,7 @@ public class CreateTowerOnDrag : MonoBehaviour {
 		mousePos.z = 0;
 		if (map.GetCellAt((int)(mousePos.x / map.cellSize), (int)(mousePos.y / map.cellSize)) != null){
 
-			Vector3 closestPos = GetClosestPos();
+            Vector3 closestPos = map.GetCellPos(GetClosestCell());
 
 			if (currentGhost == null){
 				currentGhost = Instantiate(ghost, closestPos, Quaternion.identity) as GameObject;
@@ -211,13 +227,12 @@ public class CreateTowerOnDrag : MonoBehaviour {
 			currentTowerRangeObject.transform.position = closestPos;
 		}
 	}
-
-	Vector3 GetClosestPos(){
-		Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
-		mousePos.z = 0;
-		Vector3 pos = map.GetCellPos(map.GetCellClosestToPos(mousePos.x, mousePos.y + map.cellSize));
-		return pos;
-	}
+    
+    Cell GetClosestCell() {
+        Vector3 mousePos = Camera.main.ScreenToWorldPoint(Input.mousePosition);
+        mousePos.z = 0;
+        return map.GetCellClosestToPos(mousePos.x, mousePos.y + map.cellSize);
+    }
 
 	bool HasEnoughMoneyToBuyTower(){
 		return playerMoney.Money >= towerCost;
