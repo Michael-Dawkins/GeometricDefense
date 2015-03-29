@@ -6,7 +6,7 @@ public class TimeScaleManager : MonoBehaviour {
 	public static TimeScaleManager instance;
 	public delegate void OnTimeScaleChangeCallback();
 	public event OnTimeScaleChangeCallback TimeScaleChange;
-
+    public bool isPlaying;
 	public enum TimeScale{
 		ONE, TWO, THREE
 	}
@@ -14,31 +14,38 @@ public class TimeScaleManager : MonoBehaviour {
 	void Awake(){
 		instance = this;
 		timeScale = TimeScale.ONE;
+        isPlaying = true;
 	}
 	
 	public void SelectNextTimeScale(){
 		switch(timeScale){
-		case TimeScale.ONE:
-			timeScale = TimeScale.TWO;
-			Time.timeScale = 2f;
-			if (TimeScaleChange != null){
-				TimeScaleChange();
-			}
-			break;
-		case TimeScale.TWO:
-			timeScale = TimeScale.THREE;
-			Time.timeScale = 3f;
-			if (TimeScaleChange != null){
-				TimeScaleChange();
-			}
-			break;
-		case TimeScale.THREE:
-			timeScale = TimeScale.ONE;
-			Time.timeScale = 1f;
-			if (TimeScaleChange != null){
-				TimeScaleChange();
-			}
-			break;
+		    case TimeScale.ONE:
+			    timeScale = TimeScale.TWO;
+                if (isPlaying) {
+                    Time.timeScale = 2f;
+                }
+			    if (TimeScaleChange != null){
+				    TimeScaleChange();
+			    }
+			    break;
+		    case TimeScale.TWO:
+			    timeScale = TimeScale.THREE;
+                if (isPlaying) {
+                    Time.timeScale = 3f;
+                }
+			    if (TimeScaleChange != null){
+				    TimeScaleChange();
+			    }
+			    break;
+		    case TimeScale.THREE:
+			    timeScale = TimeScale.ONE;
+                if (isPlaying) {
+                    Time.timeScale = 1f;
+                }
+			    if (TimeScaleChange != null){
+				    TimeScaleChange();
+			    }
+			    break;
 		}
 	}
 
