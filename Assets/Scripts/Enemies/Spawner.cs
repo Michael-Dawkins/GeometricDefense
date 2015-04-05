@@ -61,6 +61,9 @@ public class Spawner : MonoBehaviour {
 			currentWaveProgress = 0;
 			totalNumberOfEnemyInCurrentWave += numberOfAddedEnemyPerWave;
 			waitingForUserToStartWave = false;
+            if (Time.timeScale == 0f) {
+                PlayPause.instance.TogglePlayPause();
+            }
 		}
 	}
 
