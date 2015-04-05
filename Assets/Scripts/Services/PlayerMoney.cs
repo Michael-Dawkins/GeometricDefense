@@ -40,7 +40,7 @@ public class PlayerMoney : MonoBehaviour {
     }
 
 	void UpdateMoneyLabel(){
-		goldLabel.text = "gold: " + money.ToString();
+		goldLabel.text = money.ToString();
 	}
 
 	public void AddOnMoneyChangeListener(OnMoneyChange callback){

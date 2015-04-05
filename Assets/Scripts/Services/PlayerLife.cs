@@ -41,7 +41,7 @@ public class PlayerLife : MonoBehaviour {
     }
 
 	void UpdateLivesLabel() {
-		label.text = "lives: " + _Lives;
+		label.text = _Lives.ToString();
 	}
 	
 	void GameOver() {
