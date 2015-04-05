@@ -10,6 +10,7 @@ public class Spawner : MonoBehaviour {
 	public CanTakeDamage enemyToSpawnBoss1;
 	public CanTakeDamage enemyToSpawnBoss2;
 	public CanTakeDamage enemyToSpawnBoss3;
+    public GameObject startWaveLabel;
 
 	public float everyXSeconds = 1.5f;
 	public int numberOfWaves = 4;
@@ -38,6 +39,7 @@ public class Spawner : MonoBehaviour {
 					SpawnEnemy();
 				} else {
 					waitingForUserToStartWave = true;
+                    startWaveLabel.SetActive(true);
 				}
 			}
 		}
@@ -61,6 +63,7 @@ public class Spawner : MonoBehaviour {
 			currentWaveProgress = 0;
 			totalNumberOfEnemyInCurrentWave += numberOfAddedEnemyPerWave;
 			waitingForUserToStartWave = false;
+            startWaveLabel.SetActive(false);
             if (Time.timeScale == 0f) {
                 PlayPause.instance.TogglePlayPause();
             }
