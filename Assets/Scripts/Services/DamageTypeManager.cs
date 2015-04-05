@@ -76,6 +76,18 @@ public class DamageTypeManager : MonoBehaviour{
 		return "Wrong damage type";
 	}
 
+    public string GetDamageTypeAdditionalLabel(DamageType DamageType) {
+        switch (currentDamageType) {
+            case DamageType.Plasma:
+                return "Boost nearby towers";
+            case DamageType.Antimatter:
+                return "Slow enemies down";
+            case DamageType.IonCharge:
+                return "Long press your towers";
+        }
+        return "Wrong damage type";
+    }
+
 	public void SelectCurrentDamageType(DamageType DamageType){
 		currentDamageType = DamageType;
 		DamageTypeSelectionChange();

@@ -11,6 +11,7 @@ public class DamageTypeLabel : MonoBehaviour {
 		damageTypeManager = DamageTypeManager.instance;
 		damageTypeManager.AddDamageTypeSelectionChangeListener(UpdateDamageTypeLabel);
 		damageTypeLabel = GetComponent<Text>();
+        UpdateDamageTypeLabel();
 	}
 
 	void UpdateDamageTypeLabel(){
