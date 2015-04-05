@@ -67,11 +67,11 @@ public class DamageTypeManager : MonoBehaviour{
 	public string GetDamageTypeLabel(DamageType DamageType){
 		switch(currentDamageType){
 			case DamageType.Plasma:
-				return "Plasma";
+				return "PLASMA";
 			case DamageType.Antimatter:
-				return "Antimatter";
+				return "ANTIMATTER";
 			case DamageType.IonCharge:
-				return "Ion Charge";
+				return "ION CHARGE";
 		}
 		return "Wrong damage type";
 	}
