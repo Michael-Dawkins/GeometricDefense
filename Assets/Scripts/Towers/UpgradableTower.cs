@@ -10,7 +10,7 @@ public class UpgradableTower : MonoBehaviour {
 	public GameObject towerRangePrefab;
 	public int maxLevel;
 
-	int towerLevel = 1;
+	public int towerLevel = 1;
 	Canvas upgradeCanvas;
 	BoxCollider2D clickableCollider;
 	GameObject clickableObject;
@@ -171,6 +171,8 @@ public class UpgradableTower : MonoBehaviour {
 
 	public void SellTower(){
 		Debug.Log("Tower sold for " + (int)(towerCost / 2f));
+        PlasmaBoostable plasmaBoostable = localizableOnMap.GetComponent<PlasmaBoostable>();
+        plasmaBoostable.beingSold = true;
 		map.NotifySellTowerObservers(localizableOnMap.cell);
 		playerMoney.Money += (int)(towerCost / 2f);
 		Destroy(gameObject);

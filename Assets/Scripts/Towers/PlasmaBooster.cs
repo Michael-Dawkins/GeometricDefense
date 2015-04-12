@@ -4,7 +4,8 @@ using System.Collections.Generic;
 
 public class PlasmaBooster : MonoBehaviour {
 
-	public float boostAmount = 15f; // 15f means 15% boost
+	public float boostAmount = 10f; // 10f means 10% boost
+    float addedBonusPerLevel = 3f;
 
 	List<PlasmaBoostable> boostedTowers;
 	TowerTypeManager.TowerType towerType;
@@ -22,6 +23,11 @@ public class PlasmaBooster : MonoBehaviour {
 		SubscribeToOwnTowerUpgrade();
 		SubscribeToOwnTowerSell();
 	}
+
+    public float GetBoostAmount() {
+        UpgradableTower upgradableTower = GetComponent<UpgradableTower>();
+        return boostAmount + (upgradableTower.towerLevel - 1) * addedBonusPerLevel;
+    }
 
 	//When a new tower is added or sold next to the booster, update the bonuses
     void SubscribeToDirectlyAdjacentTowerEvents() {
@@ -68,8 +74,24 @@ public class PlasmaBooster : MonoBehaviour {
 			}
 			CanShoot canShoot = cell.localizableOnMap.GetComponent<CanShoot>();
 			if (canShoot.towerType == towerType){
-				boostedTowers.Add(cell.localizableOnMap.GetComponent<PlasmaBoostable>());
+                PlasmaBoostable plasmaBoostable = cell.localizableOnMap.GetComponent<PlasmaBoostable>();
+                //during the selling / notify sell process, we might encounter the 
+                //beingSold but still present and thus applicable for boosters
+                //we need to filter that
+                if (!plasmaBoostable.beingSold) {
+                    boostedTowers.Add(plasmaBoostable);
+                }
 			}
 		}
 	}
+
+    void OnDestroy() {
+        List<Cell> directlyAdjacentCells = map.FindDirectlyAdjacentCells(localizableOnMap.cell);
+        foreach (Cell cell in directlyAdjacentCells) {
+            map.RemoveOnTowerAddCallback(cell, UpdateBoost);
+            map.RemoveOnTowerSellCallback(cell, UpdateBoost);
+        }
+        map.RemoveOnTowerUpgradeCallback(localizableOnMap.cell, UpdateBoost);
+        map.RemoveOnTowerSellCallback(localizableOnMap.cell, RemoveBoosterFromBoostedTowers);
+    }
 }
