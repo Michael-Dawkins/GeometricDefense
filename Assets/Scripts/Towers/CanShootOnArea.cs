@@ -8,6 +8,9 @@ public class CanShootOnArea : CanShoot {
 	Animator pulsingWaveAnimator;
 	SpriteRenderer puslingWaveRenderer;
 	Transform squareWaverWrapperTrans;
+    public override float DPS {
+        get { return base.GetDamage(); }
+    }
 
 	override protected float ColliderRadius {
 		get {
@@ -27,10 +30,10 @@ public class CanShootOnArea : CanShoot {
 	}
 	
 	void Update() {
-        if (TimeScaleManager.instance.IsPaused) {
-            return;
-        }
 		if(targets.Count > 0) {
+            if (TimeScaleManager.instance.IsPaused) {
+                return;
+            }
 			if (isAttacking == false){
 				isAttacking = true;
 				StartPuslingWaveAnimation();

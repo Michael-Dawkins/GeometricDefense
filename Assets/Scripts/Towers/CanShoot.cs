@@ -53,12 +53,30 @@ public abstract class CanShoot : MonoBehaviour {
 		towerSpriteCenterAnimator = towerSpriteCenter.GetComponent<Animator> ();
 		towerSpriteGlowAnimator = towerSpriteGlow.GetComponent<Animator> ();
 		bulletColor = towerSpriteCenter.GetComponent<SpriteRenderer>().color;
+        SetUpDamageTypeDamageMultiplier();
 		UpdateColliderRadius();
 		if (damageType == DamageTypeManager.DamageType.IonCharge){
 			ionCharger = gameObject.AddComponent<IonCharger>();
 			ionCharger.canShoot = this;
 		}
 	}
+
+    void SetUpDamageTypeDamageMultiplier() {
+        string damageTypeKey = "Damage type "
+            + DamageTypeManager.instance.GetDamageTypeLabel(
+                DamageTypeManager.instance.currentDamageType);
+        switch(damageType){
+            case DamageTypeManager.DamageType.Antimatter:
+                damageMultipliers.Add(damageTypeKey, -25f);
+                break;
+            case DamageTypeManager.DamageType.IonCharge:
+                damageMultipliers.Add(damageTypeKey, 0f);
+                break;
+            case DamageTypeManager.DamageType.Plasma:
+                damageMultipliers.Add(damageTypeKey, 10f);
+                break;
+        }
+    }
 
 	void OnTriggerEnter2D (Collider2D other) {
 		if (other.gameObject.GetComponent<CanTakeDamage> ()) {
