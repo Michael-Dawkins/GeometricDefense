@@ -29,6 +29,10 @@ public class PlasmaBoostable : MonoBehaviour {
 
 	public void RemoveBooster(PlasmaBooster plasmaBooster){
 		activePlasmaBoosters.Remove(plasmaBooster);
+        if (activePlasmaBoosters.Count == 0) {
+            StopTilePulsations();
+        }
+        UpdateBoostBonus();
 	}
 
 	public void UpdateBoostBonus(){
@@ -49,4 +53,14 @@ public class PlasmaBoostable : MonoBehaviour {
 		}
 	}
 
+    void OnDestroy() {
+        StopTilePulsations();
+    }
+
+    void StopTilePulsations() {
+        LocalizableOnMap localizableOnMap = GetComponent<LocalizableOnMap>();
+        if (localizableOnMap.cell != null) {
+            localizableOnMap.cell.tile.StopPulsating();
+        }
+    }
 }

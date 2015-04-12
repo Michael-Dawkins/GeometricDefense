@@ -67,9 +67,7 @@ public class Tile : MonoBehaviour {
 				spriteRenderer.color = Color.Lerp(pulsationColor, targetColor, pulsateTimer);
 
 				if (pulsationStartTime + pulsationDuration * pulsationRepetitions < Time.time){
-					animationStarted = false;
-					isPulsating = false;
-					spriteRenderer.color = targetColor;
+                    StopPulsating();
 				}
 			}
 		}
@@ -89,4 +87,12 @@ public class Tile : MonoBehaviour {
 		pulsationRepetitions = numberOfTimes;
 		pulsationStartTime = Time.time;
 	}
+
+    public void StopPulsating() {
+        animationStarted = false;
+        isPulsating = false;
+        if (spriteRenderer != null) {
+            spriteRenderer.color = targetColor;
+        }
+    }
 }

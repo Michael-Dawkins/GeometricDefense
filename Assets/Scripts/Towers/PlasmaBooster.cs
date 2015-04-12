@@ -18,16 +18,17 @@ public class PlasmaBooster : MonoBehaviour {
 		map = Map.instance;
 
 		UpdateBoost();
-		SubscribeToDirectlyAdjacentTowerAdds();
+		SubscribeToDirectlyAdjacentTowerEvents();
 		SubscribeToOwnTowerUpgrade();
 		SubscribeToOwnTowerSell();
 	}
 
-	//When a new tower is added next to the booster, update the bonuses
-	void SubscribeToDirectlyAdjacentTowerAdds(){
+	//When a new tower is added or sold next to the booster, update the bonuses
+    void SubscribeToDirectlyAdjacentTowerEvents() {
 		List<Cell> directlyAdjacentCells = map.FindDirectlyAdjacentCells(localizableOnMap.cell);
 		foreach(Cell cell in directlyAdjacentCells){
 			map.AddOnTowerAddCallback(cell, UpdateBoost);
+            map.AddOnTowerSellCallback(cell, UpdateBoost);
 		}
 	}
 
@@ -43,7 +44,6 @@ public class PlasmaBooster : MonoBehaviour {
 	void RemoveBoosterFromBoostedTowers(){
 		foreach(PlasmaBoostable boostedTower in boostedTowers){
 			boostedTower.RemoveBooster(this);
-			boostedTower.UpdateBoostBonus();
 		}
 	}
 
