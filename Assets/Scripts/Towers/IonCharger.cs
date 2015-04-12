@@ -109,7 +109,7 @@ public class IonCharger : MonoBehaviour {
 	}
 
 	public void Charge(float damage){
-		chargeLevel += damage / 4f;;
+		chargeLevel += damage / 4f;
 		UpdateChargeBarWidth();
 		if (chargeLevel > maxCharge){
 			chargeLevel = maxCharge;

@@ -27,6 +27,9 @@ public class CanShootOnArea : CanShoot {
 	}
 	
 	void Update() {
+        if (TimeScaleManager.instance.IsPaused) {
+            return;
+        }
 		if(targets.Count > 0) {
 			if (isAttacking == false){
 				isAttacking = true;
@@ -75,9 +78,13 @@ public class CanShootOnArea : CanShoot {
 	override protected void Shoot(CanTakeDamage target) {
 		base.Shoot(target);
 		if(target != null) {
-			target.takeDamage(GetDamage() * Time.deltaTime, damageType);
+            target.takeDamage(GetDamage(), damageType);
 		}
 	}
+
+    public override float GetDamage() {
+        return base.GetDamage() * Time.deltaTime;
+    }
 
 	public override void UpdateColliderRadius(){
 		BoxCollider2D collider = GetComponent<BoxCollider2D>();

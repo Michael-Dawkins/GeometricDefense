@@ -101,7 +101,7 @@ public abstract class CanShoot : MonoBehaviour {
 		}
 	}
 
-	public float GetDamage(){
+	public virtual float GetDamage(){
 		float calculatedDamage = Damage;
 		float totalPercentageToApply = 0f;
 		foreach(KeyValuePair<string, float> damagePercentage in damageMultipliers){

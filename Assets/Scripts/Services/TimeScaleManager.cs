@@ -7,6 +7,9 @@ public class TimeScaleManager : MonoBehaviour {
 	public delegate void OnTimeScaleChangeCallback();
 	public event OnTimeScaleChangeCallback TimeScaleChange;
     public bool isPlaying;
+    public bool IsPaused {
+        get { return !isPlaying; }
+    }
 	public enum TimeScale{
 		ONE, TWO, THREE
 	}
