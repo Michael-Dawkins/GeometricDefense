@@ -17,7 +17,8 @@ public class TimeScaleManager : MonoBehaviour {
 	void Awake(){
 		instance = this;
 		timeScale = TimeScale.ONE;
-        isPlaying = true;
+        Time.timeScale = 0f;
+        isPlaying = false;
 	}
 	
 	public void SelectNextTimeScale(){

@@ -19,6 +19,8 @@ public class PlayPause : MonoBehaviour {
 
 	void Start () {
         image = GetComponent<Image>();
+        UpdateState();
+        NotifyPauseListeners();
 	}
 
     public void TogglePlayPause() {
@@ -35,12 +37,19 @@ public class PlayPause : MonoBehaviour {
                     Time.timeScale = 3f;
                     break;
             }
-            image.sprite = pauseSprite;
         } else {
             Time.timeScale = 0f;
-            image.sprite = playSprite;
         }
+        UpdateState();
         NotifyPauseListeners();
+    }
+
+    void UpdateState() {
+        if (Time.timeScale == 0f) {
+            image.sprite = playSprite;
+        } else {
+            image.sprite = pauseSprite;
+        }
     }
 
     public void AddPauseListener(OnPauseListener callback) {
