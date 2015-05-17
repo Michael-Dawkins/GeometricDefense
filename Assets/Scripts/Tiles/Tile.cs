@@ -12,7 +12,7 @@ public class Tile : MonoBehaviour {
     public bool isAnimatable = true;
 
     public enum TileType {
-        NORMAL, OBSTACLE, DAMAGE_BOOSTER
+        NORMAL, OBSTACLE, DAMAGE_BOOSTER, RANGE_BOOSTER
     }
     public TileType tileType {
         get { return _tileType; }
@@ -28,6 +28,10 @@ public class Tile : MonoBehaviour {
                     break;
                 case TileType.DAMAGE_BOOSTER:
                     targetColor = Color.cyan;
+                    isAnimatable = false;
+                    break;
+                case TileType.RANGE_BOOSTER:
+                    targetColor = Color.yellow;
                     isAnimatable = false;
                     break;
             }
