@@ -23,21 +23,18 @@ public class Tile : MonoBehaviour {
                     isAnimatable = true;
                     break;
                 case TileType.OBSTACLE:
-                    targetColor = Color.red;
-                    isAnimatable = false;
-                    break;
                 case TileType.DAMAGE_BOOSTER:
-                    targetColor = Color.cyan;
-                    isAnimatable = false;
-                    break;
                 case TileType.RANGE_BOOSTER:
-                    targetColor = Color.yellow;
+                    targetColor = GetTileTypeColor(tileType);
+                    if (spriteRenderer != null) {
+                        spriteRenderer.color = targetColor;
+                    }
                     isAnimatable = false;
                     break;
             }
         }
     }
-    public TileType _tileType;
+    TileType _tileType;
 
 	//pulsation
 	float pulsateTimer;
@@ -52,6 +49,22 @@ public class Tile : MonoBehaviour {
 		spriteRenderer = GetComponent<SpriteRenderer>();
 		spriteRenderer.color = targetColor;
 	}
+
+    public static Color GetTileTypeColor(TileType tileType){
+        switch (tileType) {
+            case TileType.DAMAGE_BOOSTER:
+                return Color.cyan;
+            case TileType.NORMAL:
+                return Color.white;
+            case TileType.OBSTACLE:
+                return Color.red;
+            case TileType.RANGE_BOOSTER:
+                return Color.yellow;
+            default:
+                Debug.LogError("unknown tile type, cannot get color");
+                return Color.white;
+        }
+    }
 	
 	// Update is called once per frame
 	void Update () {

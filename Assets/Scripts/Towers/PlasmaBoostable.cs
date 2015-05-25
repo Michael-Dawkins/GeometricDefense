@@ -13,6 +13,10 @@ public class PlasmaBoostable : MonoBehaviour {
 	List<PlasmaBooster> activePlasmaBoosters;
 
     void Start() {
+        AddDamageMultiplierIfOnDamageBooster();
+    }
+
+    public void AddDamageMultiplierIfOnDamageBooster(){
         if (GetComponent<LocalizableOnMap>().cell.tile.tileType == Tile.TileType.DAMAGE_BOOSTER) {
             canShoot = GetComponent<CanShoot>();
             canShoot.damageMultipliers.Add(CELL_DAMAGE_BONUS_STRING, 50f);
