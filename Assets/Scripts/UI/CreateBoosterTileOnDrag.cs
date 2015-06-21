@@ -12,9 +12,11 @@ public class CreateBoosterTileOnDrag : MonoBehaviour {
     Map map;
     GameObject currentGhost;
     SpriteRenderer ghostRenderer;
+    PlayerBoosterTiles playerBoosterTiles;
 
 	void Start () {
         map = Map.instance;
+        playerBoosterTiles = PlayerBoosterTiles.instance;
         gameObject.AddComponent<BoxCollider2D>();
         BoxCollider2D collider = GetComponent<BoxCollider2D>();
         collider.size = new Vector2(140f, 140f);
@@ -57,7 +59,12 @@ public class CreateBoosterTileOnDrag : MonoBehaviour {
             PlasmaBoostable plasmaBoostable = closetCell.localizableOnMap.GetComponent<PlasmaBoostable>();
             plasmaBoostable.AddDamageMultiplierIfOnDamageBooster();
         }
-        
+        if (tileType == Tile.TileType.DAMAGE_BOOSTER) {
+            playerBoosterTiles.CurrentDamageBoosterAmount --;
+        } else if (tileType == Tile.TileType.RANGE_BOOSTER) {
+            playerBoosterTiles.CurrentRangeBoosterAmount --;
+        }
+
         //TODO
         //Update current tower if present (might need work)
     }
