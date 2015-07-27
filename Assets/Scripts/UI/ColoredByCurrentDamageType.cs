@@ -23,12 +23,7 @@ public class ColoredByCurrentDamageType : MonoBehaviour {
 	}
 
     void UpdateColor() {
-        Color damageColor = DamageTypeManager.GetDamageTypeColor(
-            DamageTypeManager.instance.currentDamageType);
-
-        float h, s, v;
-		GDUtils.ColorToHSV(damageColor, out h, out s, out v);
-		Color lightenDamageColor = GDUtils.ColorFromHSV(h,0.25f,v);
+        Color lightenDamageColor = GetDamageTypeColor();
 
         switch (colorableType){
             case Colorable.Sprite:
@@ -41,6 +36,16 @@ public class ColoredByCurrentDamageType : MonoBehaviour {
                 image.color = lightenDamageColor;
                 break;
         }
+    }
+
+    public Color GetDamageTypeColor(){
+        Color damageColor = DamageTypeManager.GetDamageTypeColor(
+            DamageTypeManager.instance.currentDamageType);
+
+        float h, s, v;
+        GDUtils.ColorToHSV(damageColor, out h, out s, out v);
+        Color lightenDamageColor = GDUtils.ColorFromHSV(h, 0.25f, v);
+        return lightenDamageColor;
     }
 
     void DetectColorableType() {
