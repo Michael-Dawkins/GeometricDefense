@@ -62,18 +62,19 @@ public class CreateBoosterTileOnDrag : MonoBehaviour {
             return;
         }
         closetCell.tile.tileType = tileType;
-        if (closetCell.localizableOnMap != null) {
-            PlasmaBoostable plasmaBoostable = closetCell.localizableOnMap.GetComponent<PlasmaBoostable>();
-            plasmaBoostable.AddDamageMultiplierIfOnDamageBooster();
-        }
         if (tileType == Tile.TileType.DAMAGE_BOOSTER) {
             playerBoosterTiles.CurrentDamageBoosterAmount --;
+            if (closetCell.localizableOnMap != null) {//if there is a tower on the cell
+                PlasmaBoostable plasmaBoostable = closetCell.localizableOnMap.GetComponent<PlasmaBoostable>();
+                plasmaBoostable.AddDamageMultiplierIfOnDamageBooster();
+            }
         } else if (tileType == Tile.TileType.RANGE_BOOSTER) {
             playerBoosterTiles.CurrentRangeBoosterAmount --;
+            if (closetCell.localizableOnMap != null) {//if there is a tower on the cell
+                CanShoot canShoot = closetCell.localizableOnMap.GetComponent<CanShoot>();
+                canShoot.UpdateRangeBoostedStatus();
+            }
         }
-
-        //TODO
-        //Update current tower if present (might need work)
     }
 
     void DisplayCannotPlaceTileMessage(){

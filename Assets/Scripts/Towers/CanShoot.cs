@@ -8,8 +8,15 @@ public abstract class CanShoot : MonoBehaviour {
 	public float Damage;
 	//ex: "Plasma" > 40 for à 40% boost from a plasma tower
 	public Dictionary<string,float> damageMultipliers = new Dictionary<string, float>();
+    public float rangeBoostAmount = 1f;
+    public bool isRangeBoosted = false;
 	public float cellRange{
-        get {return _cellRange;}
+        get {
+            if (isRangeBoosted)
+                return _cellRange + rangeBoostAmount;
+            else
+                return _cellRange;
+        }
         set {
             _cellRange = value;
             UpdateColliderRadius();
@@ -99,6 +106,12 @@ public abstract class CanShoot : MonoBehaviour {
 		CircleCollider2D collider = GetComponent<CircleCollider2D>();
 		collider.radius = ColliderRadius;
 	}
+
+    public void UpdateRangeBoostedStatus() {
+        Tile tile = GetComponent<LocalizableOnMap>().cell.tile;
+        isRangeBoosted = tile.tileType == Tile.TileType.RANGE_BOOSTER;
+        UpdateColliderRadius();
+    }
 	
 	public void removeTargetFromList(CanTakeDamage target){
 		deadTargets.Add(target);
