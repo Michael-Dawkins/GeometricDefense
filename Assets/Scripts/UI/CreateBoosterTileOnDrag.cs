@@ -28,6 +28,13 @@ public class CreateBoosterTileOnDrag : MonoBehaviour {
             Vector2 touchPos = new Vector2(wp.x, wp.y);
 
             if (GetComponent<Collider2D>() == Physics2D.OverlapPoint(touchPos)) {
+                //do not allow dragging if no more tiles available
+                if (tileType == Tile.TileType.DAMAGE_BOOSTER && playerBoosterTiles.CurrentDamageBoosterAmount == 0){
+                    return;
+                }
+                else if (tileType == Tile.TileType.RANGE_BOOSTER && playerBoosterTiles.CurrentRangeBoosterAmount == 0) {
+                    return;
+                }
                 dragging = true;
             }
         } else if (Input.GetMouseButton(0) && dragging) {
