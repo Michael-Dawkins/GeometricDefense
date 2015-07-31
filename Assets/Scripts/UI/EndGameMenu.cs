@@ -7,7 +7,7 @@ public class EndGameMenu : MonoBehaviour {
     public static EndGameMenu instance;
     public GameObject menuObj;
     public Text endGameLabel;
-    public Text upgradePointsEarnedLabel;
+    public Text rewardText;
     public delegate void OnEndMenu();
     private List<OnEndMenu> callbacks = new List<OnEndMenu>();
     public bool isShown = false;
@@ -20,6 +20,8 @@ public class EndGameMenu : MonoBehaviour {
 	}
 
     public void Show() {
+        if (isShown)
+            return;
         menuObj.SetActive(true);
         UpdateView();
         isShown = true;
@@ -35,8 +37,35 @@ public class EndGameMenu : MonoBehaviour {
     void UpdateView() {
         string endGameText = "Mission " + (PlayerLife.instance.playerDied ? "Failed" : "Complete");
         endGameLabel.text = endGameText;
-        string pointsEarnedText = "Upgrade points earned: ";
-        upgradePointsEarnedLabel.text = pointsEarnedText + PlayerUpgrades.instance.lastAmountEarned;
+        EarnAReward();
+    }
+
+    private void EarnAReward() {
+        if (RandomChance(0.5f)) {
+            EarnUpgradePoints();
+        } else {
+            EarnABoosterTile();
+        }
+    }
+
+    private void EarnUpgradePoints() {
+        rewardText.text = 
+            "You won " + PlayerUpgrades.instance.lastAmountEarned + " upgrade points!";
+    }
+
+    private void EarnABoosterTile() {
+        if (RandomChance(0.5f)) {
+            PlayerBoosterTiles.instance.EarnOneDamageBooster();
+            rewardText.text = "You won 1 damage booster!";
+        } else {
+            PlayerBoosterTiles.instance.EarnOneRangeBooster();
+            rewardText.text = "You won 1 range booster!";
+        }
+    }
+
+    //a chance of 0.7 means a 70% chance of returning true
+    private bool RandomChance(float chance) {
+        return Random.Range(0, 1f) > chance;
     }
 
     public void AddEndMenuListener(OnEndMenu callback) {
