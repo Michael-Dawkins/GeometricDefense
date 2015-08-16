@@ -3,6 +3,8 @@ using UnityEngine.UI;
 
 public abstract class GreyOutWhenNoBooster : MonoBehaviour {
 
+    public bool isCurrentlyGreyedOut;
+
     private Color initialColor;
     private Image image;
     private Text text;
@@ -37,6 +39,7 @@ public abstract class GreyOutWhenNoBooster : MonoBehaviour {
     }
 
     private void GreyOut(){
+        isCurrentlyGreyedOut = true;
         if (image != null) {
             image.color = Color.gray;
         } else {
@@ -45,6 +48,7 @@ public abstract class GreyOutWhenNoBooster : MonoBehaviour {
     }
 
     private void RestoreColor(){
+        isCurrentlyGreyedOut = false;
         if (image != null) {
             image.color = initialColor;
         } else {

@@ -12,17 +12,23 @@ public class ColoredByCurrentDamageType : MonoBehaviour {
     SpriteRenderer spriteRenderer;
     Image image;
     Colorable colorableType;
+    GreyOutWhenNoBooster greyOutWhenNoBooster;
+
     enum Colorable {
         Text, Sprite, Image
     }
 
 	void Start () {
+        greyOutWhenNoBooster = GetComponent<GreyOutWhenNoBooster>();
         DetectColorableType();
         UpdateColor();
         DamageTypeManager.instance.AddDamageTypeSelectionChangeListener(UpdateColor);
 	}
 
     void UpdateColor() {
+        if (greyOutWhenNoBooster != null && greyOutWhenNoBooster.isCurrentlyGreyedOut) {
+            return;
+        }
         Color lightenDamageColor = GetDamageTypeColor();
 
         switch (colorableType){
