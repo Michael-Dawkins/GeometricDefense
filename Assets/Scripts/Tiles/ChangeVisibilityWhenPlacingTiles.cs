@@ -23,8 +23,10 @@ public class ChangeVisibilityWhenPlacingTiles : MonoBehaviour {
     }
 
     void OnDestroy() {
-        tilePlacer.RemoveStartPositioningTilesListener(SetAppropriateVisibility);
-        tilePlacer.RemoveStopPositioningTilesListener(SetAppropriateVisibility);
+        if (tilePlacer != null) {
+            tilePlacer.RemoveStartPositioningTilesListener(SetAppropriateVisibility);
+            tilePlacer.RemoveStopPositioningTilesListener(SetAppropriateVisibility);
+        }
     }
 
 }
