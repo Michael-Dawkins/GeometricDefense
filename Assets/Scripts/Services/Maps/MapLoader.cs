@@ -50,6 +50,7 @@ public class MapLoader : MonoBehaviour {
         AdjustCameraToMapSize();
         Spawners.instance.Reset();
         Towers.instance.DestroyAllTowers();//TODO problem on onDeselect afterwards, check removal after tower selection
+        PlayerBoosterTiles.instance.ResetCurrentAmounts();
     }
 
     void AdjustCameraToMapSize() {

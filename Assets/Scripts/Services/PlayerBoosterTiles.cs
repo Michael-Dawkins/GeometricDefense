@@ -7,6 +7,11 @@ public class PlayerBoosterTiles : MonoBehaviour {
 
     public static PlayerBoosterTiles instance;
 
+    public void ResetCurrentAmounts() {
+        CurrentDamageBoosterAmount = MaxDamageBoosterAmount;
+        CurrentRangeBoosterAmount = MaxRangeBoosterAmount;
+    }
+
     public int MaxRangeBoosterAmount {
         get { return _maxRangeBoosterAmount; }
         set {
