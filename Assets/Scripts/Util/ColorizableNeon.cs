@@ -5,13 +5,15 @@ public class ColorizableNeon : MonoBehaviour {
 
 	[SerializeField][HideInInspector]
 	Color aColor;
-	SpriteRenderer centerRenderer;
-	SpriteRenderer glowRenderer;
+	public SpriteRenderer centerRenderer;
+	public SpriteRenderer glowRenderer;
+    public Color initialColor;
+    bool colorInitialized;
 
 	public Color Color {
 		set{
 			aColor = value;
-			ApplyColor(aColor);
+			ApplyColor(aColor,0.25f);
 		}
 		get {
 			return aColor;
@@ -19,21 +21,27 @@ public class ColorizableNeon : MonoBehaviour {
 	}
 
 	void Start () {
-		ApplyColor(aColor);
+        centerRenderer = transform.FindChild("NeonCenter").GetComponent<SpriteRenderer>();
+        glowRenderer = transform.FindChild("NeonGlow").GetComponent<SpriteRenderer>();
+        ApplyColor(aColor, 0.25f);
 	}
 
-	void ApplyColor(Color colorToApply){
-		float h, s, v;
+	public void ApplyColor(Color colorToApply, float centerSaturation){
+        if (!colorInitialized) {
+            initialColor = colorToApply;
+            colorInitialized = true;
+        }
+
+        float h, s, v;
 		GDUtils.ColorToHSV(colorToApply, out h, out s, out v);
 		colorToApply = GDUtils.ColorFromHSV(h, 1f, v);
 		
 		GDUtils.ColorToHSV(colorToApply, out h, out s, out v);
-		Color lightColor = GDUtils.ColorFromHSV(h,0.25f,v);
+		Color lightColor = GDUtils.ColorFromHSV(h, centerSaturation, v);
 
-		centerRenderer = transform.FindChild("NeonCenter").GetComponent<SpriteRenderer>();
-		glowRenderer = transform.FindChild("NeonGlow").GetComponent<SpriteRenderer>();
 		centerRenderer.color = lightColor;
 		glowRenderer.color = colorToApply;
-	}
+
+    }
 	
 }

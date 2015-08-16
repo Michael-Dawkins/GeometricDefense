@@ -1,5 +1,4 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 [RequireComponent (typeof(Rigidbody2D))]
@@ -29,8 +28,8 @@ public class CanTakeDamage : MonoBehaviour {
 	PlayerMoney playerMoney;
 	CanMove canMove;
 	IonShield ionShield;
+    Flash flash;
 
-	// Use this for initialization
 	void Start () {
 		Vector3 pos = transform.position;
 		healthBar = Instantiate(healthBarSPrite,new Vector3(pos.x - 0.15f, pos.y + 0.15f, 0f), transform.rotation) as GameObject;
@@ -39,9 +38,9 @@ public class CanTakeDamage : MonoBehaviour {
 		playerMoney = PlayerMoney.instance;
 		canMove = GetComponent<CanMove>();
 		ionShield = GetComponent<IonShield>();
+        flash = GetComponent<Flash>();
 	}
 	
-	// Update is called once per frame
 	void Update () {
 		canMove.slowed = Time.time < (slowStartTime + slowTime);
 	}
@@ -59,8 +58,10 @@ public class CanTakeDamage : MonoBehaviour {
 		if(projectile){
 			takeDamage(projectile.damage, projectile.damageType);
 			projectile.OnEnemyHit();
-		}
+            flash.TriggerFlash(DamageTypeManager.GetDamageTypeColor(projectile.damageType));
+        }
 	}
+
 
 	public void takeDamage(float damage, DamageTypeManager.DamageType damageType){
 		if (damageType == DamageTypeManager.DamageType.Antimatter){

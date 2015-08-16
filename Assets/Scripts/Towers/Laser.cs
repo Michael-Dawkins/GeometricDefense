@@ -7,7 +7,10 @@ public class Laser : Projectile {
 	}
 	
 	void Update () {
-		transform.localPosition = new Vector3(transform.localPosition.x + speed * Time.deltaTime, transform.localPosition.y, 0);
+		transform.localPosition = new Vector3(
+            transform.localPosition.x + speed * Time.deltaTime, 
+            transform.localPosition.y, 
+            0);
 	}
 
 	public override void OnEnemyHit(){}
