@@ -20,12 +20,16 @@ public class EndGameMenu : MonoBehaviour {
 	}
 
     public void Show() {
-        if (isShown)
+        if (menuObj.activeSelf)
             return;
         menuObj.SetActive(true);
         UpdateView();
         isShown = true;
         NotifyEndMenuListeners();
+    }
+
+    void OnDisable() {
+        isShown = false;
     }
 
     public void Hide() {

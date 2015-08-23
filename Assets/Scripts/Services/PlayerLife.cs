@@ -52,7 +52,7 @@ public class PlayerLife : MonoBehaviour {
         MapLoader.instance.ReloadMap();
     }
 
-	public void WinTheGame(){
+    public void WinTheGame(){
         PlayerUpgrades.instance.WinUpgradePoints();
         EndGameMenu.instance.Show();
 	}

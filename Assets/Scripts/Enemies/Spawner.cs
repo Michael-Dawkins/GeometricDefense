@@ -56,7 +56,7 @@ public class Spawner : MonoBehaviour {
     }
 
 	public void StartNextWave(){
-		if(waitingForUserToStartWave && !PlayerLife.instance.playerDied){
+		if(waitingForUserToStartWave && !PlayerLife.instance.playerDied && currentWave < numberOfWaves) {
 			currentWave ++;
 			UpdateWaveCounterDisplay();
 			nextSpawningTime = 0f;//start now
@@ -72,7 +72,7 @@ public class Spawner : MonoBehaviour {
 
 	public void NotifyThatEnemyDied(){
 		enemiesAlive --;
-		if (currentWave == numberOfWaves && enemiesAlive == 0){
+		if (currentWave == numberOfWaves && enemiesAlive == 0 && currentWaveProgress == totalNumberOfEnemyInCurrentWave){
 			if(!PlayerLife.instance.playerDied){
 				Win();
 			}
