@@ -35,9 +35,9 @@ public class CanShootBullets : CanShoot {
 	}
 	
 	override protected void Shoot(CanTakeDamage target) {
-		base.Shoot(target);
 		if(target != null) {
-			towerSpriteCenterAnimator.SetTrigger("shooting");
+            base.Shoot(target);
+            towerSpriteCenterAnimator.SetTrigger("shooting");
 			towerSpriteGlowAnimator.SetTrigger("shooting");
 			GuidedBullet guidedBullet = Instantiate(bulletPrefab, transform.position, transform.rotation) as GuidedBullet;
 			guidedBullet.Target = target;
