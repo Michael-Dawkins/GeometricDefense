@@ -1,31 +1,32 @@
 ﻿using UnityEngine;
 using System.Collections;
 
+[RequireComponent (typeof(ComposableVisibility))]
 public class ChangeVisibilityWhenPlacingTiles : MonoBehaviour {
 
-    private TilePlacer tilePlacer;
-
+    private string VISIBILITY_KEY = "ChangeVisibilityWhenPlacingTiles";
     public bool VisibleWhenPlacingTiles;
+    ComposableVisibility composableVisibility;
 
-	void Start () {
-        tilePlacer = TilePlacer.instance;
-        tilePlacer.AddStartPositioningTilesListener(SetAppropriateVisibility);
-        tilePlacer.AddStopPositioningTilesListener(SetAppropriateVisibility);
+    void Start () {
+        composableVisibility = GetComponent<ComposableVisibility>();
+        TilePlacer.instance.AddStartPositioningTilesListener(SetAppropriateVisibility);
+        TilePlacer.instance.AddStopPositioningTilesListener(SetAppropriateVisibility);
         SetAppropriateVisibility();
 	}
 
-    void SetAppropriateVisibility() {
+    public void SetAppropriateVisibility() {
         if (VisibleWhenPlacingTiles == true) {
-            gameObject.SetActive(tilePlacer.IsPositioningTiles);
+            composableVisibility.setVisibilityKey(VISIBILITY_KEY, TilePlacer.instance.IsPositioningTiles);
         } else {
-            gameObject.SetActive(!tilePlacer.IsPositioningTiles);
+            composableVisibility.setVisibilityKey(VISIBILITY_KEY, !TilePlacer.instance.IsPositioningTiles);
         }
     }
 
     void OnDestroy() {
-        if (tilePlacer != null) {
-            tilePlacer.RemoveStartPositioningTilesListener(SetAppropriateVisibility);
-            tilePlacer.RemoveStopPositioningTilesListener(SetAppropriateVisibility);
+        if (TilePlacer.instance != null) {
+            TilePlacer.instance.RemoveStartPositioningTilesListener(SetAppropriateVisibility);
+            TilePlacer.instance.RemoveStopPositioningTilesListener(SetAppropriateVisibility);
         }
     }
 
