@@ -6,6 +6,7 @@ using System.Collections.Generic;
 public class PlayerMoney : MonoBehaviour {
 
 	public static PlayerMoney instance;
+    public int baseMoney;
 
 	public Text goldLabel;
 	int money;
@@ -36,7 +37,7 @@ public class PlayerMoney : MonoBehaviour {
 	}
 
     public void ResetAmount() {
-        Money = 1000;
+        Money = baseMoney;
     }
 
 	void UpdateMoneyLabel(){

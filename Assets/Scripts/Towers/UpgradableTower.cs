@@ -91,7 +91,7 @@ public class UpgradableTower : MonoBehaviour {
 			upgradeButtonObject.SetActive(true);
 			upgradeButtonBackground.SetActive(true);
 			upgradeCostLabel = upgradeButtonObject.GetComponentInChildren<Text>();
-			upgradeCostLabel.text = "$" + upgradeCost;
+			upgradeCostLabel.text = "$" + upgradeCost.ToString("F0");
 			UpdateUpgradeButtonAvailability(playerMoney.Money);
 		}
 		DisplayTowerRange();
@@ -170,7 +170,7 @@ public class UpgradableTower : MonoBehaviour {
 			SpriteRenderer spriteRendererGlow = transform.Find("TowerSpriteGlow").GetComponent<SpriteRenderer>();
 			spriteRendererGlow.sprite = Resources.Load(resourceName + "_" + towerLevel + "-glow", typeof(Sprite)) as Sprite;
 			map.NotifyUpgradeTowerObservers(localizableOnMap.cell);
-            upgradeCost += upgradeCost / 2f;
+            upgradeCost += upgradeCost / 1.5f;
             SoundManager.instance.PlaySound(SoundManager.TOWER_UPGRADE);
 		}
 		OnDeselect();
