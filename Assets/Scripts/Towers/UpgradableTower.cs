@@ -70,10 +70,10 @@ public class UpgradableTower : MonoBehaviour {
 		if(!isContextualMenuOpen){
 			UIState.TowerSelection();
 			DisplaySellButton();
-			DisplayUpgradeButton();
             DisplayDPSLabel();
 			isContextualMenuOpen = true;
-		} else {
+            DisplayUpgradeButton();
+        } else {
 			OnDeselect();
 		}
 	}
