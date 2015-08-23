@@ -160,6 +160,10 @@ public class UpgradableTower : MonoBehaviour {
 
 			towerCost += upgradeCost;
 
+            IonCharger ionCharger = GetComponent<IonCharger>();
+            if (ionCharger != null)
+                ionCharger.UpdateChargeBarWidth();
+
 			SpriteRenderer spriteRendererCenter = transform.Find("TowerSpriteCenter").GetComponent<SpriteRenderer>();
 			string resourceName = spriteRendererCenter.sprite.name.Split('_')[0];
 			spriteRendererCenter.sprite = Resources.Load(resourceName + "_" + towerLevel, typeof(Sprite)) as Sprite;

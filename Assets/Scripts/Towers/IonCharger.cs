@@ -7,7 +7,10 @@ public class IonCharger : MonoBehaviour {
 	public CanShoot canShoot;
 	BoxCollider2D boxCollider2D;
 	float chargeLevel;
-	float maxCharge = 500f;
+	float timeForMaxCharge = 15f; //time at full shooting
+    float MaxCharge {
+        get { return canShoot.DPS * timeForMaxCharge; }
+    }
 	GameObject chargeBarObj;
 	float width;
 	float parentSize;
@@ -18,8 +21,10 @@ public class IonCharger : MonoBehaviour {
 	GameObject chargingSpriteObj;
 	float timeToShrink = 1f;
 	TowerButton towerButton;
+    SpriteRenderer chargeRenderer;
+    SpriteRenderer chargeGlowRenderer;
 
-	void Start () {
+    void Start () {
 		width = Map.instance.cellSize;
 
 		//instantiate neon line
@@ -27,10 +32,14 @@ public class IonCharger : MonoBehaviour {
 		chargeBarObj.transform.parent = transform;
 		chargeBarObj.transform.localPosition = new Vector3(-(width/2f),-(width/2f), 0);
 		chargeBarObj.transform.localScale = new Vector3(chargeBarObj.transform.localScale.x, 2f, 0);
-		UpdateChargeBarWidth();
+        chargeRenderer = chargeBarObj.GetComponent<SpriteRenderer>();
+        chargeGlowRenderer = chargeBarObj.transform.Find("Glow").GetComponent<SpriteRenderer>();
+
+        UpdateChargeBarWidth();
 		parentSize = transform.localScale.x;
-		chargeBarObj.GetComponent<SpriteRenderer>().color = Color.white;
-		chargeBarObj.transform.Find("Glow").GetComponent<SpriteRenderer>().color = Color.white;
+
+        chargeRenderer.color = Color.white;
+        chargeGlowRenderer.color = Color.white;
 
 		//storing position for quick check during Update
 		bottomLeft = new Vector2(chargeBarObj.transform.position.x,chargeBarObj.transform.position.y);
@@ -111,18 +120,25 @@ public class IonCharger : MonoBehaviour {
 	public void Charge(float damage){
 		chargeLevel += damage / 4f;
 		UpdateChargeBarWidth();
-		if (chargeLevel > maxCharge){
-			chargeLevel = maxCharge;
+		if (chargeLevel > MaxCharge) {
+			chargeLevel = MaxCharge;
 			DisplayAsFullyCharged();
 		}
 	}
 
-	void UpdateChargeBarWidth(){
-		float worldUnits = (chargeLevel/maxCharge) * width * parentSize;
-		if (worldUnits < 0.02f){
-			worldUnits = 0.02f;
-		}
-		GDUtils.ScaleTransformToXWorldUnitHorinzontally(chargeBarObj.transform, worldUnits);
+	public void UpdateChargeBarWidth(){
+		float worldUnits = (chargeLevel/ MaxCharge) * width * parentSize;
+        if (worldUnits < 0.001f) {
+            worldUnits = 0.001f;
+        }
+        float opacity = chargeLevel / MaxCharge + 0.3f;
+        if (opacity > 1)
+            opacity = 1;
+        if (chargeLevel == 0)
+            opacity = 0;
+        chargeRenderer.SetAlpha(opacity);
+        chargeGlowRenderer.SetAlpha(opacity);
+        GDUtils.ScaleTransformToXWorldUnitHorinzontally(chargeBarObj.transform, worldUnits);
 	}
 
 	void DisplayAsFullyCharged() {
