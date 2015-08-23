@@ -25,7 +25,12 @@ public class CanShootBullets : CanShoot {
 	void Update() {
 		if(nextShootingTime < Time.time) {
 			if(targets.Count > 0) {
-				Shoot(targets [0]);
+                if (targets[0] == null) {
+                    RemoveDeadTargets();
+                }
+                //after removing enemies that disapeared at the goal, targets can be empty
+                if (targets.Count > 0)
+                    Shoot(targets [0]);
 			}
 		}
 	}

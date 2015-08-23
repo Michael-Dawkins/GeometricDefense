@@ -102,6 +102,14 @@ public abstract class CanShoot : MonoBehaviour {
 		}
 	}
 
+    protected void RemoveDeadTargets() {
+        while (targets[0] == null) {
+            targets.RemoveAt(0);
+            if (targets.Count == 0)
+                return;
+        }
+    }
+
 	public virtual void UpdateColliderRadius(){
 		CircleCollider2D collider = GetComponent<CircleCollider2D>();
 		collider.radius = ColliderRadius;
