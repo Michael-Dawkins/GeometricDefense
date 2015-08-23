@@ -66,7 +66,6 @@ public class IonCharger : MonoBehaviour {
 	}
 
 	void Attack() {
-		Debug.Log("Ion charge attack!");
 		GameObject attackObj = new GameObject("IonChargeAttack");
 		switch(canShoot.towerType){
 		case TowerTypeManager.TowerType.Circle:
@@ -81,7 +80,8 @@ public class IonCharger : MonoBehaviour {
 		}
 		IonChargeAttack ionChargeAttack = attackObj.GetComponent<IonChargeAttack>();
 		ionChargeAttack.canShoot = canShoot;
-		ionChargeAttack.BaseDamage = chargeLevel;
+        //every damage dealt will increase 25% of its valus in the final ion charge damage
+		ionChargeAttack.BaseDamage = chargeLevel / 4f;
 		attackObj.transform.position = canShoot.transform.position;
 		chargeLevel = 0f;
 		UpdateChargeBarWidth();
