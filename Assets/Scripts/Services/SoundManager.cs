@@ -4,6 +4,21 @@ using System.Collections.Generic;
 
 public class SoundManager : MonoBehaviour {
 
+    public delegate void OnSoundToggle(bool enabled);
+    public event OnSoundToggle SoundToggle = delegate {};
+    private string IS_SOUND_ENABLED_KEY = "IS_SOUND_ENABLED_KEY";
+    private bool _IsSoundEnabled;
+    public bool IsSoundEnabled {
+        get { return _IsSoundEnabled; }
+        set {
+            if (value != _IsSoundEnabled) {
+                _IsSoundEnabled = value;
+                SaveTools.SaveInPlayerPrefs(IS_SOUND_ENABLED_KEY, _IsSoundEnabled);
+                SoundToggle(value);
+            }
+        }
+    }
+
     public static string BUTTON_CLICK = "ButtonClick";
     public static string CIRCLE_ION_CHARGE = "CircleIonCharge";
     public static string CIRCLE_SHOOT = "CircleShoot";
@@ -36,6 +51,10 @@ public class SoundManager : MonoBehaviour {
 
     void Awake() {
         instance = this;
+        if (PlayerPrefs.HasKey(IS_SOUND_ENABLED_KEY))
+            IsSoundEnabled = (bool) SaveTools.LoadFromPlayerPrefs(IS_SOUND_ENABLED_KEY);
+        else
+            IsSoundEnabled = true;
     }
 
 	void Start () {
@@ -69,8 +88,14 @@ public class SoundManager : MonoBehaviour {
 
     }
 
+    public void ToggleSound() {
+        IsSoundEnabled = !IsSoundEnabled;
+    }
+
     public void PlaySound(string soundKey) {
-        GetComponent<AudioSource>().PlayOneShot(audioClips[soundKey], volumes[soundKey]);
+        if (IsSoundEnabled) {
+            GetComponent<AudioSource>().PlayOneShot(audioClips[soundKey], volumes[soundKey]);
+        }
     }
 	
 }
