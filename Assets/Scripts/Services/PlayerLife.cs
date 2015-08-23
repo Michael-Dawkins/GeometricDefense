@@ -20,11 +20,12 @@ public class PlayerLife : MonoBehaviour {
 				if (_Lives <= 0){
 					GameOver();
 				}
-			}
+			} else {
+                _Lives = value;
+            }
 		}
 	}
 
-	//Prefabs
 	public Text label;
 
 	void Awake(){
@@ -48,7 +49,8 @@ public class PlayerLife : MonoBehaviour {
         playerDied = true;
         PlayerUpgrades.instance.ResetLastAmountEarned();
         EndGameMenu.instance.Show();
-	}
+        MapLoader.instance.ReloadMap();
+    }
 
 	public void WinTheGame(){
         PlayerUpgrades.instance.WinUpgradePoints();

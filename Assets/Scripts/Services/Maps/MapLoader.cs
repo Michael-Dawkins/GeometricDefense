@@ -4,6 +4,7 @@ using System.Collections;
 public class MapLoader : MonoBehaviour {
 
     static string LAST_MAP_PLAYED = "LAST_MAP_PLAYED";
+    private string lastMapLoaded;
     public static MapLoader instance;
     Map map;
 
@@ -27,6 +28,7 @@ public class MapLoader : MonoBehaviour {
 
     public void LoadMap(string mapResourceName) {
         Debug.Log("Loading " + mapResourceName);
+        lastMapLoaded = mapResourceName;
         TextAsset mapTextAsset = (TextAsset)Resources.Load(mapResourceName, typeof(TextAsset));
         JSONObject mapJson = new JSONObject(mapTextAsset.text);
         int dimensionsIndex = mapJson.keys.IndexOf("dimensions");
@@ -40,6 +42,10 @@ public class MapLoader : MonoBehaviour {
         map.UpdateGoalPosition();
         ResetGameState();
         SaveTools.SaveInPlayerPrefs(LAST_MAP_PLAYED, mapResourceName);
+    }
+
+    public void ReloadMap() {
+        LoadMap(lastMapLoaded);
     }
 
     void ResetGameState() {
