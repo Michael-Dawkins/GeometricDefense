@@ -62,7 +62,8 @@ public abstract class CanShoot : MonoBehaviour {
 		bulletColor = towerSpriteCenter.GetComponent<SpriteRenderer>().color;
         SetUpDamageTypeDamageMultiplier();
 		UpdateColliderRadius();
-		if (damageType == DamageTypeManager.DamageType.IonCharge){
+        UpdateRangeBoostedStatus();
+        if (damageType == DamageTypeManager.DamageType.IonCharge){
 			ionCharger = gameObject.AddComponent<IonCharger>();
 			ionCharger.canShoot = this;
 		}
