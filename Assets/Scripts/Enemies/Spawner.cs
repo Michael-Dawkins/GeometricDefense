@@ -54,6 +54,7 @@ public class Spawner : MonoBehaviour {
         enemiesAlive = 0;
         totalNumberOfEnemyInCurrentWave = 10;
         UpdateWaveCounterDisplay();
+        startWaveLabel.SetActive(true);
     }
 
 	public void StartNextWave(){
