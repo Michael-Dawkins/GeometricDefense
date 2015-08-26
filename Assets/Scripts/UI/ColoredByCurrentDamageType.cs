@@ -13,6 +13,10 @@ public class ColoredByCurrentDamageType : MonoBehaviour {
     Image image;
     Colorable colorableType;
     GreyOutWhenNoBooster greyOutWhenNoBooster;
+    public bool saturated = false;
+    public float alpha = 1f;
+    private float hightSaturation = 1f;
+    private float lowSaturation = 0.2f;
 
     enum Colorable {
         Text, Sprite, Image
@@ -50,7 +54,8 @@ public class ColoredByCurrentDamageType : MonoBehaviour {
 
         float h, s, v;
         GDUtils.ColorToHSV(damageColor, out h, out s, out v);
-        Color lightenDamageColor = GDUtils.ColorFromHSV(h, 0.25f, v);
+        Color lightenDamageColor = GDUtils.ColorFromHSV(h, saturated ? hightSaturation : lowSaturation, v);
+        lightenDamageColor.a = alpha;
         return lightenDamageColor;
     }
 
