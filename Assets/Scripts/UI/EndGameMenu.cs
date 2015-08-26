@@ -41,7 +41,27 @@ public class EndGameMenu : MonoBehaviour {
     void UpdateView() {
         string endGameText = "Mission " + (PlayerLife.instance.playerDied ? "Failed" : "Complete");
         endGameLabel.text = endGameText;
-        EarnAReward();
+        if (PlayerLife.instance.playerDied)
+            ShowFunnyMessage();
+        else
+            EarnAReward();
+    }
+
+    private void ShowFunnyMessage() {
+        string[] messages = new [] {
+            "Life can be tough",
+            "You'll do better",
+            "HAHA! Sorry...",
+            "The answer is 42",
+            "It's the doctor!",
+            "Is it a bird? Is it a plane?",
+            "Insert coin",
+            "KNOCK OUT",
+            "Instructions unclear, got stuck",
+            "Come on, try one more time!"
+        };
+        int index = Random.Range(0, messages.Length - 1);
+        rewardText.text = messages[index];
     }
 
     private void EarnAReward() {
