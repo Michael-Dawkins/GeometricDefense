@@ -54,6 +54,7 @@ public class PlayerLife : MonoBehaviour {
 
     public void WinTheGame(){
         PlayerUpgrades.instance.WinUpgradePoints();
+        PlayPause.instance.TogglePlayPause();
         EndGameMenu.instance.Show();
 	}
 }
