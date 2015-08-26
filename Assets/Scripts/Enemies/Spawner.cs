@@ -39,7 +39,8 @@ public class Spawner : MonoBehaviour {
 					SpawnEnemy();
 				} else {
 					waitingForUserToStartWave = true;
-                    startWaveLabel.SetActive(true);
+                    if (currentWave != numberOfWaves)
+                        startWaveLabel.SetActive(true);
 				}
 			}
 		}
