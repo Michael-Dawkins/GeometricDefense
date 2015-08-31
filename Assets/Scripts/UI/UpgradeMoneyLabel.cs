@@ -13,7 +13,7 @@ public class UpgradeMoneyLabel : MonoBehaviour {
 	}
 
     void UpdateLabel() {
-        text.text = "Upgrade Money: " + PlayerUpgradeMoney.instance.Money;
+        text.text = "Upgrade points: " + PlayerUpgradeMoney.instance.Money;
     }
 
     void OnDestroy() {
