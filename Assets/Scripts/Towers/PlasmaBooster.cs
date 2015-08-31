@@ -73,15 +73,13 @@ public class PlasmaBooster : MonoBehaviour {
 				continue;
 			}
 			CanShoot canShoot = cell.localizableOnMap.GetComponent<CanShoot>();
-			if (canShoot.towerType == towerType){
-                PlasmaBoostable plasmaBoostable = cell.localizableOnMap.GetComponent<PlasmaBoostable>();
-                //during the selling / notify sell process, we might encounter the 
-                //beingSold but still present and thus applicable for boosters
-                //we need to filter that
-                if (!plasmaBoostable.beingSold) {
-                    boostedTowers.Add(plasmaBoostable);
-                }
-			}
+            PlasmaBoostable plasmaBoostable = cell.localizableOnMap.GetComponent<PlasmaBoostable>();
+            //during the selling / notify sell process, we might encounter the 
+            //beingSold but still present and thus applicable for boosters
+            //we need to filter that
+            if (!plasmaBoostable.beingSold) {
+                boostedTowers.Add(plasmaBoostable);
+            }
 		}
 	}
 
