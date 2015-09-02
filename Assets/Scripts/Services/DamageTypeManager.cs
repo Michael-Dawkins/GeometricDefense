@@ -1,8 +1,14 @@
 ﻿using UnityEngine;
+using UnityEngine.UI;
 using System.Collections;
 using System.Collections.Generic;
 
 public class DamageTypeManager : MonoBehaviour{
+
+    public Image damageTypeImage;
+    public Sprite antimatterSprite;
+    public Sprite ionChargeSprite;
+    public Sprite plasmaSprite;
 
 	public static DamageTypeManager instance;
 
@@ -19,6 +25,7 @@ public class DamageTypeManager : MonoBehaviour{
 
 	void Awake(){
 		instance = this;
+        
 	}
 
     void Start() {
@@ -61,8 +68,23 @@ public class DamageTypeManager : MonoBehaviour{
             currentDamageType = DamageType.Antimatter;
             break;
 		}
-		DamageTypeSelectionChange();
+        UpdateDamageTypeImage();
+        DamageTypeSelectionChange();
 	}
+
+    private void UpdateDamageTypeImage() {
+        switch (currentDamageType) {
+            case DamageType.Antimatter:
+                damageTypeImage.sprite = antimatterSprite;
+                break;
+            case DamageType.IonCharge:
+                damageTypeImage.sprite = ionChargeSprite;
+                break;
+            case DamageType.Plasma:
+                damageTypeImage.sprite = plasmaSprite;
+                break;
+        }
+    }
 
 	public string GetDamageTypeLabel(DamageType DamageType){
 		switch(currentDamageType){
@@ -83,7 +105,7 @@ public class DamageTypeManager : MonoBehaviour{
             case DamageType.Antimatter:
                 return "Slow enemies down";
             case DamageType.IonCharge:
-                return "Long press your towers";
+                return "Press your towers";
         }
         return "Wrong damage type";
     }
