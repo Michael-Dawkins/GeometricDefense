@@ -992,9 +992,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="1"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.47637524"
-     inkscape:cx="505.80126"
-     inkscape:cy="539.93294"
+     inkscape:zoom="0.67369633"
+     inkscape:cx="289.08439"
+     inkscape:cy="648.33759"
      inkscape:document-units="px"
      inkscape:current-layer="layer1"
      showgrid="false"
@@ -1024,16 +1024,17 @@
     <flowRoot
        xml:space="preserve"
        id="flowRoot4136"
-       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter4734)"
+       style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;letter-spacing:0px;word-spacing:0px;fill:#c1faff;fill-opacity:1;stroke:#06ebff;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter4734);"
        transform="translate(295.24223,-179.35213)"><flowRegion
          id="flowRegion4138"><rect
            id="rect4140"
            width="765.71429"
            height="102.85714"
            x="134.28572"
-           y="108.57143" /></flowRegion><flowPara
+           y="108.57143"
+           style="stroke:#06ebff;stroke-opacity:1;fill:#c1faff;fill-opacity:1;" /></flowRegion><flowPara
          id="flowPara4142"
-         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:90px;line-height:125%;font-family:Exo;-inkscape-font-specification:'Exo, Medium';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#ffffff">PLASMA</flowPara></flowRoot>    <flowRoot
+         style="font-style:normal;font-variant:normal;font-weight:500;font-stretch:normal;font-size:90px;line-height:125%;font-family:Exo;-inkscape-font-specification:'Exo, Medium';text-align:start;writing-mode:lr-tb;text-anchor:start;fill:#c1faff;stroke:#06ebff;stroke-opacity:1;fill-opacity:1;">PLASMA</flowPara></flowRoot>    <flowRoot
        xml:space="preserve"
        id="flowRoot4136-9"
        style="font-style:normal;font-weight:normal;font-size:40px;line-height:125%;font-family:sans-serif;text-align:center;letter-spacing:0px;word-spacing:0px;text-anchor:middle;fill:#000000;fill-opacity:1;stroke:none;stroke-width:1px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;filter:url(#filter4670)"
