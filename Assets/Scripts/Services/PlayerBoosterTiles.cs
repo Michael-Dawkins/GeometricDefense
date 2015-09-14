@@ -1,11 +1,13 @@
 ﻿using UnityEngine;
-using System.Collections;
 using System.Collections.Generic;
 
 //Responsible for the number of booster available in the game
 public class PlayerBoosterTiles : MonoBehaviour {
 
     public static PlayerBoosterTiles instance;
+
+    public Sprite rangeBoosterTutorial;
+    public Sprite damageBoosterTutorial;
 
     public void ResetCurrentAmounts() {
         CurrentDamageBoosterAmount = MaxDamageBoosterAmount;
@@ -83,15 +85,27 @@ public class PlayerBoosterTiles : MonoBehaviour {
     }
 
     public void EarnOneDamageBooster() {
+        if (MaxDamageBoosterAmount == 0)
+            DisplayDamageBoosterTutorial();
         CurrentDamageBoosterAmount++;
         MaxDamageBoosterAmount++;
         SaveTools.SaveInPlayerPrefs(MAX_DAMAGE_BOOSTER_AMOUNT, MaxDamageBoosterAmount);
     }
 
     public void EarnOneRangeBooster() {
+        if (MaxRangeBoosterAmount == 0)
+            DisplayRangeBoosterTutorial();
         CurrentRangeBoosterAmount++;
         MaxRangeBoosterAmount++;
         SaveTools.SaveInPlayerPrefs(MAX_RANGE_BOOSTER_AMOUNT, MaxRangeBoosterAmount);
+    }
+
+    void DisplayDamageBoosterTutorial() {
+        ImagePopupManager.instance.DisplayPopup(damageBoosterTutorial);
+    }
+
+    void DisplayRangeBoosterTutorial() {
+        ImagePopupManager.instance.DisplayPopup(rangeBoosterTutorial);
     }
 
     public void ClearPlayerPrefs() {

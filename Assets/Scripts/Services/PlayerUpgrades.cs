@@ -1,10 +1,19 @@
 ﻿using UnityEngine;
-using System.Collections;
+using UnityEngine.UI;
 using System.Collections.Generic;
 using System;
 
+[Serializable]
+public struct PlayerUpgradeImage {
+    public string upgradeName;
+    public Sprite sprite;
+}
+
 public class PlayerUpgrades: MonoBehaviour {
 
+    //assign tutorial images in inspector to automaticall get them displayed to
+    //the user when the associated upgrade name is bought by the player
+    public PlayerUpgradeImage[] tutorialImages;
     static string PLAYER_PREFS_KEY = "UPGRADES";
     public static PlayerUpgrades instance;
     PlayerUpgradeMoney playerUpgradeMoney;
@@ -15,6 +24,7 @@ public class PlayerUpgrades: MonoBehaviour {
     List<OnPlayerUpgradesLoaded> loadCallbacks = new List<OnPlayerUpgradesLoaded>();
     public event OnPlayerUpgradeBought PlayerUgradeBought = delegate { };
     public delegate void OnPlayerUpgradeBought();
+    [HideInInspector]
     public bool loaded = false;
 
     public List<Upgrade> Upgrades {
@@ -91,11 +101,18 @@ public class PlayerUpgrades: MonoBehaviour {
             upgrade.bought = true;
             PlayerUgradeBought();
             SaveTools.SaveInPlayerPrefs(PLAYER_PREFS_KEY, Upgrades);
-
+            DisplayTutorial(upgrade.name);
         } else {
             Debug.Log("Couldn't buy " + upgrade.name + " for "
                 + upgrade.cost + "player upgrade money, player only has "
                 + playerUpgradeMoney.Money + " playerUpgradeMoney");
+        }
+    }
+
+    void DisplayTutorial(string upgradeName) {
+        foreach(PlayerUpgradeImage playerUpgradeImage in tutorialImages) {
+            if (playerUpgradeImage.upgradeName == upgradeName)
+                ImagePopupManager.instance.DisplayPopup(playerUpgradeImage.sprite);
         }
     }
 
