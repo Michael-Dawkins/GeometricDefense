@@ -1,0 +1,17 @@
+# What is Geometric Defense ?
+Geometric Defense is an open source neon themed tower defense game for Android.
+
+It is being developed using Unity 5 in C#, graphics source files are handled with inkscape in svg format.
+
+The game is currently undergoing user testing and bug fixing phase before it will be available to everyone on the Google Play Store.
+
+
+# Screenshots
+
+![In game screen shot](Screenshots/gameplay.gif)
+
+![Pause menu](Screenshots/pause.png)
+
+there is a web based map editor that exports maps in a json format.
+
+![Web based Map editor](Screenshots/map_editor.png)
