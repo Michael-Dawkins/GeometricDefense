@@ -25,7 +25,6 @@ public class PlayerUpgradeMoney : MonoBehaviour {
     }
     
     void Start () {
-        _Money = 100f;
         if (PlayerPrefs.HasKey(PLAYER_PREFS_KEY)) {
             _Money = PlayerPrefs.GetFloat(PLAYER_PREFS_KEY);
         } else {
