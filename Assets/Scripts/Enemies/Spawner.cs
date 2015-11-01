@@ -90,16 +90,14 @@ public class Spawner : MonoBehaviour {
 		enemy.spawner = this;
 		enemy.transform.SetParent(transform);
 		CanTakeDamage damageable = enemy.GetComponent<CanTakeDamage>();
-		if (currentBaseLife == 0){
-			currentBaseLife = damageable.InitialHp;
-		} else if (currentWaveProgress == 0){
-			currentBaseLife *= hpIncreaseMultiplier;
-		}
 		damageable.InitialHp = currentBaseLife * hpIncreaseMultiplier;
         if (EnemyShouldBecoreABoss()) {
             TransformEnemyIntoBoss(enemy);
         }
 		enemiesAlive++;
+        if (currentWaveProgress == totalNumberOfEnemyInCurrentWave) {
+            currentBaseLife *= hpIncreaseMultiplier;
+        }
 	}
 
 	CanTakeDamage GetEnemyToSpaw(){

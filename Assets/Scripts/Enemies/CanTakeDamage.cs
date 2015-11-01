@@ -101,7 +101,7 @@ public class CanTakeDamage : MonoBehaviour {
 			tower.removeTargetFromList(gameObject.GetComponent<CanTakeDamage>());
 		}
 		Destroy(gameObject);
-		playerMoney.Money += 6 + (int) initialHp / 16;
+		playerMoney.Money += (int) initialHp / 10;
 	}
 
 	void OnDestroy(){
