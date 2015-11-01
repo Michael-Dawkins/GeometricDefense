@@ -8,7 +8,7 @@ public class IonChargeAttackSquare : IonChargeAttack {
 
 	protected override void Start() {
 		base.Start();
-		DamageMultiplier = 1.2f;
+		DamageMultiplier = 1.5f;
 		Shoot();
         SoundManager.instance.PlaySound(SoundManager.ION_CHARGE_SQUARE);
 	}

@@ -5,7 +5,7 @@ public class IonChargeAttackTriangle : IonChargeAttack {
 
 	protected override void Start() {
 		base.Start();
-		DamageMultiplier = 1f;
+		DamageMultiplier = 1.2f;
 		Shoot();
         SoundManager.instance.PlaySound(SoundManager.TRIANGLE_ION_CHARGE);
 	}

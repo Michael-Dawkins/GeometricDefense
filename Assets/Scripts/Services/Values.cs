@@ -25,19 +25,19 @@ public class Values : MonoBehaviour {
 		circleLevels.Levels.Add(1, new CircleStats(Damage: 15f, CellRange: 1f, ShootingRate: 1f));
 		circleLevels.Levels.Add(2, new CircleStats(Damage: 30f, CellRange: 1.3f, ShootingRate: 1.5f));
 		circleLevels.Levels.Add(3, new CircleStats(Damage: 60f, CellRange: 1.6f, ShootingRate: 2.2f));
-		circleLevels.Levels.Add(4, new CircleStats(Damage: 110f, CellRange: 2f, ShootingRate: 2.5f));
+		circleLevels.Levels.Add(4, new CircleStats(Damage: 120, CellRange: 2f, ShootingRate: 2.5f));
 
 		//Square
 		squareLevels.Levels.Add(1, new SquareStats(Damage: 8f, CellRange: 1f));
 		squareLevels.Levels.Add(2, new SquareStats(Damage: 16f, CellRange: 1f));
 		squareLevels.Levels.Add(3, new SquareStats(Damage: 28f, CellRange: 1f));
-		squareLevels.Levels.Add(4, new SquareStats(Damage: 55f, CellRange: 1f));
+		squareLevels.Levels.Add(4, new SquareStats(Damage: 60f, CellRange: 1f));
 
 		//Triangle
 		triangleLevels.Levels.Add(1, new TriangleStats(Damage: 12f, CoolDown: 2f));
 		triangleLevels.Levels.Add(2, new TriangleStats(Damage: 22f, CoolDown: 1.4f));
 		triangleLevels.Levels.Add(3, new TriangleStats(Damage: 40f, CoolDown: 0.8f));
-		triangleLevels.Levels.Add(4, new TriangleStats(Damage: 85f, CoolDown: 0.2f));
+		triangleLevels.Levels.Add(4, new TriangleStats(Damage: 90f, CoolDown: 0.2f));
 	}
 
 	public Dictionary<TowerTypeManager.TowerType, TowerLevels> Towers = new Dictionary<TowerTypeManager.TowerType, TowerLevels>();
