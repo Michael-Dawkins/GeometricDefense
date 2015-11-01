@@ -1,20 +1,20 @@
 {
 	"maps" :[
 		{
-			"label": "First map",
-			"resourceName": "map_1"
+			"label": "Flappy defense",
+			"resourceName": "flappy"
 		},
 		{
-			"label": "Second map",
-			"resourceName": "map_2"
+			"label": "Zones",
+			"resourceName": "zones"
 		},
 		{
-			"label": "Third map",
-			"resourceName": "map_3"
+			"label": "Neon hall",
+			"resourceName": "hall"
 		},
 		{
-			"label": "Fourth map",
-			"resourceName": "map_4"
+			"label": "Diamond",
+			"resourceName": "diamond"
 		}
 	]
 }

@@ -16,7 +16,7 @@ public class MapLoader : MonoBehaviour {
         map = Map.instance;
         Screen.sleepTimeout = SleepTimeout.NeverSleep;
 
-        string mapToLoad = "map_1";//default map if the game has never been launched before
+        string mapToLoad = "flappy";//default map if the game has never been launched before
         if (PlayerPrefs.HasKey(LAST_MAP_PLAYED)) {
             mapToLoad = SaveTools.LoadFromPlayerPrefs(LAST_MAP_PLAYED) as string;
         } else {
@@ -24,6 +24,11 @@ public class MapLoader : MonoBehaviour {
         }
 
         LoadMap(mapToLoad);
+    }
+
+    public void ClearPlayerPrefs() {
+        Debug.Log("PlayerPref " + LAST_MAP_PLAYED + " was deleted from PlayPrefs");
+        PlayerPrefs.DeleteKey(LAST_MAP_PLAYED);
     }
 
     public void LoadMap(string mapResourceName) {

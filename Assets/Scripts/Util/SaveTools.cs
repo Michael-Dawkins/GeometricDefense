@@ -14,7 +14,7 @@ public class SaveTools {
 
     public static object LoadFromPlayerPrefs(string playerPrefsKey) {
         string base64String = PlayerPrefs.GetString(playerPrefsKey);
-        Debug.Log("Loaded " + playerPrefsKey + " to PlayerPrefs");
+        Debug.Log("Loaded " + playerPrefsKey + " from PlayerPrefs");
         return StringToObject(base64String);
     }
 
