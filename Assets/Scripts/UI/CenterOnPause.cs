@@ -22,7 +22,8 @@ public class CenterOnPause : MonoBehaviour {
         initialPosition = rectTransform.rect.position;
         initialScale = rectTransform.localScale;
         Debug.Log("Initial position " + initialPosition);
-	}
+        CenterIfPaused();
+    }
 	
 	void Update () {
         if (!isAnimating)
