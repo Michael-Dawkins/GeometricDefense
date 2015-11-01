@@ -26,22 +26,31 @@ public class PlayPause : MonoBehaviour {
     public void TogglePlayPause() {
         TimeScaleManager.instance.isPlaying = !TimeScaleManager.instance.isPlaying;
         if (TimeScaleManager.instance.isPlaying) {
-            switch(TimeScaleManager.instance.timeScale){
-                case TimeScaleManager.TimeScale.ONE:
-                    Time.timeScale = 1f;
-                    break;
-                case TimeScaleManager.TimeScale.TWO:
-                    Time.timeScale = 2f;
-                    break;
-                case TimeScaleManager.TimeScale.THREE:
-                    Time.timeScale = 3f;
-                    break;
-            }
+            Play();
         } else {
-            Time.timeScale = 0f;
+            Pause();
         }
         UpdateState();
         NotifyPauseListeners();
+    }
+
+    void Play() {
+        switch (TimeScaleManager.instance.timeScale) {
+            case TimeScaleManager.TimeScale.ONE:
+                Time.timeScale = 1f;
+                break;
+            case TimeScaleManager.TimeScale.TWO:
+                Time.timeScale = 2f;
+                break;
+            case TimeScaleManager.TimeScale.THREE:
+                Time.timeScale = 3f;
+                break;
+        }
+        Spawners.instance.SpawnerList[0].StartNextWave();
+    }
+
+    void Pause() {
+        Time.timeScale = 0f;
     }
 
     void UpdateState() {
