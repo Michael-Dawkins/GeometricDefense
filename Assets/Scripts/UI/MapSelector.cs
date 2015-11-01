@@ -8,10 +8,9 @@ public class MapSelector : MonoBehaviour {
     public RectTransform buttonPrefab;
     bool isMenuDisplayed = false;
 
-    GameObject mapListPanel;
+    public GameObject mapListPanel;
 
 	void Start () {
-        mapListPanel = mapSelectorScrollRect.transform.Find("MapListPanel").gameObject;
         TextAsset mapListTextAsset = (TextAsset)Resources.Load("map_list", typeof(TextAsset));
         JSONObject mapListJson = new JSONObject(mapListTextAsset.text);
         ConstructButtonsForJson(mapListJson);

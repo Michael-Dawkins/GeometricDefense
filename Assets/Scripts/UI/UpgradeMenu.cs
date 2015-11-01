@@ -8,7 +8,7 @@ public class UpgradeMenu : MonoBehaviour {
     public GameObject upgradeMenu;
     public RectTransform buttonPrefab;
     bool isMenuDisplayed = false;
-    GameObject upgradeListPanel;
+    public GameObject upgradeListPanel;
     Dictionary<Upgrade, Text> upgradeTexts;
 
     void Start() {
@@ -17,7 +17,6 @@ public class UpgradeMenu : MonoBehaviour {
 
     void Init() {
         upgradeTexts = new Dictionary<Upgrade, Text>();
-        upgradeListPanel = upgradeMenu.transform.Find("PlayerUpgradesView/UpgradeListPanel").gameObject;
         ClickReceptor.instance.AddOnClickListener(OnClickReceptorClick);
         ConstructButtonsFromUpgradeslist(PlayerUpgrades.instance.Upgrades);
         UpdateButtonStates();
