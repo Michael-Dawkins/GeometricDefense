@@ -5,9 +5,6 @@ It is licensed under GPL V3.
 
 It is being developed using Unity 5 in C#, graphics source files are handled with inkscape in svg format.
 
-The game is currently undergoing user testing and bug fixing phase before it will be available to everyone on the Google Play Store.
-
-
 # Screenshots
 
 ![In game screen shot](Screenshots/gameplay.gif)
